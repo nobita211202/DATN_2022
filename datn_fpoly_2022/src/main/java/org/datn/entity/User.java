@@ -1,5 +1,7 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @Column(name = "user_id", nullable = false)

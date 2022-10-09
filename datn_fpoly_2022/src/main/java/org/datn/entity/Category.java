@@ -1,5 +1,7 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "categories")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     @Id
     @Column(name = "category_id", nullable = false)
