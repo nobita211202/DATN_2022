@@ -1,5 +1,6 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "admins")
+@AllArgsConstructor
 public class Admin {
     @Id
     @Column(name = "admin_id", nullable = false)
@@ -36,6 +38,13 @@ public class Admin {
 
     @Column(name = "status")
     private Short status;
+
+    public Admin(Long id) {
+    }
+
+    public Admin() {
+
+    }
 
     public Long getId() {
         return id;
