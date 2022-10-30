@@ -90,22 +90,22 @@ public class UserAccountServiceImpl implements UserAccountService {
             Instant time_now = Instant.now();                           //lấy time hiện tại
             System.out.println(time_now.isAfter(time_until));
             if (time_now.isAfter(time_until)==false){
-                responseData.setStatus(10);
+                responseData.setStatus(HttpStatus.LOCKED.value());
                 responseData.setMessage("Bị khóa trong 15'");
             }}else {
                 if (user2 == null){
-                    responseData.setStatus(404);
+                    responseData.setStatus(HttpStatus.NOT_FOUND.value());
                     responseData.setMessage("Email không tồn tại");
                 } else if (user1 == null) {
-                    responseData.setStatus(201);
+                    responseData.setStatus(HttpStatus.NO_CONTENT.value());
                     responseData.setMessage("Email hoặc mật khẩu sai");
                 }else {
                     BlockUser user3 =udao.findByEmailInBlockUser(user2);
                     if (user3==null){
-                        responseData.setStatus(200);
+                        responseData.setStatus(HttpStatus.OK.value());
                         responseData.setMessage("Đăng nhập thành công");
                     }else {
-                        responseData.setStatus(405);
+                        responseData.setStatus(HttpStatus.FORBIDDEN.value());
                         responseData.setMessage("Tài khoản đã bị khóa");
                     }
                 }
