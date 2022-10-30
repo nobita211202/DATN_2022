@@ -1,4 +1,4 @@
-package org.datn.DAO;
+package org.datn.dao;
 
 import org.datn.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

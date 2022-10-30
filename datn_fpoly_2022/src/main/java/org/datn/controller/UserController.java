@@ -1,7 +1,7 @@
 package org.datn.controller;
 
-import org.datn.DAO.CategoryDao;
-import org.datn.DAO.UserDao;
+import org.datn.dao.CategoryDao;
+import org.datn.dao.UserDao;
 import org.datn.entity.Category;
 import org.datn.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

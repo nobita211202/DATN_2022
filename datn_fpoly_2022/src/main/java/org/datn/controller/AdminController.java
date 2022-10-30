@@ -1,6 +1,6 @@
 package org.datn.controller;
 
-import org.datn.DAO.AdminDao;
+import org.datn.dao.AdminDao;
 import org.datn.entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
