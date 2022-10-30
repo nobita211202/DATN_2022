@@ -1,4 +1,4 @@
-package org.datn.DAO;
+package org.datn.dao;
 
 import org.datn.entity.UsersRole;
 import org.springframework.data.jpa.repository.JpaRepository;

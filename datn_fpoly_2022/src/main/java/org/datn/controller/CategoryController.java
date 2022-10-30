@@ -1,6 +1,6 @@
 package org.datn.controller;
 
-import org.datn.DAO.CategoryDao;
+import org.datn.dao.CategoryDao;
 import org.datn.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

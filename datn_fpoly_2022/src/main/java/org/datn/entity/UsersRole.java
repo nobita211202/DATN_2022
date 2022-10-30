@@ -1,12 +1,16 @@
 package org.datn.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.Type;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
+@Component
 @Table(name = "users_role")
 public class UsersRole {
     @Id
