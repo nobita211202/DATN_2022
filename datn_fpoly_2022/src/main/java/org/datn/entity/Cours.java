@@ -12,6 +12,7 @@ import java.time.Instant;
 public class Cours {
     @Id
     @Column(name = "course_id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
