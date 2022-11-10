@@ -2,6 +2,7 @@ package org.datn.service;
 
 
 import org.datn.entity.Category;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface CategoryService {
     void delete(long id);
     Category put(Category category);
     boolean exists(long id);
+    Page<Category> pageCategories(int pageNumber ,int pageSize);
 }

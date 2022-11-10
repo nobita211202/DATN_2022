@@ -4,6 +4,8 @@ import org.datn.dao.CategoryDao;
 import org.datn.entity.Category;
 import org.datn.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,13 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category save(Category admin) {
-        return categoryDao.save(admin);
+    public Category save(Category category) {
+        return categoryDao.save(category);
     }
 
     @Override
     public void delete(long id) {
-        categoryDao.deleteById(id);
+        categoryDao.delete_ctg(id);
     }
 
     @Override
@@ -42,5 +44,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean exists(long id) {
         return categoryDao.existsById(id);
+    }
+
+    @Override
+    public Page<Category> pageCategories(int pageNumber,int pageSize) {
+        return categoryDao.findAll(PageRequest.of(pageNumber,pageSize));
     }
 }
