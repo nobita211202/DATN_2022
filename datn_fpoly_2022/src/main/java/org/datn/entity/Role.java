@@ -1,5 +1,6 @@
 package org.datn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Role {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
     @JoinColumn(name = "admin_id", nullable = false)
     private Admin admin;
 

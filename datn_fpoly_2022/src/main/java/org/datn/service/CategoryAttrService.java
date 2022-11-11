@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public interface CategoryAttrService {
+
     List<CategoriesAttr> findAll();
     CategoriesAttr createCategoryAttr(CategoriesAttr ca);
 
@@ -15,4 +16,7 @@ public interface CategoryAttrService {
     CategoriesAttr updateCategoryAttr(CategoriesAttr ca);
 
     CategoriesAttr findByIDCategoryAttr(Long id);
+
+
+
 }

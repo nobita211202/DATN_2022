@@ -1,35 +1,30 @@
 package org.datn.controller;
 
-import antlr.collections.impl.Vector;
-import org.datn.dao.CategoryDao;
 import org.datn.entity.Category;
-import org.datn.service.CategoryService;
+import org.datn.entity.Role;
+import org.datn.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/role")
+public class RoleController {
     @Autowired
-    CategoryService categoryService;
+    RoleService roleService;
 
     @GetMapping("/all")
-    public ResponseEntity getAll(Model model) {
-        List<Category>lst = categoryService.getAll();
-        return ResponseEntity.ok(lst);
+    public ResponseEntity<List<Role>> getAll(Model model) {
+        return ResponseEntity.ok(roleService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getId(@PathVariable("id") Long id) {
-        Optional<Category> optional = categoryService.findById(id);
+    public ResponseEntity<Role> getId(@PathVariable("id") Long id) {
+        Optional<Role> optional = roleService.findById(id);
         if (!optional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -37,27 +32,30 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Category> add(@RequestBody Category category) {
-        categoryService.save(category);
-        return ResponseEntity.ok(category);
+    public ResponseEntity<Role> add(@RequestBody Role role) {
+        if (roleService.exists(role.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+        roleService.save(role);
+        return ResponseEntity.ok(role);
     }
 
-    @PutMapping()
-    public ResponseEntity<Category> put(
-                                     @RequestBody Category category) {
-        if (!categoryService.exists(category.getId())) {
+    @PutMapping("/{id}")
+    public ResponseEntity<Role> put(@PathVariable("id") Long id,
+                                        @RequestBody Role role) {
+        if (!roleService.exists(id)) {
             return ResponseEntity.notFound().build();
         }
-        categoryService.put(category);
-        return ResponseEntity.ok(category);
+        roleService.save(role);
+        return ResponseEntity.ok(role);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        if (!categoryService.exists(id)) {
+        if (!roleService.exists(id)) {
             return ResponseEntity.notFound().build();
         }
-        categoryService.delete(id);
+        roleService.delete(id);
         return ResponseEntity.ok().build();
     }
 
@@ -68,6 +66,7 @@ public class CategoryController {
     ){
         if(pageNumber < 0 || pageSize < 0)
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(categoryService.pageCategories(pageNumber,pageSize));
+        return ResponseEntity.ok(roleService.pageCategories(pageNumber,pageSize));
     }
+
 }
