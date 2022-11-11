@@ -1,6 +1,6 @@
 package org.datn.controller;
 
-import org.datn.dao.BlockUserDao;
+
 import org.datn.bean.ResponseData;
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
@@ -11,7 +11,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.InetAddress;
+import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -51,5 +53,14 @@ public class LoginController {
 
 
         return ResponseEntity.ok(responseData);
+    }
+    @GetMapping ("/token")
+    public String token (){
+        SecureRandom random = new SecureRandom();
+        Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+        byte[] randomBytes = new byte[24];
+        random.nextBytes(randomBytes);
+        System.out.println(base64Encoder.encodeToString(randomBytes));
+        return base64Encoder.encodeToString(randomBytes);
     }
 }
