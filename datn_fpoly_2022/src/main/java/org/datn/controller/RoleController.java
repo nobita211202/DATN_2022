@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/api/role")
 public class RoleController {
     @Autowired
     RoleService roleService;
@@ -22,7 +22,7 @@ public class RoleController {
         return ResponseEntity.ok(roleService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Role> getId(@PathVariable("id") Long id) {
         Optional<Role> optional = roleService.findById(id);
         if (!optional.isPresent()) {
@@ -40,7 +40,7 @@ public class RoleController {
         return ResponseEntity.ok(role);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Role> put(@PathVariable("id") Long id,
                                         @RequestBody Role role) {
         if (!roleService.exists(id)) {
@@ -50,7 +50,7 @@ public class RoleController {
         return ResponseEntity.ok(role);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!roleService.exists(id)) {
             return ResponseEntity.notFound().build();
@@ -59,7 +59,7 @@ public class RoleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("page/{pageNumber}/{pageSize}")
+    @GetMapping("/page/{pageNumber}/{pageSize}")
     public ResponseEntity page(
             @PathVariable("pageNumber") int pageNumber,
             @PathVariable("pageSize") int pageSize

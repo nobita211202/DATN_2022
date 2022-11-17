@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
@@ -27,7 +27,7 @@ public class CategoryController {
         return ResponseEntity.ok(lst);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity getId(@PathVariable("id") Long id) {
         Optional<Category> optional = categoryService.findById(id);
         if (!optional.isPresent()) {
@@ -42,7 +42,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    @PutMapping()
+    @PutMapping("/update/{id}")
     public ResponseEntity<Category> put(
                                      @RequestBody Category category) {
         if (!categoryService.exists(category.getId())) {

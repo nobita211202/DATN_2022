@@ -14,16 +14,17 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     UserDao uDao;
 
-    @GetMapping("user/all")
+    @GetMapping("/all")
     public ResponseEntity<List<User>> getAll(Model model) {
         return ResponseEntity.ok(uDao.findAll());
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<User> getId(@PathVariable("id") Long id) {
         Optional<User> optional = uDao.findById(id);
         if (!optional.isPresent()) {
@@ -32,7 +33,7 @@ public class UserController {
         return ResponseEntity.ok(optional.get());
     }
 
-    @PostMapping("user/add")
+    @PostMapping("/add")
     public ResponseEntity<User> add(@RequestBody User user) {
         if (uDao.existsById(user.getId())) {
             return ResponseEntity.badRequest().build();
@@ -41,7 +42,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("user/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> put(@PathVariable("id") Long id,
                                         @RequestBody User user) {
         if (!uDao.existsById(id)) {
@@ -51,7 +52,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping("user/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!uDao.existsById(id)) {
             return ResponseEntity.notFound().build();

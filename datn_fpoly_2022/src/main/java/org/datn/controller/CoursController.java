@@ -11,28 +11,28 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/coursapi")
+@RequestMapping("/api/cours")
 public class CoursController {
     @Autowired
     CoursService coursService;
 
-    @GetMapping("/listcours")
+    @GetMapping("/all")
     public List<Cours> getAll() {                 //Lấy danh sách khóa học
         return coursService.findAll();
     }
-    @PostMapping("/addcours")
+    @PostMapping("/create")
     public Cours addCours(@RequestBody Cours cours){    //Thêm khóa học
         return coursService.createCours(cours);
     }
-    @DeleteMapping("/deletecours/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteCours (@PathVariable("id") Long id){      //Xóa khóa học theo id
         coursService.deleteCours(id);
     }
-    @PutMapping("/updatecours/{id}")
+    @PutMapping("/update/{id}")
     public Cours updateCours (@PathVariable("id") Long id ,@RequestBody Cours cours){   //Update khóa học
         return coursService.updateCours(cours);
     }
-    @GetMapping("{id}")
+    @GetMapping("/get/{id}")
     public Cours getOne (@PathVariable("id") Long id){              //tìm kiếm
         return coursService.findByIDCours(id);
     }
