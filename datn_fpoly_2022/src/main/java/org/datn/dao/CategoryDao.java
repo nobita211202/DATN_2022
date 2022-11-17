@@ -13,6 +13,13 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
     List<Category> findCategoryByParent(Category category);
     @Procedure()
     void delete_ctg(long id);
+
+    /**
+     * @param id of parent category
+     *           find all category by parent id
+     * @return
+     *          list of category
+     */
     @Query(value = "WITH RECURSIVE tempTable\n" +
             "as\n" +
             "\t(\n" +
@@ -26,5 +33,6 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
             "\t\t\tINNER JOIN tempTable t on t.category_id = c.parent_id\n" +
             "\t)\n" +
             "\tSELECT * FROM tempTable", nativeQuery = true)
+
     List<Category> findCategoryByParentId(Long id);
 }
