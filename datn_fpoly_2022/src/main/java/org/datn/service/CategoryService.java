@@ -15,4 +15,5 @@ public interface CategoryService {
     Category put(Category category);
     boolean exists(long id);
     Page<Category> pageCategories(int pageNumber ,int pageSize);
+    List<Category> findCategoryByParentId(Long id);
 }

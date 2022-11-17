@@ -50,4 +50,9 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<Category> pageCategories(int pageNumber,int pageSize) {
         return categoryDao.findAll(PageRequest.of(pageNumber,pageSize));
     }
+
+    @Override
+    public List<Category> findCategoryByParentId(Long id) {
+        return categoryDao.findCategoryByParentId(id);
+    }
 }

@@ -70,4 +70,10 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(categoryService.pageCategories(pageNumber,pageSize));
     }
+    @GetMapping("/find/parent/{id}")
+    public ResponseEntity findParent(@PathVariable Long id){
+        if(!categoryService.exists(id))
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(categoryService.findCategoryByParentId(id));
+    }
 }
