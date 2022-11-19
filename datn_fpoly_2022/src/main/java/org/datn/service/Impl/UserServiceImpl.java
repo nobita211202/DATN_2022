@@ -33,10 +33,10 @@ public class UserServiceImpl implements UserService {
         userDao.deleteById(id);
     }
 
-    @Override
-    public User findUserByToken(String token) {
-        return userDao.findUserByToken(token);
-    }
+//    @Override
+//    public User findUserByToken(String token) {
+//        return userDao.findUserByToken(token);
+//    }
 
     @Override
     public User put(User user) {
