@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class TokenServiceImpl implements TokenService {
     @Autowired
     TokenDAO tokenDAO;
+
     @Override
     public Token create(Token token) {
         return tokenDAO.save(token);
