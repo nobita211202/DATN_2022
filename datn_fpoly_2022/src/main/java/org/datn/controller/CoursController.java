@@ -4,6 +4,7 @@ import org.datn.entity.Cours;
 import org.datn.service.CoursService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +38,7 @@ public class CoursController {
         return coursService.findByIDCours(id);
     }
     @GetMapping("/paging/{pageNumber}/{pageSize}")
-    public Page<Cours> coursPagination(@PathVariable Integer pageNumber,@PathVariable Integer pageSize){
-//        pageSize=2;
+    public Page<Cours> coursPagination(@PathVariable Optional<Integer> pageNumber,@PathVariable Integer pageSize){
         return coursService.getCoursPaging(pageNumber,pageSize);
     }
 }

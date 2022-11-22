@@ -92,7 +92,8 @@ public class UserAccountServiceImpl implements UserAccountService {
             if (time_now.isAfter(time_until)==false){
                 responseData.setStatus(HttpStatus.LOCKED.value());
                 responseData.setMessage("Bị khóa trong 15'");
-            }}else {
+            }
+        }else{
                 if (user2 == null){
                     responseData.setStatus(HttpStatus.NOT_FOUND.value());
                     responseData.setMessage("Email không tồn tại");

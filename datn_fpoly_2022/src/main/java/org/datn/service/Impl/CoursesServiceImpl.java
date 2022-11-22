@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CoursesServiceImpl implements CoursService {
@@ -48,8 +50,9 @@ public class CoursesServiceImpl implements CoursService {
     }
 
     @Override
-    public Page<Cours> getCoursPaging(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+    public Page<Cours> getCoursPaging(Optional<Integer> pageNumber, Integer pageSize) {
+        Sort sort = Sort.sort(Cours.class).by(Cours::getId).ascending();
+        Pageable pageable = PageRequest.of(pageNumber.orElse(0),pageSize,sort);
         return cdao.findAll(pageable);
     }
 }

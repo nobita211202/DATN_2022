@@ -44,6 +44,10 @@ public class User {
     @Column(name = "image")
     private String image;
 
+    @Size(max = 255)
+    @Column(name = "token")
+    private String token;
+
     @Column(name = "money")
     private Float money;
 
@@ -174,6 +178,14 @@ public class User {
 
     public void setStatus(Short status) {
         this.status = status;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }
