@@ -11,12 +11,12 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/cours")
+@RequestMapping("/api/course")
 public class CoursController {
     @Autowired
     CoursService coursService;
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public List<Cours> getAll() {                 //Lấy danh sách khóa học
         return coursService.findAll();
     }

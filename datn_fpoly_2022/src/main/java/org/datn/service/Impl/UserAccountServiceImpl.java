@@ -116,7 +116,9 @@ public class UserAccountServiceImpl implements UserAccountService {
         responseData.setError(responseData.getMessage());
         return  responseData;
     }
-
+    public User findOneByEmailIgnoreCaseAndPassword(String email, String password) {
+        return udao.findOneByEmailIgnoreCaseAndPassword(email, password);
+    }
 
 }
 //if (user2 == null){

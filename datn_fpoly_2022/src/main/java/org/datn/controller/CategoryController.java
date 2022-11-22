@@ -21,7 +21,7 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public ResponseEntity getAll(Model model) {
         List<Category>lst = categoryService.getAll();
         return ResponseEntity.ok(lst);

@@ -11,11 +11,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
     @Id
     @Column(name = "user_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,7 +22,6 @@ public class User {
     private Admin admin;
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "username", nullable = false)
     private String username;
 
@@ -36,12 +34,9 @@ public class User {
     @Type(type = "org.hibernate.type.TextType")
     private String address;
 
-    @Size(max = 15)
     @Column(name = "phone", length = 15)
     private String phone;
 
-    @Size(max = 255)
-    @NotNull
     @Column(name = "email", nullable = false)
     private String email;
 

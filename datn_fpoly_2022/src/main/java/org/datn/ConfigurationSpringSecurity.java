@@ -30,7 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-                http.csrf().disable();
+                http.cors().and().csrf().disable();
 
 
     }
@@ -47,7 +47,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
     }
     @Override
     public void configure( WebSecurity web) throws Exception {
-        System.out.println("Chạy tới confi 2");
         web.ignoring().antMatchers(HttpMethod.OPTIONS,"/**");
     }
 }

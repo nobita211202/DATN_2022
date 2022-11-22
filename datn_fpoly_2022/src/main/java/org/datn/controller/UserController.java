@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     UserDao uDao;
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public ResponseEntity<List<User>> getAll(Model model) {
         return ResponseEntity.ok(uDao.findAll());
     }

@@ -35,4 +35,5 @@ public interface UserAccountService  {
 
 
     ResponseData login(User user) throws UnknownHostException;
+    User findOneByEmailIgnoreCaseAndPassword(String email, String password);
 }

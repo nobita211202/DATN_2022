@@ -15,19 +15,20 @@ import static org.springframework.http.HttpStatus.OK;
 public class ResponseData<T> {
     private String error;
     private String message;
-    private List<T> data;
-    private int status;
     T value;
+    private int status;
+    private String token;
+
 
     public ResponseData() {
     }
 
-    public ResponseData(String error, String message, List<T> data, int status, T value) {
+    public ResponseData(String error, String message, T value, int status, String token) {
         this.error = error;
         this.message = message;
-        this.data = data;
-        this.status = status;
         this.value = value;
+        this.status = status;
+        this.token = token;
     }
 
     public String getError() {
@@ -46,12 +47,12 @@ public class ResponseData<T> {
         this.message = message;
     }
 
-    public List<T> getData() {
-        return null;
+    public T getValue() {
+        return value;
     }
 
-    public void setData(List<T> data) {
-        this.data = data;
+    public void setValue(T value) {
+        this.value = value;
     }
 
     public int getStatus() {
@@ -62,11 +63,11 @@ public class ResponseData<T> {
         this.status = status;
     }
 
-    public T getValue() {
-        return value;
+    public String getToken() {
+        return token;
     }
 
-    public void setValue(T value) {
-        this.value = value;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

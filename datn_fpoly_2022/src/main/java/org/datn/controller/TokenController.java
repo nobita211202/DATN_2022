@@ -1,7 +1,7 @@
 package org.datn.controller;
 
 import org.datn.entity.Token;
-import org.datn.service.TokenService;
+import org.datn.service.Impl.TokenServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/token")
 public class TokenController {
     @Autowired
-    TokenService tokenService;
+    TokenServiceImpl tokenService;
     @PostMapping("/add")
     public Token create(@RequestBody Token token) {
         return tokenService.create(token);

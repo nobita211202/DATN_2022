@@ -25,5 +25,6 @@ public interface UserDao extends JpaRepository<User, Long> {
     @Query("SELECT MAX (i.effectUntil) FROM BlockUser i WHERE i.ipAddress LIKE :ip ")
     Instant findEffectUntilInBlockUser(String ip);
 
+    @Query("SELECT e FROM User e WHERE e.email LIKE :email AND e.password LIKE :password")
     User findOneByEmailIgnoreCaseAndPassword(String email, String password);
 }

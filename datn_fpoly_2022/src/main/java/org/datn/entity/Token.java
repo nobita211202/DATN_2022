@@ -1,7 +1,11 @@
 package org.datn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.datn.utils.HashAlgorithm;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,13 +18,17 @@ public class Token implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "code")
-    private String tokenCode = UUID.randomUUID().toString();
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private String tokenCode = HashAlgorithm.getStringFromSHA512(UUID.randomUUID().toString());
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     @Column(name="created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date created = new Date();
+
+    public Token() throws NoSuchAlgorithmException {
+    }
 
     public Long getId() {
         return id;

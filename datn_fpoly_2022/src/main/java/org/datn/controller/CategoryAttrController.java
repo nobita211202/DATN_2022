@@ -15,7 +15,7 @@ public class CategoryAttrController {
     @Autowired
     CategoryAttrService categoryAttrService;
 
-    @GetMapping("/category-attribute/all")
+    @GetMapping("/category-attribute/get")
     public List<CategoriesAttr> getAll(){
         return categoryAttrService.findAll();
     }

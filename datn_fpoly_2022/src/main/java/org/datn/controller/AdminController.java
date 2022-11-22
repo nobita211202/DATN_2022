@@ -17,7 +17,7 @@ public class AdminController {
     @Autowired
     AdminDao aDao;
 
-    @GetMapping("/admin/all")
+    @GetMapping("/admin/get")
     public ResponseEntity<List<Admin>> getAll(Model model) {
         return ResponseEntity.ok(aDao.findAll());
     }

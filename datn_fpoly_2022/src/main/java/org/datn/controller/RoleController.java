@@ -17,7 +17,7 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public ResponseEntity<List<Role>> getAll(Model model) {
         return ResponseEntity.ok(roleService.getAll());
     }
