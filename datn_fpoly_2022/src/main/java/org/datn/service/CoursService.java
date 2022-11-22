@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface CoursService {
@@ -20,5 +21,5 @@ public interface CoursService {
 
     Cours findByIDCours(Long id);
 
-    Page<Cours> getCoursPaging(Integer pageNumber,Integer pageSize);
+    Page<Cours> getCoursPaging(Optional<Integer> pageNumber, Integer pageSize);
 }
