@@ -1,8 +1,10 @@
 package org.datn.controller;
 
+import org.datn.entity.Admin;
 import org.datn.entity.Category;
 import org.datn.entity.Role;
 import org.datn.service.RoleService;
+import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -33,20 +35,24 @@ public class RoleController {
 
     @PostMapping("/add")
     public ResponseEntity<Role> add(@RequestBody Role role) {
-        if (roleService.exists(role.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
+
+        Admin admin= new Admin();
+        admin.setId(1L);
+        role.setAdmin(admin);
         roleService.save(role);
         return ResponseEntity.ok(role);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Role> put(@PathVariable("id") Long id,
-                                        @RequestBody Role role) {
-        if (!roleService.exists(id)) {
+    @PutMapping("/update")
+    public ResponseEntity<Role> put(
+            @RequestBody Role role) {
+        if (!roleService.exists(role.getId())) {
             return ResponseEntity.notFound().build();
         }
-        roleService.save(role);
+        Admin admin= new Admin();
+        admin.setId(1L);
+        role.setAdmin(admin);
+        roleService.put(role);
         return ResponseEntity.ok(role);
     }
 

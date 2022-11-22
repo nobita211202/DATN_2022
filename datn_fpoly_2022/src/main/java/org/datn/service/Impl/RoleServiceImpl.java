@@ -3,6 +3,7 @@ package org.datn.service.Impl;
 import org.datn.dao.RoleDao;
 import org.datn.entity.Role;
 import org.datn.service.RoleService;
+import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +14,8 @@ import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-
+    @Autowired
+    Bases<Role> bases;
     @Autowired
     RoleDao roleDao;
 
@@ -29,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role save(Role role) {
-        return roleDao.save(role);
+        return roleDao.save(bases.getBase(role,Bases.CREATE));
     }
 
     @Override
@@ -39,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role put(Role role) {
-        return roleDao.save(role);
+        return roleDao.save(bases.getBase(role,Bases.UPDATE));
     }
 
     @Override

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/DATN_2022.iml" filepath="$PROJECT_DIR$/.idea/DATN_2022.iml" />
+      <module fileurl="file://$PROJECT_DIR$/datn_fpoly_2022/DATN_UDPM.iml" filepath="$PROJECT_DIR$/datn_fpoly_2022/DATN_UDPM.iml" />
     </modules>
   </component>
 </project>

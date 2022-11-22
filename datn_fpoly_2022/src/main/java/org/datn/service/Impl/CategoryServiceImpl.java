@@ -3,6 +3,8 @@ package org.datn.service.Impl;
 import org.datn.dao.CategoryDao;
 import org.datn.entity.Category;
 import org.datn.service.CategoryService;
+import org.datn.utils.Base.Bases;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryDao categoryDao;
+    @Autowired
+    ModelMapper modelMapper;
+
+    @Autowired
+    Bases<Category> bases;
+
     @Override
     public List<Category> getAll() {
         return categoryDao.findAll();
@@ -28,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category save(Category category) {
-        return categoryDao.save(category);
+        return categoryDao.save(bases.getBase(category,Bases.CREATE));
     }
 
     @Override
@@ -37,8 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category put(Category admin) {
-        return categoryDao.save(admin);
+    public Category put(Category category) {
+        return categoryDao.save(bases.getBase(category,Bases.UPDATE));
     }
 
     @Override

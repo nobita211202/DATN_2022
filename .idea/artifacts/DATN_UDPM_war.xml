@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="DATN_UDPM:war">
+    <output-path>$PROJECT_DIR$/datn_fpoly_2022/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>DATN_UDPM</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="DATN_UDPM-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="DATN_UDPM:war exploded" />
+    </root>
+  </artifact>
+</component>

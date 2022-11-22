@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 public class Role {
     @Id
     @Column(name = "role_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -25,14 +27,14 @@ public class Role {
     private String name;
 
     @Column(name = "created")
-    private LocalDate created;
+    private Instant created;
 
     @Column(name = "creator")
     @Type(type = "org.hibernate.type.TextType")
     private String creator;
 
     @Column(name = "modified")
-    private LocalDate modified;
+    private Instant modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")
@@ -65,13 +67,6 @@ public class Role {
         this.name = name;
     }
 
-    public LocalDate getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDate created) {
-        this.created = created;
-    }
 
     public String getCreator() {
         return creator;
@@ -81,11 +76,20 @@ public class Role {
         this.creator = creator;
     }
 
-    public LocalDate getModified() {
+
+    public Instant getCreated() {
+        return created;
+    }
+
+    public void setCreated(Instant created) {
+        this.created = created;
+    }
+
+    public Instant getModified() {
         return modified;
     }
 
-    public void setModified(LocalDate modified) {
+    public void setModified(Instant modified) {
         this.modified = modified;
     }
 
