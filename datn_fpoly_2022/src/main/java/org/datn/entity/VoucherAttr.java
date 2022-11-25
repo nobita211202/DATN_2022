@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 public class VoucherAttr {
     @Id
     @Column(name = "voucher_attr_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

@@ -12,6 +12,7 @@ import java.time.Instant;
 public class CategoriesAttr {
     @Id
     @Column(name = "category_attr_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

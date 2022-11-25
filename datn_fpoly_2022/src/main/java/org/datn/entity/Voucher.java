@@ -12,6 +12,7 @@ import java.time.Instant;
 public class Voucher {
     @Id
     @Column(name = "voucher_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
