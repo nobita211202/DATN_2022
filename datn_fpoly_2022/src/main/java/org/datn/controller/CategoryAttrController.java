@@ -20,15 +20,20 @@ public class CategoryAttrController {
         return categoryAttrService.findAll();
     }
     @PostMapping("/category-attribute/add")
-    public CategoriesAttr addCours(@RequestBody CategoriesAttr cattr){    //Thêm khóa học
+    public CategoriesAttr addCategoriesAttr(@RequestBody CategoriesAttr cattr){    //Thêm khóa học
         return categoryAttrService.createCategoryAttr(cattr);
     }
     @DeleteMapping("/category-attribute/delete/{id}")
-    public void deleteCours (@PathVariable("id") Long id){      //Xóa khóa học theo id
+    public void deleteCategoriesAttr (@PathVariable("id") Long id){      //Xóa khóa học theo id
         categoryAttrService.deleteCategoryAttr(id);
     }
     @PutMapping("/category-attribute/update/{id}")
     public CategoriesAttr updateCategoriAttr (@PathVariable("id") Long id ,@RequestBody CategoriesAttr cattr){   //Update khóa học
         return categoryAttrService.updateCategoryAttr(cattr);
     }
+    @GetMapping("/findByID/{id}")
+    public CategoriesAttr findByIDCategoriesAttr(@PathVariable("id") Long id){
+        return categoryAttrService.findByIDCategoryAttr(id);
+    }
+
 }
