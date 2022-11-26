@@ -12,16 +12,17 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api")
 public class AdminController {
     @Autowired
     AdminDao aDao;
 
-    @GetMapping("admin/all")
+    @GetMapping("/admin/get")
     public ResponseEntity<List<Admin>> getAll(Model model) {
         return ResponseEntity.ok(aDao.findAll());
     }
 
-    @GetMapping("admin/{id}")
+    @GetMapping("/admin/get/{id}")
     public ResponseEntity<Admin> getId(@PathVariable("id") Long id) {
         Optional<Admin> optional = aDao.findById(id);
         if (!optional.isPresent()) {
@@ -30,7 +31,7 @@ public class AdminController {
         return ResponseEntity.ok(optional.get());
     }
 
-    @PostMapping("admin/add")
+    @PostMapping("/admin/add")
     public ResponseEntity<Admin> add(@RequestBody Admin admin) {
         if (aDao.existsById(admin.getId())) {
             return ResponseEntity.badRequest().build();
@@ -39,7 +40,7 @@ public class AdminController {
         return ResponseEntity.ok(admin);
     }
 
-    @PutMapping("admin/{id}")
+    @PutMapping("/admin/update/{id}")
     public ResponseEntity<Admin> put(@PathVariable("id") Long id,
                                         @RequestBody Admin admin) {
         if (!aDao.existsById(id)) {
@@ -49,7 +50,7 @@ public class AdminController {
         return ResponseEntity.ok(admin);
     }
 
-    @DeleteMapping("admin/{id}")
+    @DeleteMapping("/admin/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!aDao.existsById(id)) {
             return ResponseEntity.notFound().build();

@@ -1,8 +1,10 @@
 package org.datn.controller;
 
+import org.datn.entity.Admin;
 import org.datn.entity.Category;
 import org.datn.entity.Role;
 import org.datn.service.RoleService;
+import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -12,17 +14,17 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/api/role")
 public class RoleController {
     @Autowired
     RoleService roleService;
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public ResponseEntity<List<Role>> getAll(Model model) {
         return ResponseEntity.ok(roleService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Role> getId(@PathVariable("id") Long id) {
         Optional<Role> optional = roleService.findById(id);
         if (!optional.isPresent()) {
@@ -33,24 +35,28 @@ public class RoleController {
 
     @PostMapping("/add")
     public ResponseEntity<Role> add(@RequestBody Role role) {
-        if (roleService.exists(role.getId())) {
-            return ResponseEntity.badRequest().build();
-        }
+
+        Admin admin= new Admin();
+        admin.setId(1L);
+        role.setAdmin(admin);
         roleService.save(role);
         return ResponseEntity.ok(role);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Role> put(@PathVariable("id") Long id,
-                                        @RequestBody Role role) {
-        if (!roleService.exists(id)) {
+    @PutMapping("/update")
+    public ResponseEntity<Role> put(
+            @RequestBody Role role) {
+        if (!roleService.exists(role.getId())) {
             return ResponseEntity.notFound().build();
         }
-        roleService.save(role);
+        Admin admin= new Admin();
+        admin.setId(1L);
+        role.setAdmin(admin);
+        roleService.put(role);
         return ResponseEntity.ok(role);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         if (!roleService.exists(id)) {
             return ResponseEntity.notFound().build();
@@ -59,7 +65,7 @@ public class RoleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("page/{pageNumber}/{pageSize}")
+    @GetMapping("/page/{pageNumber}/{pageSize}")
     public ResponseEntity page(
             @PathVariable("pageNumber") int pageNumber,
             @PathVariable("pageSize") int pageSize
