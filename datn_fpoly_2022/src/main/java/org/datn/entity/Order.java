@@ -28,10 +28,6 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "course_id", nullable = false)
-    private Cours course;
 
     @Column(name = "effect_from")
     private Instant effectFrom;
@@ -89,14 +85,6 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Cours getCourse() {
-        return course;
-    }
-
-    public void setCourse(Cours course) {
-        this.course = course;
     }
 
     public Instant getEffectFrom() {
