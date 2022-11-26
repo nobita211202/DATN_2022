@@ -49,17 +49,5 @@ public class CoursController {
         return coursService.getCoursPaging(pageNumber,pageSize);
     }
 
-    @GetMapping("getimage/{image}")
-    public ResponseEntity<ByteArrayResource> getImage(@PathVariable("image")String image){
-        if (!image.equals("") || image !=null){
-            try {
-                Path filename= Paths.get("uploadCours",image);
-                byte[] buffer = Files.readAllBytes(filename);
-                ByteArrayResource byteArrayResource = new ByteArrayResource(buffer);
-                return ResponseEntity.ok().contentType(MediaType.parseMediaType("images/jpg"))
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+
 }
