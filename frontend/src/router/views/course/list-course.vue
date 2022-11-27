@@ -4,8 +4,119 @@ export default {
   page: {
     title: 'Danh sách khoá học',
   },
+
   components: {
     Layout,
+  },
+  data() {
+    return {
+      listCouses: {
+        data: [
+          {
+            id: 1,
+            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
+            teacher: {
+              teacher_id: 1,
+              teacher_name: 'Hán Quang Dự',
+            },
+            rate: {
+              star: 4,
+              half_star: 1,
+              non_star: 0,
+              total_rate: 32,
+            },
+            price: '459.000',
+            old_price: '599.000',
+            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
+          },
+          {
+            id: 1,
+            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
+            teacher: {
+              teacher_id: 1,
+              teacher_name: 'Hán Quang Dự',
+            },
+            rate: {
+              star: 4,
+              half_star: 1,
+              non_star: 0,
+              total_rate: 32,
+            },
+            price: '459.000',
+            old_price: '599.000',
+            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
+          },
+          {
+            id: 1,
+            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
+            teacher: {
+              teacher_id: 1,
+              teacher_name: 'Hán Quang Dự',
+            },
+            rate: {
+              star: 4,
+              half_star: 1,
+              non_star: 0,
+              total_rate: 32,
+            },
+            price: '459.000',
+            old_price: '599.000',
+            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
+          },
+          {
+            id: 1,
+            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
+            teacher: {
+              teacher_id: 1,
+              teacher_name: 'Hán Quang Dự',
+            },
+            rate: {
+              star: 4,
+              half_star: 1,
+              non_star: 0,
+              total_rate: 32,
+            },
+            price: '459.000',
+            old_price: '599.000',
+            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
+          },
+          {
+            id: 1,
+            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
+            teacher: {
+              teacher_id: 1,
+              teacher_name: 'Hán Quang Dự',
+            },
+            rate: {
+              star: 4,
+              half_star: 1,
+              non_star: 0,
+              total_rate: 32,
+            },
+            price: '459.000',
+            old_price: '599.000',
+            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
+          },
+          {
+            id: 1,
+            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
+            teacher: {
+              teacher_id: 1,
+              teacher_name: 'Hán Quang Dự',
+            },
+            rate: {
+              star: 4,
+              half_star: 1,
+              non_star: 0,
+              total_rate: 32,
+            },
+            price: '459.000',
+            old_price: '599.000',
+            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
+          },
+        ],
+      },
+    }
   },
 }
 </script>
@@ -138,14 +249,18 @@ export default {
             </div>
           </div>
           <div class="row">
-            <div class="col-xl-4 col-md-6 col-sm-6">
+            <div
+              v-for="course in listCouses.data"
+              :key="course.id"
+              class="col-xl-4 col-md-6 col-sm-6"
+            >
               <div class="card">
                 <div class="product-grid6">
                   <div class="product-image6 p-5">
-                    <a href="shop-description.html" class="bg-light">
+                    <a :href="`course/${course.id}`" class="bg-light">
                       <img
                         class="img-fluid br-7 w-100"
-                        src="https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg"
+                        :src="course.img"
                         alt="img"
                       />
                     </a>
@@ -153,279 +268,47 @@ export default {
                   <div class="card-body pt-0">
                     <div class="product-content">
                       <h1 class="title fw-bold fs-20"
-                        ><a href="shop-description.html"
+                        ><a :href="`course/${course.id}`"
                           >69 Tuyệt chiêu chốt sale trực tiếp</a
                         ></h1
                       >
                       <h1 class="teacher-title fw-bold fs-20"
-                        ><a href="shop-description.html">Hán Quang Dự</a></h1
+                        ><a :href="`teacher/${course.teacher.teacher_id}`">{{
+                          course.teacher.teacher_name
+                        }}</a></h1
                       >
                       <div class="mb-2 text-warning">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star-half-o text-warning"></i>
-                        <i class="fa fa-star-o text-warning"></i>
-                        <span class="text-muted ml-2">(32)</span>
+                        <i
+                          v-for="star in course.rate.star"
+                          :key="star"
+                          class="fa fa-star text-warning"
+                        ></i>
+                        <i
+                          v-for="star in course.rate.half_star"
+                          :key="star"
+                          class="fa fa-star-half-o text-warning"
+                        ></i>
+                        <i
+                          v-for="star in course.rate.non_star"
+                          :key="star"
+                          class="fa fa-star-o text-warning"
+                        ></i>
+                        <span class="text-muted ml-2"
+                          >({{ course.rate.total_rate }})</span
+                        >
                       </div>
                       <div class="price"
-                        >459.000 <sup>đ</sup>
-                        <span class="ms-4">599.000 <sup>đ</sup></span>
+                        >{{ course.price }} <sup>đ</sup>
+                        <span class="ms-4"
+                          >{{ course.old_price }} <sup>đ</sup></span
+                        >
                       </div>
                     </div>
                   </div>
-                  <!-- <div class="card-footer text-center">
-                    <a href="cart.html" class="btn btn-primary mb-1"
-                      ><i class="fe fe-shopping-cart me-2"></i>Add to cart</a
-                    >
-                    <a href="wishlist.html" class="btn btn-outline-primary mb-1"
-                      ><i class="fe fe-heart me-2 wishlist-icon"></i>Add to
-                      wishlist</a
-                    >
-                  </div> -->
                 </div>
               </div>
             </div>
-            <div class="col-xl-4 col-md-6 col-sm-6">
-              <div class="card">
-                <div class="product-grid6">
-                  <div class="product-image6 p-5">
-                    <a href="shop-description.html" class="bg-light">
-                      <img
-                        class="img-fluid br-7 w-100"
-                        src="https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg"
-                        alt="img"
-                      />
-                    </a>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="product-content">
-                      <h1 class="title fw-bold fs-20"
-                        ><a href="shop-description.html"
-                          >69 Tuyệt chiêu chốt sale trực tiếp</a
-                        ></h1
-                      >
-                      <h1 class="teacher-title fw-bold fs-20"
-                        ><a href="shop-description.html">Hán Quang Dự</a></h1
-                      >
-                      <div class="mb-2 text-warning">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star-half-o text-warning"></i>
-                        <i class="fa fa-star-o text-warning"></i>
-                        <span class="text-muted ml-2">(32)</span>
-                      </div>
-                      <div class="price"
-                        >459.000 <sup>đ</sup>
-                        <span class="ms-4">599.000 <sup>đ</sup></span>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="card-footer text-center">
-                    <a href="cart.html" class="btn btn-primary mb-1"
-                      ><i class="fe fe-shopping-cart me-2"></i>Add to cart</a
-                    >
-                    <a href="wishlist.html" class="btn btn-outline-primary mb-1"
-                      ><i class="fe fe-heart me-2 wishlist-icon"></i>Add to
-                      wishlist</a
-                    >
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-sm-6">
-              <div class="card">
-                <div class="product-grid6">
-                  <div class="product-image6 p-5">
-                    <a href="shop-description.html" class="bg-light">
-                      <img
-                        class="img-fluid br-7 w-100"
-                        src="https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg"
-                        alt="img"
-                      />
-                    </a>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="product-content">
-                      <h1 class="title fw-bold fs-20"
-                        ><a href="shop-description.html"
-                          >69 Tuyệt chiêu chốt sale trực tiếp</a
-                        ></h1
-                      >
-                      <h1 class="teacher-title fw-bold fs-20"
-                        ><a href="shop-description.html">Hán Quang Dự</a></h1
-                      >
-                      <div class="mb-2 text-warning">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star-half-o text-warning"></i>
-                        <i class="fa fa-star-o text-warning"></i>
-                        <span class="text-muted ml-2">(32)</span>
-                      </div>
-                      <div class="price"
-                        >459.000 <sup>đ</sup>
-                        <span class="ms-4">599.000 <sup>đ</sup></span>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="card-footer text-center">
-                    <a href="cart.html" class="btn btn-primary mb-1"
-                      ><i class="fe fe-shopping-cart me-2"></i>Add to cart</a
-                    >
-                    <a href="wishlist.html" class="btn btn-outline-primary mb-1"
-                      ><i class="fe fe-heart me-2 wishlist-icon"></i>Add to
-                      wishlist</a
-                    >
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-sm-6">
-              <div class="card">
-                <div class="product-grid6">
-                  <div class="product-image6 p-5">
-                    <a href="shop-description.html" class="bg-light">
-                      <img
-                        class="img-fluid br-7 w-100"
-                        src="https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg"
-                        alt="img"
-                      />
-                    </a>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="product-content">
-                      <h1 class="title fw-bold fs-20"
-                        ><a href="shop-description.html"
-                          >69 Tuyệt chiêu chốt sale trực tiếp</a
-                        ></h1
-                      >
-                      <h1 class="teacher-title fw-bold fs-20"
-                        ><a href="shop-description.html">Hán Quang Dự</a></h1
-                      >
-                      <div class="mb-2 text-warning">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star-half-o text-warning"></i>
-                        <i class="fa fa-star-o text-warning"></i>
-                        <span class="text-muted ml-2">(32)</span>
-                      </div>
-                      <div class="price"
-                        >459.000 <sup>đ</sup>
-                        <span class="ms-4">599.000 <sup>đ</sup></span>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="card-footer text-center">
-                    <a href="cart.html" class="btn btn-primary mb-1"
-                      ><i class="fe fe-shopping-cart me-2"></i>Add to cart</a
-                    >
-                    <a href="wishlist.html" class="btn btn-outline-primary mb-1"
-                      ><i class="fe fe-heart me-2 wishlist-icon"></i>Add to
-                      wishlist</a
-                    >
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-sm-6">
-              <div class="card">
-                <div class="product-grid6">
-                  <div class="product-image6 p-5">
-                    <a href="shop-description.html" class="bg-light">
-                      <img
-                        class="img-fluid br-7 w-100"
-                        src="https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg"
-                        alt="img"
-                      />
-                    </a>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="product-content">
-                      <h1 class="title fw-bold fs-20"
-                        ><a href="shop-description.html"
-                          >69 Tuyệt chiêu chốt sale trực tiếp</a
-                        ></h1
-                      >
-                      <h1 class="teacher-title fw-bold fs-20"
-                        ><a href="shop-description.html">Hán Quang Dự</a></h1
-                      >
-                      <div class="mb-2 text-warning">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star-half-o text-warning"></i>
-                        <i class="fa fa-star-o text-warning"></i>
-                        <span class="text-muted ml-2">(32)</span>
-                      </div>
-                      <div class="price"
-                        >459.000 <sup>đ</sup>
-                        <span class="ms-4">599.000 <sup>đ</sup></span>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="card-footer text-center">
-                    <a href="cart.html" class="btn btn-primary mb-1"
-                      ><i class="fe fe-shopping-cart me-2"></i>Add to cart</a
-                    >
-                    <a href="wishlist.html" class="btn btn-outline-primary mb-1"
-                      ><i class="fe fe-heart me-2 wishlist-icon"></i>Add to
-                      wishlist</a
-                    >
-                  </div> -->
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-4 col-md-6 col-sm-6">
-              <div class="card">
-                <div class="product-grid6">
-                  <div class="product-image6 p-5">
-                    <a href="shop-description.html" class="bg-light">
-                      <img
-                        class="img-fluid br-7 w-100"
-                        src="https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg"
-                        alt="img"
-                      />
-                    </a>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="product-content">
-                      <h1 class="title fw-bold fs-20"
-                        ><a href="shop-description.html"
-                          >69 Tuyệt chiêu chốt sale trực tiếp</a
-                        ></h1
-                      >
-                      <h1 class="teacher-title fw-bold fs-20"
-                        ><a href="shop-description.html">Hán Quang Dự</a></h1
-                      >
-                      <div class="mb-2 text-warning">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star-half-o text-warning"></i>
-                        <i class="fa fa-star-o text-warning"></i>
-                        <span class="text-muted ml-2">(32)</span>
-                      </div>
-                      <div class="price"
-                        >459.000 <sup>đ</sup>
-                        <span class="ms-4">599.000 <sup>đ</sup></span>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- <div class="card-footer text-center">
-                    <a href="cart.html" class="btn btn-primary mb-1"
-                      ><i class="fe fe-shopping-cart me-2"></i>Add to cart</a
-                    >
-                    <a href="wishlist.html" class="btn btn-outline-primary mb-1"
-                      ><i class="fe fe-heart me-2 wishlist-icon"></i>Add to
-                      wishlist</a
-                    >
-                  </div> -->
-                </div>
-              </div>
-            </div>
+
             <div class="mb-5">
               <div class="float-end">
                 <ul class="pagination">
