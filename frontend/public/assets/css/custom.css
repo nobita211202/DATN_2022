@@ -1,0 +1,533 @@
+body {
+  font-family: 'Arial', sans-serif !important;font-family
+  background-color: #f2f7fc !important;background-color
+}
+.text-bold {
+  font-weight: 600;
+}
+.mr-5 {
+  margin-right: 5px;
+}
+.mr-3 {
+  margin-right: 1rem !important;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+.ml-2 {
+  margin-left: 2px !important;
+}
+.header {
+  padding-top: 0.25rem !important;
+  padding-bottom: 0.25rem !important;
+}
+
+.card-title {
+  font-weight: bold !important;
+}
+
+.modal-title {
+  font-weight: bolder !important;
+}
+.modal-open {
+  overflow: hidden !important;
+}
+.group b {
+  font-weight: bolder !important;
+  text-transform: uppercase;
+}
+.group-row {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.group-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: #000;
+}
+.title-child {
+  padding-left: 3px;
+  color: #5a6970;
+}
+
+.group-active {
+  border-left: 5px solid #0c85d0;
+}
+
+.actived {
+  border-left: 5px solid #0c85d0;
+}
+
+.custom-textarea {
+  overflow-y: scroll;
+  resize: none;
+}
+
+.tag {
+  justify-content: center;
+  float: left;
+  height: 30px;
+  overflow: hidden;
+  line-height: 30px;
+  color: #fff;
+  border-radius: 0 !important;
+}
+.tag-account {
+  width: 16px;
+  height: 16px;
+}
+.tags .tag {
+  margin: 3px 2px !important;
+}
+
+.tag:hover {
+  cursor: pointer;
+}
+
+#table-tag-list .tags .tag {
+  margin: 0 2px !important;
+}
+
+.tagNotSelected {
+  color: #000 !important;
+  background-color: #f0f8ffff !important;
+}
+
+#table-group-list p {
+  margin: 0 !important;
+}
+
+#table-account-updated-at p {
+  margin: 0 !important;
+}
+
+#addTag {
+  width: 61px;
+  height: 30px;
+  text-align: center;
+  background-color: #fff !important;
+  border: 1px solid #e6e6e6;
+}
+#addTag:focus {
+  outline: none;
+}
+
+.editTag {
+  width: 60px;
+  border: none;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.editTag:focus {
+  outline: none;
+}
+
+.btnOptions {
+  margin-right: 5px;
+}
+
+.action-group .me-1 {
+  margin-right: 0.2rem !important;
+}
+
+#table-group-list-mobile {
+  display: none;
+}
+
+.custom-control-label {
+  font-size: 14px !important;
+  font-weight: 500;
+}
+
+#title-group-desktop {
+  display: block;
+}
+
+#title-group-mobile {
+  display: none;
+}
+
+.collapse-custom {
+  float: left;
+  width: 100%;
+  border-left: 1px solid #e8e8e8;
+}
+.drag-div {
+  float: left;
+  width: 100%;
+}
+
+.fe-folder-minus {
+  color: #000 !important;
+}
+.dropdown-icon {
+  color: #000 !important;
+}
+
+#form-update-account {
+  padding: 0 !important;
+}
+
+.modal-header {
+  padding: 0.5rem 1rem !important;
+}
+
+.modal-footer {
+  padding: 0 !important;
+  border-top: none !important;
+}
+
+.modal-body {
+  max-height: 500px;
+  padding: 0.5rem 1rem !important;
+}
+
+.form-group {
+  margin-bottom: 0.5rem !important;
+}
+
+.p-focus {
+  height: 40px !important;
+  resize: vertical !important;
+}
+.p-focus:focus {
+  height: 80px !important;
+}
+
+.filed-key > td {
+  padding: 5px !important;
+}
+
+.btn {
+  border-radius: 0 !important;
+}
+
+.modal .btn {
+  line-height: 1.2 !important;
+}
+
+.modal .form-control {
+  line-height: 1 !important;
+}
+
+#form-change-password {
+  padding: 0 !important;
+}
+
+.card {
+  border-radius: 0 !important;
+}
+
+input {
+  border-radius: 0 !important;
+}
+
+#left-col {
+  padding-right: 0.1rem !important;
+  padding-left: 0.2rem !important;
+}
+
+#main-display {
+  padding-right: 0.1rem !important;
+  padding-left: 0.1rem !important;
+}
+
+#right-col {
+  padding-right: 0.2rem !important;
+  padding-left: 0.1rem !important;
+}
+
+.page-item .page-link {
+  padding: 0.251rem 0.65rem;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+.page-item:first-child .page-link {
+  border-radius: 0 !important;
+}
+
+.page-item:last-child .page-link {
+  border-radius: 0 !important;
+}
+
+.nav.panel-tabs a.active {
+  color: #000 !important;
+}
+
+.btn-group .badge {
+  z-index: 99 !important;
+}
+.nav-tabs .nav-link {
+  min-width: 80px;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0 !important;
+}
+.action-link {
+  font-weight: bold;
+  color: #000;
+}
+.action-link:hover {
+  color: #05c3fb !important;
+}
+.table td {
+  vertical-align: middle !important;
+}
+
+.float-right {
+  float: right;
+}
+
+.modal-xl .card {
+  margin-bottom: 5px !important;
+}
+.groupHeader .card-title {
+  text-transform: uppercase;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.float-left {
+  float: left;
+}
+
+#tabVCB .badge-sm {
+  font-size: 1em !important;
+  border-radius: 0 !important;
+}
+
+#col-nav {
+  margin-right: -6px !important;
+  margin-left: auto !important;
+}
+
+#col-trash {
+  padding: 5px 0 !important;
+  margin-right: 0;
+  margin-left: 0;
+}
+.list-tags {
+  padding-top: 10px;
+  margin-top: 20px;
+  border-top: 1px solid #e1e1e1;
+}
+.tagNot {
+  color: #000 !important;
+  background-color: #f0f8ff !important;
+}
+
+.community-link {
+  min-width: 170px;
+}
+.toasted-container.bottom-left {
+  left: 1% !important;
+}
+
+.bottom-left .primary {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6c5ffc !important;
+}
+
+.title-price-list:hover {
+  cursor: pointer;
+}
+
+textarea {
+  border-radius: 0 !important;
+}
+
+.progress {
+  border-radius: 0 !important;
+}
+.progress-bar {
+  border-radius: 0 !important;
+}
+.bar-fail {
+  background-color: #e82646 !important;
+}
+.bar-success {
+  background-color: #28a745 !important;
+}
+.form-search-email {
+  line-height: 1 !important;
+}
+
+.btn-search {
+  line-height: 1.2 !important;
+}
+
+.panel-tabs li a {
+  border-radius: 0 !important;
+}
+
+.item-wrapper__item td .badge {
+  border-radius: 0 !important;
+}
+
+.mw-61 {
+  min-width: 61px !important;
+}
+
+.bg-unkown {
+  background-color: #fff !important;
+  border: 1px solid #e6e6e6;
+}
+
+.spinner2 .cube1 {
+  background-color: #6c5ffc !important;
+  border-radius: 50% !important;
+  -webkit-animation: sk-cubemove 1.2s infinite ease-in-out !important;
+  animation: sk-cubemove 1.2s infinite ease-in-out !important;
+}
+
+.spinner2 .cube2 {
+  background-color: #6c5ffc !important;
+  border-radius: 50% !important;
+  -webkit-animation: sk-cubemove 1s infinite ease-in-out !important;
+  animation: sk-cubemove 1s infinite ease-in-out !important;
+}
+
+.spinner-loading {
+  width: 3rem !important;
+  height: 3rem !important;
+  color: #6c5ffc !important;
+}
+
+.spinner-loading-right {
+  width: 2rem !important;
+  height: 2rem !important;
+  color: #6c5ffc !important;
+}
+
+.form-select {
+  height: auto !important;
+  border-radius: 0 !important;
+}
+
+.card-body + .card-body {
+  border-top: none !important;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 991px) {
+  body {
+    overflow: scroll;
+  }
+
+  #main-display {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding: 0;
+  }
+  #right-col {
+    display: none;
+  }
+
+  #list-manager-groups {
+    max-height: 180px;
+  }
+  #table-tag-list {
+    display: none;
+  }
+
+  #table-group-list {
+    display: none;
+  }
+
+  #table-group-list-mobile {
+    display: block;
+  }
+
+  #table-group-list-mobile p {
+    padding: 0;
+    margin: 0;
+  }
+
+  #table-account-updated-at {
+    display: none;
+  }
+
+  .btn-hide-mobile {
+    display: none;
+    margin-bottom: 3px;
+  }
+  #inSearch {
+    max-width: 300px;
+  }
+  .poprow {
+    max-width: 300px !important;
+
+    /* margin-top: 20px; */
+  }
+  .mb-mobile {
+    margin-bottom: 3px;
+  }
+
+  #unlock-group .modal-dialog {
+    position: relative !important;
+    top: 30% !important;
+    left: 0 !important;
+    width: auto !important;
+    margin: 0.5rem !important;
+  }
+  .ps__thumb-x {
+    display: none;
+  }
+
+  #popoverSearch {
+    /* width: 300px; */
+
+    /* margin-top: 330px; */
+  }
+  #main-row {
+    margin-right: 0 !important;
+  }
+
+  #title-group-desktop {
+    display: none;
+  }
+
+  #title-group-mobile {
+    display: block;
+  }
+  .tooltip {
+    display: none !important;
+  }
+
+  #idMenuHomeContent {
+    margin-top: -300px !important;
+    margin-left: 0 !important;
+  }
+  #idMenuLeftContent2 {
+    margin-top: -50px !important;
+  }
+
+  #col-left-admin {
+    max-height: 300px;
+    margin-top: 1.5rem;
+    overflow: scroll;
+  }
+  #left-content-admin {
+    height: auto !important;
+  }
+
+  #col-main-admin {
+    max-height: 400px !important;
+    overflow: scroll;
+  }
+
+  #main-content-admin {
+    max-height: 500px !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .modal-lg {
+    max-width: 600px !important;
+  }
+}
