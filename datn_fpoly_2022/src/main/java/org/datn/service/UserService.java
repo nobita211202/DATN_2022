@@ -13,4 +13,6 @@ public interface UserService {
     void delete(long id);
     User put(User user);
     boolean exists(long id);
+
+    User findByEmail(String email);
 }

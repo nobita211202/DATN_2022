@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -33,6 +35,8 @@ public class LoginController {
 
     @Autowired
     HttpServletResponse response;
+    @Autowired
+    HttpServletRequest request;
     int x=0;
     @GetMapping("/get")
     public List<User> getAccounts() {
@@ -57,6 +61,8 @@ public class LoginController {
                 tokenService.create(token);                                 //tạo token mới
             }
             response.setHeader("Authorization", token.getTokenCode());           //set token vào header
+            HttpSession session=request.getSession();
+            session.setAttribute("token", token.getTokenCode());
            return new ResponseData("Successfully","Login success",u2, HttpStatus.OK.value(), token.getTokenCode()); //trả về token
         }
         if (!(responseData.getStatus()==200)&& x == 5 && userAccountService.findById(user.getEmail())!=null && !(responseData.getStatus()==10)){

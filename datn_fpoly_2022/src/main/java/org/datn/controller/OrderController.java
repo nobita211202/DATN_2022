@@ -14,19 +14,7 @@ import java.util.List;
 public class OrderController {
     @Autowired
     OrderService orderService;
-    @GetMapping("/getAllCours")
-    public ResponseEntity<List<Cours>> getAllCours(){
-        List<Cours> coursList=orderService.getAllCours();
-        return ResponseEntity.ok(coursList);
-    }
-    @GetMapping("/getOrder/{orderId}")
-    public ResponseEntity<Order> getOrderDetail(@PathVariable Long orderId){
-        Order order = orderService.getOrderDetail(orderId);
-        return ResponseEntity.ok(order);
-    }
-    @PostMapping("/placeOrder")
-    public ResponseEntity<Order> placeOrder(@RequestBody Order order){
-//        Float amount = orderService.getCartAmount();
-        return null;
-    }
+
+
+
 }

@@ -188,4 +188,24 @@ public class User {
         this.token = token;
     }
 
+    public User(Long id, Admin admin, String username, String password, String address, String phone, String email, String image, String token, Float money, LocalDate created, String creator, LocalDate modified, String modifier, Short status) {
+        this.id = id;
+        this.admin = admin;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.image = image;
+        this.token = token;
+        this.money = money;
+        this.created = created;
+        this.creator = creator;
+        this.modified = modified;
+        this.modifier = modifier;
+        this.status = status;
+    }
+
+    public User() {
+    }
 }

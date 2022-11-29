@@ -9,11 +9,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.tholv.FileUtils.FileWriterIO;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +34,19 @@ public class CoursController {
         return coursService.findAll();
     }
     @PostMapping("/create")
-    public Cours addCours(@RequestBody Cours cours){    //Thêm khóa học
-        return coursService.createCours(cours);
+    public ResponseEntity<Cours> addCours(@RequestBody Cours cours, @RequestParam("image")MultipartFile image){    //Thêm khóa học
+
+        Path path= Paths.get("images/");
+        try {
+            InputStream inputStream =  image.getInputStream();
+            Files.copy(inputStream,path.resolve(image.getOriginalFilename()),
+                    StandardCopyOption.REPLACE_EXISTING);
+            cours.setImage(image.getOriginalFilename().toLowerCase());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        coursService.createCours(cours);
+        return ResponseEntity.ok(cours);
     }
     @DeleteMapping("/delete/{id}")
     public void deleteCours (@PathVariable("id") Long id){      //Xóa khóa học theo id
@@ -49,5 +65,8 @@ public class CoursController {
         return coursService.getCoursPaging(pageNumber,pageSize);
     }
 
+    }
 
-}
+
+
+

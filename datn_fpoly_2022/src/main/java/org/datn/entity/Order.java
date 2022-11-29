@@ -152,4 +152,21 @@ public class Order {
         this.status = status;
     }
 
+    public Order(Long id, Voucher voucher, String code, User user, Instant effectFrom, Instant effectUntil, Instant created, String creator, Instant modified, String modifier, Float price, Short status) {
+        this.id = id;
+        this.voucher = voucher;
+        this.code = code;
+        this.user = user;
+        this.effectFrom = effectFrom;
+        this.effectUntil = effectUntil;
+        this.created = created;
+        this.creator = creator;
+        this.modified = modified;
+        this.modifier = modifier;
+        this.price = price;
+        this.status = status;
+    }
+
+    public Order() {
+    }
 }
