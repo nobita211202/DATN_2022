@@ -23,23 +23,22 @@ export default {
         isBusy: false,
         data: [
           {
-            id: 1,
-            username: 'Manager',
-            password: 1,
-            email:"hoang@c.cp",
-            image:"",
-            phone:"0961389115",
+            image: 1,
+            name: 'Manager',
+            studyTime: 1,
+            price:423,
             address:"Hà nội",
-
+            like:"22",
             creator: 'admin',
             created: '1970-01-01',
             status: 1,
+
           },
         ],
         fields: [
           { key: 'image', label: 'img', sortable: true },
           { key: 'name', label: 'Tên khóa học' },
-          { key: 'study_time', label: 'Email', sortable: true },
+          { key: 'studyTime', label: 'Thời gian học', sortable: true },
           { key: 'price', label: 'Giá ban', sortable: true },
           { key: 'like', label: 'Lượt thích', sortable: true },
           { key: 'created', label: 'Ngày tạo' },

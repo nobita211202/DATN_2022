@@ -3963,11 +3963,6 @@ ckeditor4-vue@^2.2.0:
   dependencies:
     ckeditor4-integrations-common "^1.0.0"
 
-ckeditor@^4.12.1:
-  version "4.12.1"
-  resolved "https://registry.yarnpkg.com/ckeditor/-/ckeditor-4.12.1.tgz#954a7b028dd611e44ba51cc7c2fe051cf1052186"
-  integrity sha512-pH2Su4oi0D4iN/3U8nUcwI7/lXHoOJi0aiN8e2zxnm4Ow5kq8eZP2ZGmpYyuqRyKZ2tHaU8+OyYi7laXcjiq9Q==
-
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.npmjs.org/class-utils/-/class-utils-0.3.6.tgz"
@@ -14097,6 +14092,11 @@ timsort@^0.3.0:
   resolved "https://registry.npmjs.org/timsort/-/timsort-0.3.0.tgz"
   integrity sha512-qsdtZH+vMoCARQtyod4imc2nIJwg9Cc7lPRrw9CzF8ZKR0khdr8+2nX80PBhET3tcyTtJDxAffGh2rXH4tyU8A==
 
+tiny-cookie@^1.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tiny-cookie/-/tiny-cookie-1.0.1.tgz#753786079c642a3c3d0b2accad600f8de119ac2a"
+  integrity sha512-4KJ21HYTNumxnHvCbLrtrrhSwtWXzpmaRJIUg4biBii5AiSe2izod5bauXiiQxVuf2Fta57U2DTW1Fa4/6Cmgw==
+
 title-case@^2.1.0:
   version "2.1.1"
   resolved "https://registry.npmjs.org/title-case/-/title-case-2.1.1.tgz"
@@ -14821,6 +14821,13 @@ vue-confirm-dialog@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/vue-confirm-dialog/-/vue-confirm-dialog-1.1.0.tgz"
   integrity sha512-Mp+41h9Y3LMSv9Vjb0WaWJ4wumj0VSe93cyNT7wLus+o4/5HnMC8EIDlDDMtAElaVqhFtQj2LRdquaBEcbBtJQ==
+
+vue-cookie@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/vue-cookie/-/vue-cookie-1.1.4.tgz#b8b46d112bda9f93a2f47017c2ed5282d2064fda"
+  integrity sha512-lxWIzmUTCVra0H7YPbNpYx0wbTQThV+n7ueUOcqtK8dlckmfB8fcyf4OEiRuQUd7iiVub2T3IDlWiisEM5Ku0Q==
+  dependencies:
+    tiny-cookie "^1.0"
 
 vue-eslint-parser@^7.0.0:
   version "7.11.0"

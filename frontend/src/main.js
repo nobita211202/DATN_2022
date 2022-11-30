@@ -5,12 +5,14 @@ import Vue from 'vue'
 import axios from '@/node_modules/axios/index'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import CKEditor from 'ckeditor4-vue'
+import Cookie from "vue-cookie"
 
 import App from './app.vue'
 // eslint-disable-next-line import/no-relative-parent-imports
 
 // Globally register all `_base`-prefixed components
 import '@components/_globals'
+Vue.use(Cookie)
 Vue.use(axios)
 Vue.use( CKEditor );
 // Install BootstrapVue
