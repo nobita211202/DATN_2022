@@ -15,6 +15,7 @@ export default {
         { key: 'admin-role', title: 'Quản lý role', icon: 'fa-users' },
         { key: 'admin-category', title: 'Quản lý danh mục', icon: 'fa-folder' },
         { key: 'admin-users', title: 'Quản lý tài khoản', icon: 'fa-user' },
+        { key: 'admin-course', title: 'Quản lý Khóa học', icon: 'fa-user' },
         // { key: 'admin-tools', title: 'Quản lý tool', icon: 'fa-windows' },
       ],
     }

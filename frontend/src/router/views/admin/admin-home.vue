@@ -3,6 +3,8 @@ import Layout from '@layouts/main.vue'
 import LeftAdmin from '@layouts/left-admin.vue'
 import AdminRole from '@views/admin/admin-role.vue'
 import AdminCategory from '@views/admin/admin-cateogry.vue'
+import adminUser from '@/src/router/views/admin/admin-user.vue'
+import adminSourse from '@/src/router/views/admin/admin-sourse.vue'
 import { bus } from '@src/main'
 export default {
   page: {
@@ -14,6 +16,8 @@ export default {
     LeftAdmin,
     AdminRole,
     AdminCategory,
+    adminUser,
+    adminSourse
   },
 
   data() {
@@ -112,6 +116,8 @@ body {
             <div class="card-body">
               <AdminRole v-if="activeTab === 'admin-role'" />
               <AdminCategory v-if="activeTab === 'admin-category'" />
+              <adminUser v-if="activeTab === 'admin-users'" />
+              <adminSourse v-if="activeTab === 'admin-course'"/>
             </div>
           </div>
         </b-col>
