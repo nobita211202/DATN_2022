@@ -69,8 +69,6 @@
       },
       methods:{
           login(){
-              console.log(this.$router);
-              console.log(this.$cookie.get("acc"));
             //   if(this.validate(this.acc)) throw new Error("ERROR_VALIDATE")
             //   axios.post("http://localhost:8080/api/login",this.acc)
             //   .then((res)=>{

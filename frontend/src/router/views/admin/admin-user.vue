@@ -12,7 +12,7 @@ export default {
     return {
     imageSelected :"",
     fileRender:{},
-      roles: {
+      users: {
         isBusy: false,
         data: [
           {
@@ -54,10 +54,10 @@ export default {
         admin_id: 1,
         status: 0,
       },
-      roleDelete: {},
-      formEditRole: {},
+      userDelete: {},
+      formEditUser: {},
       currentPage: 1,
-      rolesPerPage: 5,
+      usersPerPage: 5,
       currentUser: {
         id: 1,
         name: 'admin',
@@ -70,7 +70,7 @@ export default {
         { value: 1, text: 'Admin' },
         { value: 2, text: 'Manager' },
       ],
-      rolesBackup: [],
+      usersBackup: [],
       txtSearch: '',
     }
   },
@@ -78,11 +78,11 @@ export default {
   watch: {
     txtSearch() {
       if (this.txtSearch !== '' && this.txtSearch !== null) {
-        this.roles.data = this.rolesBackup.filter((e) =>
+        this.users.data = this.usersBackup.filter((e) =>
           e.role_name.toLowerCase().includes(this.txtSearch.toLowerCase())
         )
       } else {
-        this.roles.data = this.rolesBackup
+        this.users.data = this.usersBackup
       }
     },
   },
@@ -96,13 +96,13 @@ export default {
       console.log(this.fileRender);
       this.fileRender.readAsDataURL(this.imageSelected)
     },
-    mdEditRole(item) {
-      this.formEditRole = Object.assign({}, item)
+    mdEditUser(item) {
+      this.formEditUser = Object.assign({}, item)
       this.$bvModal.show('modal-edit-user')
     },
     onAddUser() {
       const obj = Object.assign({}, this.formAddUser)
-      const isExist = this.roles.data.find((e) => e.username === obj.username)
+      const isExist = this.users.data.find((e) => e.username === obj.username)
       if (isExist !== undefined) {
         alert('Username đã tồn tại')
         return
@@ -121,38 +121,38 @@ export default {
         )
 
 
-      this.rolesBackup = this.roles.data
+      this.usersBackup = this.users.data
       this.$bvModal.hide('modal-add-user')
     },
 
-    onEditRole() {
-      for (const obj of this.roles.data) {
-        if (obj.id === this.formEditRole.id) {
-          obj.role_name = this.formEditRole.role_name
-          obj.status = this.formEditRole.status
-          obj.admin_id = this.formEditRole.admin_id
+    onEditUser() {
+      for (const obj of this.users.data) {
+        if (obj.id === this.formEditUser.id) {
+          obj.role_name = this.formEditUser.role_name
+          obj.status = this.formEditUser.status
+          obj.admin_id = this.formEditUser.admin_id
           break
         }
       }
       this.$bvModal.hide('modal-edit-user')
     },
 
-    onRemoveRole(item) {
-      this.roleDelete = item
+    onRemoveUser(item) {
+      this.userDelete = item
       this.busy = true
-      // this.roles.data = this.roles.data.filter((e) => e.id !== id)
+      // this.users.data = this.users.data.filter((e) => e.id !== id)
     },
     onCancel() {
       this.busy = false
-      this.roleDelete = {}
+      this.userDelete = {}
     },
 
-    tryRemoveRole() {
-      this.roles.data = this.roles.data.filter(
-        (e) => e.id !== this.roleDelete.id
+    tryRemoveUser() {
+      this.users.data = this.users.data.filter(
+        (e) => e.id !== this.userDelete.id
       )
       this.busy = false
-      this.roleDelete = {}
+      this.userDelete = {}
     },
   },
 }
@@ -177,9 +177,9 @@ export default {
       striped
       hover
       responsive
-      :items="roles.data"
-      :fields="roles.fields"
-      :busy="roles.isBusy"
+      :items="users.data"
+      :fields="users.fields"
+      :busy="users.isBusy"
     >
       <template v-slot:cell(image)="role">
         <b-col sm="12" class="bg-dark">
@@ -209,10 +209,10 @@ export default {
         <b-button
           class="mr-5"
           variant="outline-danger"
-          @click="onRemoveRole(role.item)"
+          @click="onRemoveUser(role.item)"
           ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
         >
-        <b-button variant="outline-info" @click="mdEditRole(role.item)"
+        <b-button variant="outline-info" @click="mdEditUser(role.item)"
           ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
         >
       </template>
@@ -225,8 +225,8 @@ export default {
     >
       <b-pagination
         v-model="currentPage"
-        :total-rows="roles.meta.pagination.total"
-        :per-page="rolesPerPage"
+        :total-rows="users.meta.pagination.total"
+        :per-page="usersPerPage"
         limit="1"
       >
       </b-pagination>
@@ -322,34 +322,76 @@ export default {
       hide-backdrop
       hide-header-close
     >
-      <template v-slot:modal-title> Sửa role </template>
+      <template v-slot:modal-title> Sửa user </template>
       <b-form>
-        <b-form-group label="Tài khoản" label-for="role-name">
-          <b-row>
-            <b-form-input
-            id="role-name"
-            v-model="formEditRole.role_name"
-            required
-            type="text"
-          >
-          </b-form-input>
-
-          </b-row>
-        </b-form-group>
         <b-row>
+          <b-col sm="9">
+            <b-row>
+              <b-col>
+                <b-form-group label="Tài khoản" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditUser.username "
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Mật khẩu" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditUser.password"
+                    required
+                    type="password"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="SDT" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditUser.phone"
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
 
-          <b-col>
-            <b-form-group label="Trạng thái">
-              <b-form-select
-                v-model="formEditRole.status"
-                :options="optionsStatus"
-              ></b-form-select>
+              </b-col>
+              <b-col>
+                <b-form-group label="Email" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditUser.email"
+                    required
+                    type="email"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Address" label-for="role-name">
+                  <b-form-textarea v-model="formEditUser.address">
+                  </b-form-textarea>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col class="d-flex flex-column">
+            <b-form-group label="Img" label-for="role-name">
+              <input type="file" @change="chooseImg" class="form-control">
             </b-form-group>
+            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
+
           </b-col>
         </b-row>
+
       </b-form>
       <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="onEditRole">
+        <b-button type="button" variant="success" @click="onEditUser">
           Sửa</b-button
         >
       </template>
@@ -366,7 +408,7 @@ export default {
           <p
             ><strong id="form-confirm-label"
               >Bạn có chắc muốn <span class="text-danger">xoá</span>
-              <span class="text-bold"> {{ roleDelete.role_name }}</span></strong
+              <span class="text-bold"> {{ userDelete.username }}</span></strong
             ></p
           >
           <div style="justify-content: center">
@@ -376,7 +418,7 @@ export default {
             <b-button
               variant="outline-danger"
               class="mr-3"
-              @click="tryRemoveRole"
+              @click="tryRemoveUser"
               >Xoá</b-button
             >
           </div>

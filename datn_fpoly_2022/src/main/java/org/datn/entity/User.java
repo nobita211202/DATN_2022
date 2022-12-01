@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +17,10 @@ public class User {
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JoinColumn()
+    @OneToMany()
+    List<UsersRole> Roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
@@ -67,6 +72,14 @@ public class User {
 
     @Column(name = "status")
     private Short status;
+
+    public List<UsersRole> getRoles() {
+        return Roles;
+    }
+
+    public void setRoles(List<UsersRole> roles) {
+        Roles = roles;
+    }
 
     public Long getId() {
         return id;

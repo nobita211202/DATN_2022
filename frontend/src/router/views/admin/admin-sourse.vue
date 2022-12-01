@@ -19,7 +19,7 @@ export default {
       content:"",
     imageSelected :"",
     fileRender:{},
-      roles: {
+    courses: {
         isBusy: false,
         data: [
           {
@@ -32,6 +32,7 @@ export default {
             creator: 'admin',
             created: '1970-01-01',
             status: 1,
+            describe:"hehe"
 
           },
         ],
@@ -60,8 +61,8 @@ export default {
         admin_id: 1,
         status: 0,
       },
-      roleDelete: {},
-      formEditRole: {},
+      sourseDelete: {},
+      formEditCourse: {},
       currentPage: 1,
       rolesPerPage: 5,
       currentUser: {
@@ -84,11 +85,11 @@ export default {
   watch: {
     txtSearch() {
       if (this.txtSearch !== '' && this.txtSearch !== null) {
-        this.roles.data = this.rolesBackup.filter((e) =>
+        this.courses.data = this.rolesBackup.filter((e) =>
           e.role_name.toLowerCase().includes(this.txtSearch.toLowerCase())
         )
       } else {
-        this.roles.data = this.rolesBackup
+        this.courses.data = this.rolesBackup
       }
     },
   },
@@ -102,13 +103,13 @@ export default {
       console.log(this.fileRender);
       this.fileRender.readAsDataURL(this.imageSelected)
     },
-    mdEditRole(item) {
-      this.formEditRole = Object.assign({}, item)
+    mdEditCourse(item) {
+      this.formEditCourse = Object.assign({}, item)
       this.$bvModal.show('modal-edit-course')
     },
-    onAddUser() {
+    onAddCourse() {
       const obj = Object.assign({}, this.formAddCourse)
-      const isExist = this.roles.data.find((e) => e.username === obj.username)
+      const isExist = this.courses.data.find((e) => e.username === obj.username)
       if (isExist !== undefined) {
         alert('Username đã tồn tại')
         return
@@ -127,38 +128,38 @@ export default {
         )
 
 
-      this.rolesBackup = this.roles.data
+      this.rolesBackup = this.courses.data
       this.$bvModal.hide('modal-add-course')
     },
 
     onEditRole() {
-      for (const obj of this.roles.data) {
-        if (obj.id === this.formEditRole.id) {
-          obj.role_name = this.formEditRole.role_name
-          obj.status = this.formEditRole.status
-          obj.admin_id = this.formEditRole.admin_id
+      for (const obj of this.courses.data) {
+        if (obj.id === this.formEditCourse.id) {
+          obj.role_name = this.formEditCourse.role_name
+          obj.status = this.formEditCourse.status
+          obj.admin_id = this.formEditCourse.admin_id
           break
         }
       }
       this.$bvModal.hide('modal-edit-course')
     },
 
-    onRemoveRole(item) {
-      this.roleDelete = item
+    onRemoveSourse(item) {
+      this.sourseDelete = item
       this.busy = true
-      // this.roles.data = this.roles.data.filter((e) => e.id !== id)
+      // this.courses.data = this.roles.data.filter((e) => e.id !== id)
     },
     onCancel() {
       this.busy = false
-      this.roleDelete = {}
+      this.sourseDelete = {}
     },
 
-    tryRemoveRole() {
-      this.roles.data = this.roles.data.filter(
-        (e) => e.id !== this.roleDelete.id
+    tryRemoveSourse() {
+      this.courses.data = this.courses.data.filter(
+        (e) => e.id !== this.sourseDelete.id
       )
       this.busy = false
-      this.roleDelete = {}
+      this.sourseDelete = {}
     },
   },
 }
@@ -183,13 +184,13 @@ export default {
       striped
       hover
       responsive
-      :items="roles.data"
-      :fields="roles.fields"
-      :busy="roles.isBusy"
+      :items="courses.data"
+      :fields="courses.fields"
+      :busy="courses.isBusy"
     >
-      <template v-slot:cell(image)="role">
+      <template v-slot:cell(image)="course">
         <b-col sm="12" class="bg-dark">
-          <img :src="role.item.image" class="w-100" alt="">
+          <img :src="course.item.image" class="w-100" alt="">
         </b-col>
       </template>
       <template v-slot:table-busy>
@@ -198,27 +199,27 @@ export default {
           <strong>Loading...</strong>
         </div>
       </template>
-      <template v-slot:cell(status)="role">
-        <span v-if="role.item.status === 0" class="text-danger text-bold">
+      <template v-slot:cell(status)="course">
+        <span v-if="course.item.status === 0" class="text-danger text-bold">
           Inactive
         </span>
-        <span v-if="role.item.status === 1" class="text-success text-bold">
+        <span v-if="course.item.status === 1" class="text-success text-bold">
           Active
         </span>
       </template>
 
-      <template v-slot:cell(admin_id)="role">
-        <span v-if="role.item.admin_id === 1" class="text-bold"> Admin </span>
-        <span v-if="role.item.admin_id === 2" class="text-bold"> Manager </span>
+      <template v-slot:cell(admin_id)="course">
+        <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
+        <span v-if="course.item.admin_id === 2" class="text-bold"> Manager </span>
       </template>
-      <template v-slot:cell(action)="role">
+      <template v-slot:cell(action)="course">
         <b-button
           class="mr-5"
           variant="outline-danger"
-          @click="onRemoveRole(role.item)"
+          @click="onRemoveCourse(course.item)"
           ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
         >
-        <b-button variant="outline-info" @click="mdEditRole(role.item)"
+        <b-button variant="outline-info" @click="mdEditCourse(course.item)"
           ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
         >
       </template>
@@ -231,8 +232,8 @@ export default {
     >
       <b-pagination
         v-model="currentPage"
-        :total-rows="roles.meta.pagination.total"
-        :per-page="rolesPerPage"
+        :total-rows="courses.meta.pagination.total"
+        :per-page="coursesPerPage"
         limit="1"
       >
       </b-pagination>
@@ -288,10 +289,7 @@ export default {
             <b-row>
               <b-col>
                 <b-form-group label="Thông tin" label-for="role-name">
-                  <ckeditor></ckeditor>
-                  <b-textarea v-model="formAddCourse.describe">
-
-                  </b-textarea>
+                  <ckeditor v-model="formAddCourse.describe"></ckeditor>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -315,40 +313,73 @@ export default {
 
     <b-modal
       id="modal-edit-course"
-      size="lg"
+      size="xl"
       centered
       scrollable
       hide-backdrop
       hide-header-close
     >
-      <template v-slot:modal-title> Sửa role </template>
+      <template v-slot:modal-title> Sửa khóa hoc </template>
       <b-form>
-        <b-form-group label="Tài khoản" label-for="role-name">
-          <b-row>
-            <b-form-input
-            id="role-name"
-            v-model="formEditRole.role_name"
-            required
-            type="text"
-          >
-          </b-form-input>
-
-          </b-row>
-        </b-form-group>
         <b-row>
+          <b-col sm="9">
+            <b-row>
+              <b-col>
+                <b-form-group label="Tên khóa học" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditCourse.name "
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Thời gian học" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditCourse.studyTime"
+                    required
+                    type="number"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Giá bán" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditCourse.price"
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
 
-          <b-col>
-            <b-form-group label="Trạng thái">
-              <b-form-select
-                v-model="formEditRole.status"
-                :options="optionsStatus"
-              ></b-form-select>
+              </b-col>
+
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Thông tin" label-for="role-name">
+                  <ckeditor v-model="formEditCourse.describe"></ckeditor>
+
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col class="d-flex flex-column">
+            <b-form-group label="Img" label-for="role-name">
+              <input type="file" @change="chooseImg" class="form-control">
             </b-form-group>
+            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
+
           </b-col>
         </b-row>
+
       </b-form>
       <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="onEditRole">
+        <b-button type="button" variant="success" @click="onAddUser">
           Sửa</b-button
         >
       </template>
@@ -365,7 +396,7 @@ export default {
           <p
             ><strong id="form-confirm-label"
               >Bạn có chắc muốn <span class="text-danger">xoá</span>
-              <span class="text-bold"> {{ roleDelete.role_name }}</span></strong
+              <span class="text-bold"> {{ sourseDelete.name }}</span></strong
             ></p
           >
           <div style="justify-content: center">
@@ -375,7 +406,7 @@ export default {
             <b-button
               variant="outline-danger"
               class="mr-3"
-              @click="tryRemoveRole"
+              @click="tryRemoveSourse"
               >Xoá</b-button
             >
           </div>
