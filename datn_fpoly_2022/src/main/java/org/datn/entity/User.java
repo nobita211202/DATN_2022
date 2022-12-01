@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -52,14 +53,14 @@ public class User {
     private Float money;
 
     @Column(name = "created")
-    private LocalDate created;
+    private Date created;
 
     @Column(name = "creator")
     @Type(type = "org.hibernate.type.TextType")
     private String creator;
 
     @Column(name = "modified")
-    private LocalDate modified;
+    private Date modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")
@@ -140,11 +141,11 @@ public class User {
         this.money = money;
     }
 
-    public LocalDate getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -156,11 +157,12 @@ public class User {
         this.creator = creator;
     }
 
-    public LocalDate getModified() {
+
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(LocalDate modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
@@ -188,23 +190,7 @@ public class User {
         this.token = token;
     }
 
-    public User(Long id, Admin admin, String username, String password, String address, String phone, String email, String image, String token, Float money, LocalDate created, String creator, LocalDate modified, String modifier, Short status) {
-        this.id = id;
-        this.admin = admin;
-        this.username = username;
-        this.password = password;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.image = image;
-        this.token = token;
-        this.money = money;
-        this.created = created;
-        this.creator = creator;
-        this.modified = modified;
-        this.modifier = modifier;
-        this.status = status;
-    }
+
 
     public User() {
     }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "courses")
@@ -45,14 +46,14 @@ public class Cours {
     private Float price;
 
     @Column(name = "created")
-    private Instant created;
+    private Date created;
 
     @Column(name = "creator")
     @Type(type = "org.hibernate.type.TextType")
     private String creator;
 
     @Column(name = "modified")
-    private Instant modified;
+    private Date modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")
@@ -129,11 +130,12 @@ public class Cours {
         this.price = price;
     }
 
-    public Instant getCreated() {
+
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Instant created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -145,11 +147,11 @@ public class Cours {
         this.creator = creator;
     }
 
-    public Instant getModified() {
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 

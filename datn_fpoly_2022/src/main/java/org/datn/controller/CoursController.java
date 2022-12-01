@@ -1,7 +1,12 @@
 package org.datn.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.datn.entity.Cours;
+import org.datn.entity.User;
 import org.datn.service.CoursService;
+import org.datn.service.ImageService;
+import org.datn.utils.Base.EntityAndImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
@@ -34,17 +39,9 @@ public class CoursController {
         return coursService.findAll();
     }
     @PostMapping("/create")
-    public ResponseEntity<Cours> addCours(@RequestBody Cours cours, @RequestParam("image")MultipartFile image){    //Thêm khóa học
-
-        Path path= Paths.get("images/");
-        try {
-            InputStream inputStream =  image.getInputStream();
-            Files.copy(inputStream,path.resolve(image.getOriginalFilename()),
-                    StandardCopyOption.REPLACE_EXISTING);
-            cours.setImage(image.getOriginalFilename().toLowerCase());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public ResponseEntity<Cours> addCours(@ModelAttribute EntityAndImage data) throws JsonProcessingException {    //Thêm khóa học
+        Cours cours = (Cours) new ObjectMapper().readValue(data.getJson(),Cours.class);
+        cours.setImage(ImageService.saveImage(data.getFile()));
         coursService.createCours(cours);
         return ResponseEntity.ok(cours);
     }
@@ -52,8 +49,11 @@ public class CoursController {
     public void deleteCours (@PathVariable("id") Long id){      //Xóa khóa học theo id
         coursService.deleteCours(id);
     }
-    @PutMapping("/update/{id}")
-    public Cours updateCours (@PathVariable("id") Long id ,@RequestBody Cours cours){   //Update khóa học
+    @PutMapping("/update")
+    public Cours updateCours (@ModelAttribute EntityAndImage data) throws JsonProcessingException {   //Update khóa học
+        Cours cours = (Cours) new ObjectMapper().readValue(data.getJson(),Cours.class);
+        cours.setImage(ImageService.saveImage(data.getFile()));
+        coursService.createCours(cours);
         return coursService.updateCours(cours);
     }
     @GetMapping("/get/{id}")
