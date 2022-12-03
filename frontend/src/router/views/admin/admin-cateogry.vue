@@ -1,14 +1,25 @@
 <script>
+import modalIcon from "@components/modal_choose_icon.vue"
+import axios from "@/node_modules/axios"
+const url="http://localhost:8080/api/"
+
 export default {
+  components:{
+    modalIcon
+  },
+
   data() {
     return {
+
       categories: {
         isBusy: false,
         data: [
           {
             id: 1,
-            name_: 'Danh mục test',
-            parent_id: null,
+            name: 'Danh mục test',
+            category:{
+              id:""
+            },
             admin_id: 1,
             like: 0,
             image: '/assets/images/brand/logo-3.png',
@@ -18,11 +29,11 @@ export default {
         ],
         fields: [
           { key: 'id', label: 'ID', sortable: true },
-          { key: 'name_', label: 'Tên danh mục', sortable: true },
+          { key: 'name', label: 'Tên danh mục', sortable: true },
           { key: 'parent_id', label: 'Danh mục cha', sortable: true },
           { key: 'admin_id', label: 'Người quản lý', sortable: true },
           { key: 'like', label: 'Số like', sortable: true },
-          { key: 'image', label: 'Hình ảnh', sortable: true },
+          { key: 'image', label: 'Icon', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
           { key: 'status', label: 'Trạng thái', sortable: true },
           { key: 'action', label: 'Hành động' },
@@ -60,16 +71,7 @@ export default {
       txtSearch: '',
     }
   },
-  computed: {
-    listCategories() {
-      const arr = []
-      arr.push({ value: null, text: '' })
-      this.categories.data.forEach((e) => {
-        arr.push({ value: e.id, text: e.name_ })
-      })
-      return arr
-    },
-  },
+
   watch: {
     txtSearch() {
       if (this.txtSearch !== '' && this.txtSearch !== null) {
@@ -84,6 +86,10 @@ export default {
 
   created() {
     this.categoriesBackup = this.categories.data
+    axios.get(`${url}category/get`)
+    .then((res)=>{
+      this.categories.data = res.data
+    })
   },
 
   methods: {
@@ -98,7 +104,7 @@ export default {
     tryEditCategory() {
       for (const obj of this.categories.data) {
         if (obj.id === this.formEditCategory.id) {
-          obj.name_ = this.formEditCategory.name_
+          obj.name = this.formEditCategory.name
           obj.image = this.formEditCategory.image
           obj.parent_id = this.formEditCategory.parent_id
           obj.admin_id = this.formEditCategory.admin_id
@@ -111,25 +117,29 @@ export default {
     },
 
     tryAddCategory() {
-      const obj = Object.assign({}, this.formAddCategory)
-      const isExist = this.categories.data.find((e) => e.name_ === obj.name_)
-      if (isExist !== undefined) {
-        alert('Tên danh mục đã tồn tại')
-      } else {
-        const id = this.categories.data.length + 1
-        obj.id = id
-        obj.like = 0
-        obj.created = '1970-01-01'
-        obj.creator = this.currentUser.name
-        this.categories.data.push(obj)
+      // const obj = Object.assign({}, this.formAddCategory)
+      // const isExist = this.categories.data.find((e) => e.name === obj.name)
+      // if (isExist !== undefined) {
+      //   alert('Tên danh mục đã tồn tại')
+      // } else {
+      //   axios.post(`${url}category/add`,this.formAddCategory).then((res)=>{
+      //     const id = this.categories.data.length + 1
+      //     obj.id = id
+      //     obj.like = 0
+      //     obj.created = '1970-01-01'
+      //     obj.creator = this.currentUser.name
+      //     this.categories.data.push(obj)
+      //     this.categoriesBackup = this.categories.data
+      //   this.$bvModal.hide('modal-add-category')
+      //   })
       }
-      this.categoriesBackup = this.categories.data
-      this.$bvModal.hide('modal-add-category')
+
     },
     tryRemoveCategory() {
       this.categories.data = this.categories.data.filter(
         (e) => e.id !== this.categoryDelete.id
       )
+      axios.delete(`${url}category/${this.categoryDelete.id}`)
       this.busy = false
       this.categoryDelete = {}
       this.categoriesBackup = this.categories.data
@@ -146,8 +156,12 @@ export default {
       this.formEditCategory = Object.assign({}, item)
       this.$bvModal.show('modal-edit-category')
     },
-  },
-}
+    setIcon(icon){
+      this.formAddCategory=icon
+      this.formEditCategory=icon
+      console.log(icon);
+    }
+  }
 </script>
 
 <template>
@@ -193,6 +207,9 @@ export default {
           Active
         </span>
       </template>
+      <template v-slot:cell(image)="cate">
+        <span class="fs-1" :class="cate.item.image"></span>
+      </template>
       <template v-slot:cell(admin_id)="cate">
         <span v-if="cate.item.admin_id === 1" class="text-bold"> Admin </span>
         <span v-if="cate.item.admin_id === 2" class="text-bold"> Manager </span>
@@ -221,24 +238,20 @@ export default {
       <b-form>
         <b-form-group label="Tên danh mục">
           <b-form-input
-            v-model="formAddCategory.name_"
+            v-model="formAddCategory.name"
             required
             type="text"
           ></b-form-input>
         </b-form-group>
-        <b-form-group label="Hình ảnh">
-          <b-form-input
-            v-model="formAddCategory.image"
-            required
-            type="text"
-          ></b-form-input>
-        </b-form-group>
+        <div>
+          <modalIcon @setIcon="setIcon" />
+        </div>
         <b-row>
           <b-col>
             <b-form-group label="Danh mục cha">
               <b-form-select
                 v-model="formAddCategory.parent_id"
-                :options="listCategories"
+                :options="categories.data"
               ></b-form-select>
             </b-form-group>
           </b-col>
@@ -284,19 +297,15 @@ export default {
             type="text"
           ></b-form-input>
         </b-form-group>
-        <b-form-group label="Hình ảnh">
-          <b-form-input
-            v-model="formEditCategory.image"
-            required
-            type="text"
-          ></b-form-input>
+        <b-form-group label="Icon cate">
+          <modalIcon/>
         </b-form-group>
         <b-row>
           <b-col>
             <b-form-group label="Danh mục cha">
               <b-form-select
                 v-model="formEditCategory.parent_id"
-                :options="listCategories"
+                :options="categories.data"
               ></b-form-select>
             </b-form-group>
           </b-col>

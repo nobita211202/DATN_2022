@@ -1,5 +1,7 @@
 <script>
 import axios from '@/node_modules/axios'
+const url="http://localhost:8080/api/"
+
 export default {
 
   created(){
@@ -7,9 +9,17 @@ export default {
     this.fileRender.onload = (Even) => {
         this.imageSelected = Even.target.result
     }
+    var getUser=()=>{
+      axios.get(`${url}user/get`)
+      .then((res)=>{
+        this.users.data = res.data
+      })
+    }
+    getUser()
   },
   data() {
     return {
+    imageUP:{},
     imageSelected :"",
     fileRender:{},
       users: {
@@ -50,8 +60,13 @@ export default {
       },
       busy: false,
       formAddUser: {
-        role_name: '',
-        admin_id: 1,
+        username: '',
+        password: "",
+        image:"",
+        phone:"",
+        email:"",
+        created:"",
+        address:"",
         status: 0,
       },
       userDelete: {},
@@ -90,14 +105,13 @@ export default {
 
   methods: {
     chooseImg(even) {
-      console.log(this.imageSelected);
       this.imageSelected = even.target.files[0]
-      console.log(this.imageSelected);
-      console.log(this.fileRender);
+      this.imageUP= this.imageSelected
       this.fileRender.readAsDataURL(this.imageSelected)
     },
     mdEditUser(item) {
       this.formEditUser = Object.assign({}, item)
+      console.log(this.formEditUser);
       this.$bvModal.show('modal-edit-user')
     },
     onAddUser() {
@@ -107,18 +121,16 @@ export default {
         alert('Username đã tồn tại')
         return
       }
-      const file= new FormData()
-      console.log(this.imageSelected.name);
-      file.append("file",this.imageSelected)
-      axios.post(`http://localhost:8080/api/user/add?file=${file}`,{
-          entity:this.user
-        },
-        {
-          headers: {
+      const dataForm= new FormData()
+      dataForm.append("json", JSON.stringify(this.formAddUser))
+      dataForm.append("file",this.imageUP)
+      axios.post(`${url}user/add`, dataForm,{
+          headers:{
             'Content-Type': 'multipart/form-data'
           },
+          // transformRequest:""
         }
-        )
+      )
 
 
       this.usersBackup = this.users.data
@@ -128,12 +140,19 @@ export default {
     onEditUser() {
       for (const obj of this.users.data) {
         if (obj.id === this.formEditUser.id) {
-          obj.role_name = this.formEditUser.role_name
+          obj.username = this.formEditUser.username
           obj.status = this.formEditUser.status
-          obj.admin_id = this.formEditUser.admin_id
           break
         }
       }
+      const dataForm= new FormData()
+      dataForm.append("json", JSON.stringify(this.formEditUser))
+      dataForm.append("file",this.imageUP)
+      axios.put(`${url}user/update`,dataForm,{
+        headers:{
+            'Content-Type':'multipart/form-data',
+            'Accept':'application/json'}
+      })
       this.$bvModal.hide('modal-edit-user')
     },
 
@@ -151,9 +170,15 @@ export default {
       this.users.data = this.users.data.filter(
         (e) => e.id !== this.userDelete.id
       )
+
+      axios.delete(`${url}user/delete/${this.userDelete.id}`)
       this.busy = false
       this.userDelete = {}
     },
+    getImg(name){
+      console.log(name);
+      return `${url}img/get/${name}`
+    }
   },
 }
 </script>
@@ -181,10 +206,10 @@ export default {
       :fields="users.fields"
       :busy="users.isBusy"
     >
-      <template v-slot:cell(image)="role">
-        <b-col sm="12" class="bg-dark">
-          <img :src="role.item.image" class="w-100" alt="">
-        </b-col>
+      <template  v-slot:cell(image)="role">
+        <span >
+          <img :src="getImg(role.item.image)" style="width: 50px;" alt="">
+        </span>
       </template>
       <template v-slot:table-busy>
         <div class="text-center text-secondary my-2">
@@ -301,7 +326,7 @@ export default {
             <b-form-group label="Img" label-for="role-name">
               <input type="file" @change="chooseImg" class="form-control">
             </b-form-group>
-            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
+            <img v-if="imageSelected" name="file" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
 
           </b-col>
         </b-row>
@@ -427,3 +452,10 @@ export default {
     </b-overlay>
   </div>
 </template>
+
+<style scoped>
+
+.w-70px{
+  width: 70px !important;
+}
+</style>

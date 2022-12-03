@@ -1,5 +1,6 @@
 <script>
 import axios from '@/node_modules/axios'
+const url="http://localhost:8080/api/"
 export default {
   components:{
   },
@@ -8,9 +9,26 @@ export default {
     this.fileRender.onload = (Even) => {
         this.imageSelected = Even.target.result
     }
+    console.log(this.courses);
+    var getCourse=()=>{
+      axios.get(`${url}course/get`)
+      .then((res)=>{
+        this.courses.data= res.data
+        console.log(res.data);
+      })
+    }
+    // var getCourseAttr=()=>{
+    //   axios.get(`${url}course/get`)
+    //   .then((res)=>{
+    //     this.courses= res.data
+    //   })
+    // }
+    getCourse()
+    console.log(this.course);
   },
   data() {
     return {
+      imageUP:"",
       editor: "ClassicEditor",
         editorData: '<p>Content of the editor.</p>',
         editorConfig: {
@@ -19,6 +37,7 @@ export default {
       content:"",
     imageSelected :"",
     fileRender:{},
+    courseAtt:[],
     courses: {
         isBusy: false,
         data: [
@@ -32,7 +51,7 @@ export default {
             creator: 'admin',
             created: '1970-01-01',
             status: 1,
-            describe:"hehe"
+            describe:"hehe",
 
           },
         ],
@@ -57,9 +76,13 @@ export default {
       },
       busy: false,
       formAddCourse: {
-        role_name: '',
-        admin_id: 1,
-        status: 0,
+        categoryAttr:{
+          id:1
+        },
+        user:{
+          id:15
+        }
+
       },
       sourseDelete: {},
       formEditCourse: {},
@@ -97,10 +120,9 @@ export default {
 
   methods: {
     chooseImg(even) {
-      console.log(this.imageSelected);
+
       this.imageSelected = even.target.files[0]
-      console.log(this.imageSelected);
-      console.log(this.fileRender);
+      this.imageUP=this.imageSelected
       this.fileRender.readAsDataURL(this.imageSelected)
     },
     mdEditCourse(item) {
@@ -108,39 +130,35 @@ export default {
       this.$bvModal.show('modal-edit-course')
     },
     onAddCourse() {
-      const obj = Object.assign({}, this.formAddCourse)
-      const isExist = this.courses.data.find((e) => e.username === obj.username)
-      if (isExist !== undefined) {
-        alert('Username đã tồn tại')
-        return
-      }
-      const file= new FormData()
-      console.log(this.imageSelected.name);
-      file.append("file",this.imageSelected)
-      axios.post(`http://localhost:8080/api/user/add?file=${file}`,{
-          entity:this.user
-        },
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-        }
-        )
-
-
+      const dataForm= new FormData()
+      dataForm.append("json", JSON.stringify(this.formAddCourse))
+      dataForm.append("file",this.imageUP)
+      axios.post(`${url}course/add`,dataForm,{
+        headers:{
+            'Content-Type':'multipart/form-data',
+            'Accept':'application/json'}
+      })
       this.rolesBackup = this.courses.data
       this.$bvModal.hide('modal-add-course')
     },
 
-    onEditRole() {
+    onEditCourse() {
       for (const obj of this.courses.data) {
         if (obj.id === this.formEditCourse.id) {
-          obj.role_name = this.formEditCourse.role_name
+          obj.name = this.formEditCourse.name
           obj.status = this.formEditCourse.status
           obj.admin_id = this.formEditCourse.admin_id
           break
         }
       }
+      const dataForm= new FormData()
+      dataForm.append("json", JSON.stringify(this.formEditCourse))
+      dataForm.append("file",this.imageUP)
+      axios.put(`${url}course/update`,dataForm,{
+        headers:{
+            'Content-Type':'multipart/form-data',
+            'Accept':'application/json'}
+      })
       this.$bvModal.hide('modal-edit-course')
     },
 
@@ -158,9 +176,14 @@ export default {
       this.courses.data = this.courses.data.filter(
         (e) => e.id !== this.sourseDelete.id
       )
+      axios.delete(`${url}course/delete/${this.userDelete.id}`)
       this.busy = false
       this.sourseDelete = {}
     },
+    getImg(name){
+      console.log(name);
+      return `${url}img/get/${name}`
+    }
   },
 }
 </script>
@@ -176,7 +199,7 @@ export default {
           class="btn btn-success mb-2 float-right"
           @click="$bvModal.show('modal-add-course')"
           ><b-icon icon="patch-plus" aria-hidden="true"></b-icon> Thêm
-          user</button
+          Khóa học</button
         >
       </b-col>
     </b-row>
@@ -189,9 +212,9 @@ export default {
       :busy="courses.isBusy"
     >
       <template v-slot:cell(image)="course">
-        <b-col sm="12" class="bg-dark">
-          <img :src="course.item.image" class="w-100" alt="">
-        </b-col>
+        <span >
+          <img :src="getImg(course.item.image)" style="width: 50px;" alt="">
+        </span>
       </template>
       <template v-slot:table-busy>
         <div class="text-center text-secondary my-2">
@@ -232,8 +255,8 @@ export default {
     >
       <b-pagination
         v-model="currentPage"
-        :total-rows="courses.meta.pagination.total"
-        :per-page="coursesPerPage"
+        :total-rows="1"
+        :per-page="1"
         limit="1"
       >
       </b-pagination>
@@ -305,7 +328,7 @@ export default {
 
       </b-form>
       <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="onAddUser">
+        <b-button type="button" variant="success" @click="onAddCourse">
           Thêm</b-button
         >
       </template>
@@ -379,7 +402,7 @@ export default {
 
       </b-form>
       <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="onAddUser">
+        <b-button type="button" variant="success" @click="onEditCourse">
           Sửa</b-button
         >
       </template>
