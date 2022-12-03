@@ -18,8 +18,8 @@ public class OrderDetailController {
        try {
               orderDetailService.orderByUserIdAndMultiCourse(userId,multiCourse);
               return Map.of("message","success","status",200);
-       }catch (Exception e){
-           return Map.of("message","fail","status",500);
+       }catch (SQLException e){
+           return Map.of("message",e.getMessage(),"status",500);
        }
     }
 }
