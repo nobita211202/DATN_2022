@@ -56,3 +56,42 @@ AS $$
 			END;
 		END ;
 	END;$$
+
+
+
+
+
+
+
+
+-----------
+VIEW ORDERR BY ID 
+----------
+
+
+
+
+CREATE OR REPLACE FUNCTION view_order_detail_by_userId(
+	user_id_param BIGINT 
+)
+RETURNS TABLE(
+	code varchar,
+	created text,
+	name_	text,
+	price real
+)
+AS $$ 
+		DECLARE 
+			user_id_ BIGINT := user_id_param;
+			BEGIN
+			RETURN QUERY
+				SELECT o.code,to_char(od.created,'dd/MM/yyyy hh:mm:ss') AS created,c_.name_,od.price 
+					FROM ORDERS o LEFT OUTER JOIN ORDERS_DETAIL od
+						ON o.order_id = od.order_id
+					INNER JOIN COURSES c_
+						ON c_.course_id = od.course_id 
+					JOIN categories_attr ca
+						ON ca.category_attr_id = c_.category_attr_id
+					WHERE o.user_id = user_id_ ;
+				END;
+	$$ LANGUAGE plpgsql;
