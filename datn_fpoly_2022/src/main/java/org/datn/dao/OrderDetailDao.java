@@ -8,6 +8,6 @@ import java.lang.reflect.Array;
 
 public interface OrderDetailDao extends JpaRepository<OrderDetail, Long> {
     @Query(value = "CALL user_order(?1,ARRAY[?2])",nativeQuery = true)
-    void orderByUserIdAndMultiCourse(long userId, Array multiCourse);
+    void orderByUserIdAndMultiCourse(long userId, Long[] multiCourse);
 
 }
