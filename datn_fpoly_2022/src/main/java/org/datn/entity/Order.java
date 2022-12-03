@@ -49,9 +49,6 @@ public class Order {
     @Type(type = "org.hibernate.type.TextType")
     private String modifier;
 
-    @Column(name = "price")
-    private Float price;
-
     @Column(name = "status")
     private Short status;
 
@@ -133,14 +130,6 @@ public class Order {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
     }
 
     public Short getStatus() {
