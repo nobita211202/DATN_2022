@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CategoryDao extends JpaRepository<Category, Long> {
     List<Category> findCategoryByParent(Category category);
-    @Procedure()
+    @Query(value = "call delete_ctg(?1)",nativeQuery = true)
     void delete_ctg(long id);
 
     /**

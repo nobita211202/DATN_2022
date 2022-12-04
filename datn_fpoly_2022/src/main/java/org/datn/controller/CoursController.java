@@ -33,15 +33,17 @@ import java.util.Optional;
 public class CoursController {
     @Autowired
     CoursService coursService;
-
+    @Autowired
+    ImageService service;
     @GetMapping("/get")
     public List<Cours> getAll() {                 //Lấy danh sách khóa học
         return coursService.findAll();
     }
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<Cours> addCours(@ModelAttribute EntityAndImage data) throws JsonProcessingException {    //Thêm khóa học
+        System.out.println(data.getJson());
         Cours cours = (Cours) new ObjectMapper().readValue(data.getJson(),Cours.class);
-        cours.setImage(ImageService.saveImage(data.getFile()));
+        cours.setImage(service.saveImage(data.getFile()));
         coursService.createCours(cours);
         return ResponseEntity.ok(cours);
     }
@@ -52,7 +54,7 @@ public class CoursController {
     @PutMapping("/update")
     public Cours updateCours (@ModelAttribute EntityAndImage data) throws JsonProcessingException {   //Update khóa học
         Cours cours = (Cours) new ObjectMapper().readValue(data.getJson(),Cours.class);
-        cours.setImage(ImageService.saveImage(data.getFile()));
+        cours.setImage(service.saveImage(data.getFile()));
         coursService.createCours(cours);
         return coursService.updateCours(cours);
     }

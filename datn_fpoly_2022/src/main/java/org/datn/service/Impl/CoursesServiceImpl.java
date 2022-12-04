@@ -3,6 +3,7 @@ package org.datn.service.Impl;
 import org.datn.dao.CoursDao;
 import org.datn.entity.Cours;
 import org.datn.service.CoursService;
+import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +19,8 @@ import java.util.Optional;
 public class CoursesServiceImpl implements CoursService {
     @Autowired
     CoursDao cdao;
-
+    @Autowired
+    Bases<Cours> bases;
     @Override
     public List<Cours> findAll() {
         return cdao.findAll();
@@ -31,7 +33,7 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public Cours createCours(Cours co) {
-        return cdao.save(co);
+        return cdao.save(bases.getBase(co,Bases.CREATE));
     }
 
     @Override
@@ -41,7 +43,7 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public Cours updateCours(Cours co) {
-        return cdao.save(co);
+        return cdao.save(bases.getBase(co,Bases.UPDATE));
     }
 
     @Override
