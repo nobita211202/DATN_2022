@@ -1,6 +1,7 @@
 <script>
 import modalIcon from "@components/modal_choose_icon.vue"
 import axios from "@/node_modules/axios"
+import { bus } from "@/src/main"
 const url="http://localhost:8080/api/"
 
 export default {
@@ -17,9 +18,7 @@ export default {
           {
             id: 1,
             name: 'Danh mục test',
-            category:{
-              id:""
-            },
+            category:{ },
             admin_id: 1,
             like: 0,
             image: '/assets/images/brand/logo-3.png',
@@ -30,8 +29,7 @@ export default {
         fields: [
           { key: 'id', label: 'ID', sortable: true },
           { key: 'name', label: 'Tên danh mục', sortable: true },
-          { key: 'parent_id', label: 'Danh mục cha', sortable: true },
-          { key: 'admin_id', label: 'Người quản lý', sortable: true },
+          { key: 'parent', label: 'Danh mục cha', sortable: true },
           { key: 'like', label: 'Số like', sortable: true },
           { key: 'image', label: 'Icon', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
@@ -46,11 +44,7 @@ export default {
         },
       },
       busy: false,
-      formAddCategory: {
-        admin_id: 1,
-        status: 0,
-        // parent_id: null,
-      },
+      formAddCategory: { },
       formEditCategory: {},
       categoryDelete: {},
       currentPage: 1,
@@ -90,48 +84,59 @@ export default {
     .then((res)=>{
       this.categories.data = res.data
     })
+    bus.$on('setIcon',(icon)=>{
+      console.log(icon);
+      this.formAddCategory.image=icon;
+      this.formEditCategory.image=icon
+    })
   },
 
   methods: {
-    nameOfParentCategory(index) {
-      const isExist = this.categories.data.find((e) => e.id === index)
+    nameOfParentCategory(id) {
+      console.log(id);
+      const isExist = this.categories.data.find((e) => e.id === id)
       if (isExist !== undefined) {
-        return isExist.name_
+        return isExist.name
       } else {
         return ''
       }
     },
     tryEditCategory() {
-      for (const obj of this.categories.data) {
+      axios.put(`${url}category/update`,this.formEditCategory)
+      .then(()=>{
+        for (const obj of this.categories.data) {
         if (obj.id === this.formEditCategory.id) {
           obj.name = this.formEditCategory.name
           obj.image = this.formEditCategory.image
-          obj.parent_id = this.formEditCategory.parent_id
+          obj.category = this.formEditCategory.category
           obj.admin_id = this.formEditCategory.admin_id
           obj.status = this.formEditCategory.status
           break
         }
       }
+      })
+
+
       this.categoriesBackup = this.categories.data
       this.$bvModal.hide('modal-edit-category')
     },
 
     tryAddCategory() {
-      // const obj = Object.assign({}, this.formAddCategory)
-      // const isExist = this.categories.data.find((e) => e.name === obj.name)
-      // if (isExist !== undefined) {
-      //   alert('Tên danh mục đã tồn tại')
-      // } else {
-      //   axios.post(`${url}category/add`,this.formAddCategory).then((res)=>{
-      //     const id = this.categories.data.length + 1
-      //     obj.id = id
-      //     obj.like = 0
-      //     obj.created = '1970-01-01'
-      //     obj.creator = this.currentUser.name
-      //     this.categories.data.push(obj)
-      //     this.categoriesBackup = this.categories.data
-      //   this.$bvModal.hide('modal-add-category')
-      //   })
+      const obj = Object.assign({}, this.formAddCategory)
+      const isExist = this.categories.data.find((e) => e.name === obj.name)
+      if (isExist !== undefined) {
+        alert('Tên danh mục đã tồn tại')
+      } else {
+        axios.post(`${url}category/add`,this.formAddCategory).then((res)=>{
+          const id = this.categories.data.length + 1
+          obj.id = id
+          obj.like = 0
+          obj.created = '1970-01-01'
+          obj.creator = this.currentUser.name
+          this.categories.data.push(obj)
+          this.categoriesBackup = this.categories.data
+        this.$bvModal.hide('modal-add-category')
+        })
       }
 
     },
@@ -156,12 +161,9 @@ export default {
       this.formEditCategory = Object.assign({}, item)
       this.$bvModal.show('modal-edit-category')
     },
-    setIcon(icon){
-      this.formAddCategory=icon
-      this.formEditCategory=icon
-      console.log(icon);
-    }
+
   }
+}
 </script>
 
 <template>
@@ -196,8 +198,8 @@ export default {
           <strong>Loading...</strong>
         </div>
       </template>
-      <template v-slot:cell(parent_id)="cate">
-        <span> {{ nameOfParentCategory(cate.value) }} </span>
+      <template v-slot:cell(parent)="cate">
+        <span> {{ nameOfParentCategory(cate.item) }} </span>
       </template>
       <template v-slot:cell(status)="cate">
         <span v-if="cate.item.status === 0" class="text-danger text-bold">
@@ -207,6 +209,7 @@ export default {
           Active
         </span>
       </template>
+
       <template v-slot:cell(image)="cate">
         <span class="fs-1" :class="cate.item.image"></span>
       </template>
@@ -244,15 +247,16 @@ export default {
           ></b-form-input>
         </b-form-group>
         <div>
-          <modalIcon @setIcon="setIcon" />
+          <modalIcon />
         </div>
         <b-row>
           <b-col>
             <b-form-group label="Danh mục cha">
               <b-form-select
                 v-model="formAddCategory.parent_id"
-                :options="categories.data"
-              ></b-form-select>
+              >
+              <option v-for="ct in categories.data" :key="ct.id" :value="ct.id">{{ct.name}} </option>
+              </b-form-select>
             </b-form-group>
           </b-col>
           <b-col>
@@ -288,25 +292,26 @@ export default {
       hide-header-close
       hide-backdrop
     >
-      <template v-slot:modal-title> Sửa danh mục </template>
+      <template v-slot:modal-title>Sửa danh mục</template>
       <b-form>
         <b-form-group label="Tên danh mục">
           <b-form-input
-            v-model="formEditCategory.name_"
+            v-model="formEditCategory.name"
             required
             type="text"
           ></b-form-input>
         </b-form-group>
-        <b-form-group label="Icon cate">
-          <modalIcon/>
-        </b-form-group>
+        <div>
+          <modalIcon />
+        </div>
         <b-row>
           <b-col>
             <b-form-group label="Danh mục cha">
               <b-form-select
-                v-model="formEditCategory.parent_id"
-                :options="categories.data"
-              ></b-form-select>
+                v-model="formEditCategory.category"
+              >
+                <option v-for="ct in categories.data" :key="ct.id" v-show="(ct.id !== formEditCategory.id)" :value="ct.id">{{ct.name}} </option>
+              </b-form-select>
             </b-form-group>
           </b-col>
           <b-col>
@@ -333,6 +338,7 @@ export default {
         >
       </template>
     </b-modal>
+
 
     <b-overlay :show="busy" no-wrap>
       <template v-slot:overlay>

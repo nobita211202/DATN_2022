@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { bus } from '@src/main'
+
 export default {
   data(){
     const fontIcons=require("@assets/fontIcon.json")
@@ -49,17 +51,14 @@ export default {
       txtSearch:""
     }
   },
-  created(){
-    const fontIcons=require("@assets/fontIcon.json")
-    console.log(fontIcons);
-  },
+
   methods:{
     mdTrue(){
       this.$bvModal.show("modal-edit-icon")
     },
     mdFalse(font){
       this.showDemoIcon = font.icon
-      this.$emit("icon","helo")
+      bus.$emit('setIcon',this.showDemoIcon)
       this.$bvModal.hide("modal-edit-icon")
     }
   }
