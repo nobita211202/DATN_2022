@@ -13,114 +13,14 @@ export default {
     return {
       listCouses: {
         data: [
-          {
-            id: 1,
-            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
-            teacher: {
-              teacher_id: 1,
-              teacher_name: 'Hán Quang Dự',
-            },
-            rate: {
-              star: 4,
-              half_star: 1,
-              non_star: 0,
-              total_rate: 32,
-            },
-            price: '459.000',
-            old_price: '599.000',
-            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
-          },
-          {
-            id: 1,
-            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
-            teacher: {
-              teacher_id: 1,
-              teacher_name: 'Hán Quang Dự',
-            },
-            rate: {
-              star: 4,
-              half_star: 1,
-              non_star: 0,
-              total_rate: 32,
-            },
-            price: '459.000',
-            old_price: '599.000',
-            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
-          },
-          {
-            id: 1,
-            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
-            teacher: {
-              teacher_id: 1,
-              teacher_name: 'Hán Quang Dự',
-            },
-            rate: {
-              star: 4,
-              half_star: 1,
-              non_star: 0,
-              total_rate: 32,
-            },
-            price: '459.000',
-            old_price: '599.000',
-            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
-          },
-          {
-            id: 1,
-            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
-            teacher: {
-              teacher_id: 1,
-              teacher_name: 'Hán Quang Dự',
-            },
-            rate: {
-              star: 4,
-              half_star: 1,
-              non_star: 0,
-              total_rate: 32,
-            },
-            price: '459.000',
-            old_price: '599.000',
-            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
-          },
-          {
-            id: 1,
-            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
-            teacher: {
-              teacher_id: 1,
-              teacher_name: 'Hán Quang Dự',
-            },
-            rate: {
-              star: 4,
-              half_star: 1,
-              non_star: 0,
-              total_rate: 32,
-            },
-            price: '459.000',
-            old_price: '599.000',
-            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
-          },
-          {
-            id: 1,
-            title: '69 Tuyệt Chiêu Chốt Sale Trực Tiếp',
-            teacher: {
-              teacher_id: 1,
-              teacher_name: 'Hán Quang Dự',
-            },
-            rate: {
-              star: 4,
-              half_star: 1,
-              non_star: 0,
-              total_rate: 32,
-            },
-            price: '459.000',
-            old_price: '599.000',
-            img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
-          },
+
         ]
       },categoryParent : [],
     }
   },
   created() {
     this.getCategoryParent();
+    this.getCourse();
   }
   ,methods: {
     getCategoryParent(){
@@ -133,6 +33,12 @@ export default {
     },getCategoryChildByParentId(id){
       axios.get('/api/category-attribute/find-by-category-id/'+id).then((response) => {
         return response.data;
+      }).catch((error) => {
+        console.log(error)
+      })
+    },getCourse(){
+      axios.get('/api/course/get').then((response) => {
+        this.listCouses.data = response.data
       }).catch((error) => {
         console.log(error)
       })
@@ -266,7 +172,7 @@ export default {
                     <a :href="`course/${course.id}`" class="bg-light">
                       <img
                         class="img-fluid br-7 w-100"
-                        :src="course.img"
+                        :src="course.image"
                         alt="img"
                       />
                     </a>
@@ -275,38 +181,38 @@ export default {
                     <div class="product-content">
                       <h1 class="title fw-bold fs-20"
                         ><a :href="`course/${course.id}`"
-                          >69 Tuyệt chiêu chốt sale trực tiếp</a
+                          >{{course.name}}</a
                         ></h1
                       >
                       <h1 class="teacher-title fw-bold fs-20"
-                        ><a :href="`teacher/${course.teacher.teacher_id}`">{{
-                          course.teacher.teacher_name
+                        ><a :href="`teacher/${course.user.username}`">{{
+                          course.user.username
                         }}</a></h1
                       >
                       <div class="mb-2 text-warning">
                         <i
-                          v-for="star in course.rate.star"
+                          v-for="star in course.interest"
                           :key="star"
                           class="fa fa-star text-warning"
                         ></i>
                         <i
-                          v-for="star in course.rate.half_star"
+                          v-for="star in course.interest"
                           :key="star"
                           class="fa fa-star-half-o text-warning"
                         ></i>
                         <i
-                          v-for="star in course.rate.non_star"
+                          v-for="star in course.interest"
                           :key="star"
                           class="fa fa-star-o text-warning"
                         ></i>
                         <span class="text-muted ml-2"
-                          >({{ course.rate.total_rate }})</span
+                          >({{ course.interest}})</span
                         >
                       </div>
                       <div class="price"
                         >{{ course.price }} <sup>đ</sup>
                         <span class="ms-4"
-                          >{{ course.old_price }} <sup>đ</sup></span
+                          >{{ course.price }} <sup>đ</sup></span
                         >
                       </div>
                     </div>

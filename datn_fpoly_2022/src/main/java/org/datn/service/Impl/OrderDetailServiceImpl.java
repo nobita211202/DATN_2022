@@ -1,12 +1,15 @@
 package org.datn.service.Impl;
 
+import org.datn.bean.History;
 import org.datn.dao.OrderDetailDao;
+import org.datn.entity.OrderDetail;
 import org.datn.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
 import java.sql.*;
+import java.util.List;
 
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService {
@@ -21,5 +24,9 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         Array array = connection.createArrayOf("bigint",multiCourse);
         preparedStatement.setArray(2,array);
         preparedStatement.execute();
+    }
+    @Override
+    public List<History> findByUserId(Long userId){
+        return orderDetailDao.findByUserId(userId);
     }
 }

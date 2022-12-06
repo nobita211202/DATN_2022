@@ -16,6 +16,7 @@ public interface CategoryAttrService {
     CategoriesAttr updateCategoryAttr(CategoriesAttr ca);
 
     CategoriesAttr findByIDCategoryAttr(Long id);
+    List<CategoriesAttr> findCategoriesAttrByCategory(Long id);
 
 
 

@@ -93,4 +93,8 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(categoryService.findCategoryByParentId(id));
     }
+    @GetMapping("/get/parent")
+    public ResponseEntity findParent(){
+        return ResponseEntity.ok(categoryService.getAllByParentIsNull());
+    }
 }

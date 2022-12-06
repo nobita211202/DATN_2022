@@ -7,6 +7,8 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import CKEditor from 'ckeditor4-vue'
 import Cookie from "vue-cookie"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import 'vue2-toast/lib/toast.css';
+import Toast from 'vue2-toast';
 
 import App from './app.vue'
 // eslint-disable-next-line import/no-relative-parent-imports
@@ -17,6 +19,7 @@ Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
 axios.defaults.baseURL = 'http://localhost:8888'
 Vue.use(axios)
+Vue.use(Toast);
 Vue.use( CKEditor );
 // Install BootstrapVue
 Vue.use(BootstrapVue)

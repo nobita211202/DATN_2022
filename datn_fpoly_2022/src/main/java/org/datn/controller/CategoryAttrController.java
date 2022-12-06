@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api")
+@RequestMapping("/api/category-attribute")
 public class CategoryAttrController {
     @Autowired
     CategoryAttrService categoryAttrService;
@@ -35,5 +35,8 @@ public class CategoryAttrController {
     public CategoriesAttr findByIDCategoriesAttr(@PathVariable("id") Long id){
         return categoryAttrService.findByIDCategoryAttr(id);
     }
-
+    @GetMapping("/find-by-category-id/{id}")
+    public List<CategoriesAttr> findCategoriesAttrByCategory(@PathVariable("id") Long id){
+        return categoryAttrService.findCategoriesAttrByCategory(id);
+    }
 }

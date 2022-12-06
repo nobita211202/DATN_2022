@@ -14940,6 +14940,11 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
+vue2-toast@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue2-toast/-/vue2-toast-2.1.0.tgz#3cb7f11684b5896e52d494d0635587f453279722"
+  integrity sha512-nBqf3kM7tXTbz+dBjQkFxQDFWzcxWBbuH32YG9jS0APPQnEOwdYVU5wVXh0Y0w+vb+RE/OAZ2zb0PPM94BGk5Q==
+
 vue@2.6.11, vue@^2.6.10:
   version "2.6.11"
   resolved "https://registry.npmjs.org/vue/-/vue-2.6.11.tgz"

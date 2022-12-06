@@ -28,6 +28,7 @@ org\datn\dao\ContactDao.class
 org\datn\bean\ConfigBean.class
 org\datn\entity\CategoriesAttr.class
 org\datn\service\PaymentMethodService.class
+org\datn\bean\History.class
 org\datn\service\ForgotPasswordService.class
 org\datn\controller\CategoryAttrController.class
 org\datn\service\Impl\CategoryServiceImpl.class

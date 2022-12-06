@@ -33,7 +33,7 @@
                 <span>đ</span>
               </span>
               <b-button variant="danger" class="my-2 w-100">Đăng kí ngay</b-button>
-              <b-button variant="success" class=" my-2 w-100"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
+              <b-button variant="success" class=" my-2 w-100"  @click.prevent="orderCourse"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
               <span class="">
                 <ul class="pt-5 pb-2  text-dark d-flex flex-column">
                     <span class="my-1"><i class="fa fa-clock-o" ></i> Thời lượng:
@@ -301,6 +301,7 @@
 
 <script>
 import Layout from '@layouts/main.vue'
+import axios from '@/node_modules/axios'
 export default {
   prop:{
     idCourse:{
@@ -310,19 +311,17 @@ export default {
   },
   components:{
       Layout
-  },
-  data(){
-
-    return{
-
+  },methods: {
+    orderCourse(){
+      axios.post('/api/order-detail/order/15',[
+        this.$route.params.id
+      ]).then(res =>{
+        this.$toast.center(res.data.message);
+      }).catch(err =>{
+        console.log(err)
+      })
     }
   },
-  created(){
-    if(this.idCourse === 0 ){
-      this.$router.push("/")
-    }
-  }
-
 }
 </script>
 

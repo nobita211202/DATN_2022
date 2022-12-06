@@ -10,6 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/order-detail")
+@CrossOrigin(origins = "*")
 public class OrderDetailController {
     @Autowired
     OrderDetailService orderDetailService;
@@ -21,5 +22,13 @@ public class OrderDetailController {
        }catch (SQLException e){
            return Map.of("message",e.getMessage(),"status",500);
        }
+    }
+    @GetMapping("/get-history/{userId}")
+    public Map getOrderDetailByUserId(@PathVariable Long userId) throws SQLException, ClassNotFoundException {
+        try {
+            return Map.of("message","success","status",200,"data",orderDetailService.findByUserId(userId));
+        }catch (Exception e){
+            return Map.of("message",e.getMessage(),"status",500);
+        }
     }
 }

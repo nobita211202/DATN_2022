@@ -20,18 +20,16 @@ public class Category {
     @Column(name = "category_id", nullable = false)
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
-    @JoinColumn(name = "admin_id", nullable = false)
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
-    @NotNull
-    @Column(name = "name_", nullable = false)
+    @Column(name = "name_")
     @Type(type = "org.hibernate.type.TextType")
     private String name;
 

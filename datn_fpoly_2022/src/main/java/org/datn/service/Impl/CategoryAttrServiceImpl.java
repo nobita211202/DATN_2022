@@ -1,5 +1,4 @@
 package org.datn.service.Impl;
-
 import org.datn.dao.CategoriesAttrDao;
 import org.datn.entity.CategoriesAttr;
 import org.datn.service.CategoryAttrService;
@@ -37,5 +36,10 @@ public class CategoryAttrServiceImpl implements CategoryAttrService {
     @Override
     public CategoriesAttr findByIDCategoryAttr(Long id) {
         return cdao.findById(id).get();
+    }
+
+    @Override
+    public List<CategoriesAttr> findCategoriesAttrByCategory(Long id) {
+        return cdao.findCategoriesAttrByCategory(id);
     }
 }

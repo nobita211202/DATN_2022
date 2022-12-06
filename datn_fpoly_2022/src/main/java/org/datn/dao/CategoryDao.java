@@ -35,4 +35,6 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
             "\tSELECT * FROM tempTable", nativeQuery = true)
 
     List<Category> findCategoryByParentId(Long id);
+    @Query(value = "SELECT * FROM categories c WHERE c.parent_id IS NULL", nativeQuery = true)
+    List<Category> getAllByParentIsNull();
 }
