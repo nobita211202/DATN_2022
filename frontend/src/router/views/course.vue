@@ -5,7 +5,7 @@
       <b-row class="">
         <b-col sm="8" >
           <div class="py-2 lh-3 py-2">
-            <p class="fs-3 fw-bolder mb-0">Học đệm hát Guitar cùng Haketu</p>
+            <p class="fs-3 fw-bolder mb-0">{{course.name}}</p>
             <!-- <div class="d-flex ">
               <b-avatar class="px-1 me-1 fs-5 bg-info"></b-avatar>
               <span class="my-auto">Nguyễn Hoàng</span>
@@ -29,8 +29,7 @@
           <div class="position-absolute w-100 ">
             <div class="p-5 mt-3 bg-white">
               <span class="text-dark">
-                <span class="fs-3 text-dark">199,000</span>
-                <span>đ</span>
+                <span class="fs-3 text-dark">{{course.price | formatNumber}}</span>
               </span>
               <b-button variant="danger" class="my-2 w-100">Đăng kí ngay</b-button>
               <b-button variant="success" class=" my-2 w-100"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
@@ -114,8 +113,7 @@
           <div class="my-1 bg-white p-2">
             <strong class="fs-5 fw-bolder">Giới thiệu khóa học</strong>
           </div>
-          <div class="bg-white p-2">
-
+          <div v-html="course.describe" class="bg-white p-2">
           </div>
           <div class="my-1 bg-white p-2">
             <strong class="fs-5 fw-bolder">Nội dung khóa học</strong>
@@ -142,7 +140,7 @@
                 <span class="d-flex">
                   <a href="#" class="my-auto">
                     <span class="h4 fw-bold ">Tên khóa học</span> <br>
-                    <span class="text-danger"> 120,999đ</span>
+                    <span class="text-danger">{{199999 | formatNumber}}</span>
                   </a>
                 </span>
                 <span class="ms-auto my-auto px-2">
@@ -165,7 +163,7 @@
                 <span class="d-flex">
                   <a href="#" class="my-auto">
                     <span class="h4 fw-bold ">Tên khóa học</span> <br>
-                    <span class="text-danger"> 120,999đ</span>
+                    <span class="text-danger" > {{199999 | formatNumber}}</span>
                   </a>
                 </span>
                 <span class="ms-auto my-auto px-2">
@@ -300,27 +298,40 @@
 </template>
 
 <script>
+import axios from '@/node_modules/axios'
 import Layout from '@layouts/main.vue'
+const url="http://localhost:8080/api/"
 export default {
-  prop:{
-    idCourse:{
-      type:Number,
-      default:0
-    }
-  },
+
   components:{
       Layout
   },
   data(){
 
     return{
-
+      course:{},
+      listCourses:[]
     }
+  },
+  filters:{
+    formatNumber:function (value) {
+      return new Intl.NumberFormat().format(value)+"đ";
+    },
   },
   created(){
     if(this.idCourse === 0 ){
       this.$router.push("/")
     }
+    var getCourse=()=>{
+      // axios.get(`${url}course/get/${this.$route.params.id}`)
+      axios.get(`${url}course/get/5`)
+      .then((res)=>{
+        this.course= res.data
+        console.log(this.course);
+      })
+    }
+    // axios.get(`${url}course/get`)
+    getCourse()
   }
 
 }

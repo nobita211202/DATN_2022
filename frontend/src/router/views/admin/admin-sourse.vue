@@ -29,13 +29,9 @@ export default {
   data() {
     return {
       imageUP:"",
-      editor: "ClassicEditor",
-        editorData: '<p>Content of the editor.</p>',
-        editorConfig: {
-            // The configuration of the editor.
-        },
+
       content:"",
-    imageSelected :"",
+    imageSelected :null,
     fileRender:{},
     courseAtt:[],
     courses: {
@@ -142,6 +138,7 @@ export default {
 
       this.rolesBackup = this.courses.data
       this.$bvModal.hide('modal-add-course')
+      this.imageSelected.imageSelected=null
     },
 
     onEditCourse() {
@@ -162,6 +159,7 @@ export default {
             'Accept':'application/json'}
       })
       this.$bvModal.hide('modal-edit-course')
+      this.imageSelected=null
     },
 
     onRemoveCourse(item) {
@@ -183,6 +181,7 @@ export default {
       axios.delete(`${url}course/delete/${this.courseDelete.id}`)
       this.busy = false
       this.courseDelete = {}
+      this.imageSelected=null
     },
     getImg(name){
       console.log(name);
@@ -281,16 +280,7 @@ export default {
                   ></b-form-input>
                 </b-form-group>
               </b-col>
-              <b-col>
-                <b-form-group label="Thời gian học" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formAddCourse.studyTime"
-                    required
-                    type="number"
-                  ></b-form-input>
-                </b-form-group>
-              </b-col>
+
             </b-row>
             <b-row>
               <b-col>
@@ -309,7 +299,7 @@ export default {
             <b-row>
               <b-col>
                 <b-form-group label="Thông tin" label-for="role-name">
-                  <ckeditor v-model="formAddCourse.describe"></ckeditor>
+                  <ckeditor v-model="formAddCourse.describe" ></ckeditor>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -354,16 +344,7 @@ export default {
                   ></b-form-input>
                 </b-form-group>
               </b-col>
-              <b-col>
-                <b-form-group label="Thời gian học" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formEditCourse.studyTime"
-                    required
-                    type="number"
-                  ></b-form-input>
-                </b-form-group>
-              </b-col>
+
             </b-row>
             <b-row>
               <b-col>
@@ -392,8 +373,8 @@ export default {
             <b-form-group label="Img" label-for="role-name">
               <input type="file" @change="chooseImg" class="form-control">
             </b-form-group>
-            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
-
+            <img v-if="(imageSelected)" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
+            <img v-if="(formEditCourse.image && imageSelected === null )" :src="getImg(formEditCourse.image)" class="m-auto w-100 shadow border " alt="">
           </b-col>
         </b-row>
 
