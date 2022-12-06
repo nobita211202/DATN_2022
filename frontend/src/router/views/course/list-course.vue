@@ -1,4 +1,5 @@
 <script>
+import axios from '@/node_modules/axios';
 import Layout from '@layouts/main.vue'
 export default {
   page: {
@@ -114,10 +115,29 @@ export default {
             old_price: '599.000',
             img: 'https://static.unica.vn/upload/images/2019/04/69_tuyet_chieu_chot_sale_truc_tiep_m_1555564902.jpg',
           },
-        ],
-      },
+        ]
+      },categoryParent : [],
     }
   },
+  created() {
+    this.getCategoryParent();
+  }
+  ,methods: {
+    getCategoryParent(){
+      axios.get('/api/category/get/parent').then((response) => {
+        this.categoryParent = response.data
+      }).catch((error) => {
+        console.log(error)
+      })
+
+    },getCategoryChildByParentId(id){
+      axios.get('/api/category-attribute/find-by-category-id/'+id).then((response) => {
+        return response.data;
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  }
 }
 </script>
 
@@ -156,31 +176,17 @@ export default {
               <div class="card-title">Chuyên ngành</div>
             </div>
             <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> Java </a
+              <ul class="list-group" >
+                <li  v-for="item,index2 in categoryParent" :key="index2" class="list-group-item border-0 p-0" >
+                  <a  href="#collapse"
+                  data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseExample" >
+                  <i class="fe fe-chevron-right"></i> {{item.name}} </a
                   ><span class="product-label">22</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> Đồ hoạ</a
-                  ><span class="product-label">15</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> Web </a
-                  ><span class="product-label">10</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> CSDL </a
-                  ><span class="product-label">88</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> C# </a
-                  ><span class="product-label">88</span>
+                  <div class="" id="collapse">
+                    <div v-for="item2,index in getCategoryChildByParentId(item.id)" :key="index" class="card card-body" >
+                      {{item2.name}}
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>

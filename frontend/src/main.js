@@ -15,6 +15,7 @@ import App from './app.vue'
 import '@components/_globals'
 Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
+axios.defaults.baseURL = 'http://localhost:8888'
 Vue.use(axios)
 Vue.use( CKEditor );
 // Install BootstrapVue
