@@ -53,7 +53,7 @@
 </template>
 
 <script>
-//   import axios from "axios"
+  import axios from "axios"
   export default{
       name:"loginForm",
       data(){
@@ -69,12 +69,12 @@
       },
       methods:{
           login(){
-            //   if(this.validate(this.acc)) throw new Error("ERROR_VALIDATE")
-            //   axios.post("http://localhost:8080/api/login",this.acc)
-            //   .then((res)=>{
-            //   this.$cookie.set("acc",res.data)
-                // this.$router.push("/admin")
-            //   })
+              if(this.validate(this.acc)) throw new Error("ERROR_VALIDATE")
+              axios.post("/api/login",this.acc)
+              .then((res)=>{
+              this.$cookie.set("acc",res.data)
+                this.$router.push("/admin")
+              })
           },
           validate(acc){
               if(!acc.username){
