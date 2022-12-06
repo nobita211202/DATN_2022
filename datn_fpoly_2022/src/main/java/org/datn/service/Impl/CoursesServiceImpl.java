@@ -23,7 +23,7 @@ public class CoursesServiceImpl implements CoursService {
     Bases<Cours> bases;
     @Override
     public List<Cours> findAll() {
-        return cdao.findAll();
+        return cdao.getAllCourses();
     }
 
     @Override
@@ -33,12 +33,13 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public Cours createCours(Cours co) {
+        co.setStatus((short)0);
         return cdao.save(bases.getBase(co,Bases.CREATE));
     }
 
     @Override
     public void deleteCours(Long id) {
-        cdao.deleteById(id);
+        cdao.delete(id);
     }
 
     @Override
