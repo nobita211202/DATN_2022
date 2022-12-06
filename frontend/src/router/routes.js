@@ -1,15 +1,16 @@
 import store from '@state/store'
 
 export default [
+
   {
     path: '/',
-    name: 'home',
-    component: () => lazyLoadView(import('@views/home.vue')),
-  },
-  {
-    path: '/courses',
     name: 'listCourses',
     component: () => lazyLoadView(import('@views/course/list-course.vue')),
+  },
+  {
+    path: '/course/:id',
+    name: 'course',
+    component: () => lazyLoadView(import('@views/course.vue')),
   },
   {
     path: '/login',

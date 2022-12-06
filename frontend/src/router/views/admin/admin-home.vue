@@ -3,6 +3,8 @@ import Layout from '@layouts/main.vue'
 import LeftAdmin from '@layouts/left-admin.vue'
 import AdminRole from '@views/admin/admin-role.vue'
 import AdminCategory from '@views/admin/admin-cateogry.vue'
+import adminUser from '@/src/router/views/admin/admin-user.vue'
+import adminSourse from '@/src/router/views/admin/admin-sourse.vue'
 import { bus } from '@src/main'
 export default {
   page: {
@@ -14,6 +16,8 @@ export default {
     LeftAdmin,
     AdminRole,
     AdminCategory,
+    adminUser,
+    adminSourse
   },
 
   data() {
@@ -93,25 +97,24 @@ body {
               <h3 v-if="activeTab === 'admin-role'" class="card-title"
                 >Quản lý role</h3
               >
-              <h3 v-if="activeTab === 'admin-category'" class="card-title"
+              <h3  v-if="activeTab === 'admin-category'" class="card-title"
                 >Quản lý danh mục</h3
               >
               <h3 v-if="activeTab === 'admin-users'" class="card-title"
                 >Quản lý tài khoản</h3
               >
-              <h3 v-if="activeTab === 'admin-tools'" class="card-title"
-                >Quản lý tool cho thuê</h3
+              <h3 v-if="activeTab === 'admin-course'" class="card-title"
+                >Quản lý Khóa học</h3
               >
-              <h3 v-if="activeTab === 'admin-transaction'" class="card-title"
-                >Quản lý giao dịch</h3
-              >
-              <h3 v-if="activeTab === 'admin-statistic'" class="card-title"
-                >Thống kê</h3
-              >
+
             </div>
             <div class="card-body">
-              <AdminRole v-if="activeTab === 'admin-role'" />
-              <AdminCategory v-if="activeTab === 'admin-category'" />
+             <KeepAlive>
+                <AdminRole v-if="activeTab === 'admin-role'" />
+                <AdminCategory v-if="activeTab === 'admin-category'" />
+                <adminUser v-if="activeTab === 'admin-users'" />
+                <adminSourse v-if="activeTab === 'admin-course'"/>
+             </KeepAlive>
             </div>
           </div>
         </b-col>

@@ -6,7 +6,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="position-relative">
     <div class="page">
       <div class="page-main">
         <Header />
@@ -17,7 +17,8 @@ export default {
             </div>
           </div>
         </div>
-        <div class="footer border-top-0 footer-1" style="background: #fff">
+        <div class="py-5"></div>
+        <div class="footer border-top-0 position-absolute bottom-0 w-100 footer-1" style="background: #fff">
           <div class="container">
             <div class="row align-items-center flex-row-reverse">
               <div

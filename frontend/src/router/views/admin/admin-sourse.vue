@@ -1,0 +1,437 @@
+<script>
+import axios from '@/node_modules/axios'
+const url="http://localhost:8080/api/"
+export default {
+  components:{
+  },
+  created(){
+    this.fileRender = new FileReader()
+    this.fileRender.onload = (Even) => {
+        this.imageSelected = Even.target.result
+    }
+    console.log(this.courses);
+    var getCourse=()=>{
+      axios.get(`${url}course/get`)
+      .then((res)=>{
+        this.courses.data= res.data
+        console.log(res.data);
+      })
+    }
+    // var getCourseAttr=()=>{
+    //   axios.get(`${url}course/get`)
+    //   .then((res)=>{
+    //     this.courses= res.data
+    //   })
+    // }
+    getCourse()
+    console.log(this.course);
+  },
+  data() {
+    return {
+      imageUP:"",
+      editor: "ClassicEditor",
+        editorData: '<p>Content of the editor.</p>',
+        editorConfig: {
+            // The configuration of the editor.
+        },
+      content:"",
+    imageSelected :"",
+    fileRender:{},
+    courseAtt:[],
+    courses: {
+        isBusy: false,
+        data: [
+          {
+            image: 1,
+            name: 'Manager',
+            studyTime: 1,
+            price:423,
+            address:"Hà nội",
+            like:"22",
+            creator: 'admin',
+            created: '1970-01-01',
+            status: 1,
+            describe:"hehe",
+
+          },
+        ],
+        fields: [
+          { key: 'image', label: 'img', sortable: true },
+          { key: 'name', label: 'Tên khóa học' },
+          { key: 'studyTime', label: 'Thời gian học', sortable: true },
+          { key: 'price', label: 'Giá ban', sortable: true },
+          { key: 'like', label: 'Lượt thích', sortable: true },
+          { key: 'created', label: 'Ngày tạo' },
+          { key: 'creator', label: 'Người tạo' },
+          { key: 'action', label: 'Hành động' },
+        ],
+        meta: {
+          pagination: {
+            total: 1,
+            count: 1,
+            per_page: 0,
+          },
+        },
+      },
+      busy: false,
+      formAddCourse: {
+        categoryAttr:{
+          id:1
+        },
+        user:{
+          id:15
+        }
+
+      },
+      courseDelete: {},
+      formEditCourse: {},
+      currentPage: 1,
+      rolesPerPage: 5,
+      currentUser: {
+        id: 1,
+        name: 'admin',
+      },
+      optionsStatus: [
+        { value: 0, text: 'Inactive' },
+        { value: 1, text: 'Active' },
+      ],
+      optionsAdminId: [
+        { value: 1, text: 'Admin' },
+        { value: 2, text: 'Manager' },
+      ],
+      rolesBackup: [],
+      txtSearch: '',
+    }
+  },
+
+  watch: {
+    txtSearch() {
+      if (this.txtSearch !== '' && this.txtSearch !== null) {
+        this.courses.data = this.rolesBackup.filter((e) =>
+          e.role_name.toLowerCase().includes(this.txtSearch.toLowerCase())
+        )
+      } else {
+        this.courses.data = this.rolesBackup
+      }
+    },
+  },
+
+
+  methods: {
+    chooseImg(even) {
+
+      this.imageSelected = even.target.files[0]
+      this.imageUP=this.imageSelected
+      this.fileRender.readAsDataURL(this.imageSelected)
+    },
+    mdEditCourse(item) {
+      this.formEditCourse = Object.assign({}, item)
+      this.$bvModal.show('modal-edit-course')
+    },
+    onAddCourse() {
+      const dataForm= new FormData()
+      dataForm.append("json", JSON.stringify(this.formAddCourse))
+      dataForm.append("file",this.imageUP)
+      axios.post(`${url}course/add`,dataForm,{
+        headers:{
+            'Content-Type':'multipart/form-data',
+            'Accept':'application/json'}
+      }).then((res)=>{
+        this.courses.data.push(res.data)
+      })
+
+      this.rolesBackup = this.courses.data
+      this.$bvModal.hide('modal-add-course')
+    },
+
+    onEditCourse() {
+      for (const obj of this.courses.data) {
+        if (obj.id === this.formEditCourse.id) {
+          obj.name = this.formEditCourse.name
+          obj.status = this.formEditCourse.status
+          obj.admin_id = this.formEditCourse.admin_id
+          break
+        }
+      }
+      const dataForm= new FormData()
+      dataForm.append("json", JSON.stringify(this.formEditCourse))
+      dataForm.append("file",this.imageUP)
+      axios.put(`${url}course/update`,dataForm,{
+        headers:{
+            'Content-Type':'multipart/form-data',
+            'Accept':'application/json'}
+      })
+      this.$bvModal.hide('modal-edit-course')
+    },
+
+    onRemoveCourse(item) {
+
+      this.courseDelete = item
+      this.busy = true
+      // this.courses.data = this.roles.data.filter((e) => e.id !== id)
+    },
+    onCancel() {
+      this.busy = false
+      this.courseDelete = {}
+    },
+
+    tryRemoveCourse() {
+
+      this.courses.data = this.courses.data.filter(
+        (e) => e.id !== this.courseDelete.id
+      )
+      axios.delete(`${url}course/delete/${this.courseDelete.id}`)
+      this.busy = false
+      this.courseDelete = {}
+    },
+    getImg(name){
+      console.log(name);
+      return `${url}img/get/${name}`
+    }
+  },
+}
+</script>
+
+<template>
+  <div>
+    <b-row class="mb-10">
+      <b-col>
+        <b-form-input v-model="txtSearch" placeholder="Tìm kiếm"></b-form-input>
+      </b-col>
+      <b-col>
+        <button
+          class="btn btn-success mb-2 float-right"
+          @click="$bvModal.show('modal-add-course')"
+          ><b-icon icon="patch-plus" aria-hidden="true"></b-icon> Thêm
+          Khóa học</button
+        >
+      </b-col>
+    </b-row>
+    <b-table
+      striped
+      hover
+      responsive
+      :items="courses.data"
+      :fields="courses.fields"
+      :busy="courses.isBusy"
+    >
+      <template v-slot:cell(image)="course">
+        <span >
+          <img :src="getImg(course.item.image)" style="width: 50px;" alt="">
+        </span>
+      </template>
+      <template v-slot:table-busy>
+        <div class="text-center text-secondary my-2">
+          <b-spinner class="align-middle me-2"></b-spinner>
+          <strong>Loading...</strong>
+        </div>
+      </template>
+
+
+      <template v-slot:cell(admin_id)="course">
+        <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
+        <span v-if="course.item.admin_id === 2" class="text-bold"> Manager </span>
+      </template>
+      <template v-slot:cell(action)="course">
+        <b-button
+          class="mr-5"
+          variant="outline-danger"
+          @click="onRemoveCourse(course.item)"
+          ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
+        >
+        <b-button variant="outline-info" @click="mdEditCourse(course.item)"
+          ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
+        >
+      </template>
+    </b-table>
+    <nav
+      id="nav-pag"
+      aria-label="Page navigation"
+      size="sm"
+      class="float-right"
+    >
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="1"
+        :per-page="1"
+        limit="1"
+      >
+      </b-pagination>
+    </nav>
+    <b-modal
+      id="modal-add-course"
+      size="xl"
+      centered
+      scrollable
+      hide-backdrop
+      hide-header-close
+    >
+      <template v-slot:modal-title> Thêm khóa hoc </template>
+      <b-form>
+        <b-row>
+          <b-col sm="9">
+            <b-row>
+              <b-col>
+                <b-form-group label="Tên khóa học" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formAddCourse.name "
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Thời gian học" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formAddCourse.studyTime"
+                    required
+                    type="number"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Giá bán" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formAddCourse.price"
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+
+              </b-col>
+
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Thông tin" label-for="role-name">
+                  <ckeditor v-model="formAddCourse.describe"></ckeditor>
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col class="d-flex flex-column">
+            <b-form-group label="Img" label-for="role-name">
+              <input type="file" @change="chooseImg" class="form-control">
+            </b-form-group>
+            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
+
+          </b-col>
+        </b-row>
+
+      </b-form>
+      <template v-slot:modal-footer>
+        <b-button type="button" variant="success" @click="onAddCourse">
+          Thêm</b-button
+        >
+      </template>
+    </b-modal>
+
+    <b-modal
+      id="modal-edit-course"
+      size="xl"
+      centered
+      scrollable
+      hide-backdrop
+      hide-header-close
+    >
+      <template v-slot:modal-title> Sửa khóa hoc </template>
+      <b-form>
+        <b-row>
+          <b-col sm="9">
+            <b-row>
+              <b-col>
+                <b-form-group label="Tên khóa học" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditCourse.name "
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+              <b-col>
+                <b-form-group label="Thời gian học" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditCourse.studyTime"
+                    required
+                    type="number"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Giá bán" label-for="role-name">
+                  <b-form-input
+                    id="role-name"
+                    v-model="formEditCourse.price"
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+
+              </b-col>
+
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Thông tin" label-for="role-name">
+                  <ckeditor v-model="formEditCourse.describe"></ckeditor>
+
+                </b-form-group>
+              </b-col>
+            </b-row>
+          </b-col>
+          <b-col class="d-flex flex-column">
+            <b-form-group label="Img" label-for="role-name">
+              <input type="file" @change="chooseImg" class="form-control">
+            </b-form-group>
+            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
+
+          </b-col>
+        </b-row>
+
+      </b-form>
+      <template v-slot:modal-footer>
+        <b-button type="button" variant="success" @click="onEditCourse">
+          Sửa</b-button
+        >
+      </template>
+    </b-modal>
+    <b-overlay :show="busy" no-wrap>
+      <template v-slot:overlay>
+        <div
+          ref="dialog"
+          tabindex="-1"
+          role="dialog"
+          aria-modal="false"
+          class="text-center p3"
+        >
+          <p
+            ><strong id="form-confirm-label"
+              >Bạn có chắc muốn <span class="text-danger">xoá</span>
+              <span class="text-bold"> {{ courseDelete.name }}</span></strong
+            ></p
+          >
+          <div style="justify-content: center">
+            <b-button variant="outline-default" class="mr-3" @click="onCancel"
+              >Huỷ</b-button
+            >
+            <b-button
+              variant="outline-danger"
+              class="mr-3"
+              @click="tryRemoveCourse"
+              >Xoá</b-button
+            >
+          </div>
+        </div>
+      </template>
+    </b-overlay>
+  </div>
+</template>

@@ -1,13 +1,22 @@
+
 import router from '@router'
 import store from '@state/store'
 import Vue from 'vue'
+import axios from '@/node_modules/axios/index'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import CKEditor from 'ckeditor4-vue'
+import Cookie from "vue-cookie"
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 import App from './app.vue'
 // eslint-disable-next-line import/no-relative-parent-imports
 
 // Globally register all `_base`-prefixed components
 import '@components/_globals'
-
+Vue.use(Cookie)
+Vue.use(FontAwesomeIcon)
+Vue.use(axios)
+Vue.use( CKEditor );
 // Install BootstrapVue
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
