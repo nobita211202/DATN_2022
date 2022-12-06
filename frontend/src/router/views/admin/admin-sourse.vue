@@ -62,7 +62,6 @@ export default {
           { key: 'price', label: 'Giá ban', sortable: true },
           { key: 'like', label: 'Lượt thích', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
-          { key: 'status', label: 'Trạng thái', sortable: true },
           { key: 'creator', label: 'Người tạo' },
           { key: 'action', label: 'Hành động' },
         ],
@@ -84,7 +83,7 @@ export default {
         }
 
       },
-      sourseDelete: {},
+      courseDelete: {},
       formEditCourse: {},
       currentPage: 1,
       rolesPerPage: 5,
@@ -137,7 +136,10 @@ export default {
         headers:{
             'Content-Type':'multipart/form-data',
             'Accept':'application/json'}
+      }).then((res)=>{
+        this.courses.data.push(res.data)
       })
+
       this.rolesBackup = this.courses.data
       this.$bvModal.hide('modal-add-course')
     },
@@ -162,23 +164,25 @@ export default {
       this.$bvModal.hide('modal-edit-course')
     },
 
-    onRemoveSourse(item) {
-      this.sourseDelete = item
+    onRemoveCourse(item) {
+
+      this.courseDelete = item
       this.busy = true
       // this.courses.data = this.roles.data.filter((e) => e.id !== id)
     },
     onCancel() {
       this.busy = false
-      this.sourseDelete = {}
+      this.courseDelete = {}
     },
 
-    tryRemoveSourse() {
+    tryRemoveCourse() {
+
       this.courses.data = this.courses.data.filter(
-        (e) => e.id !== this.sourseDelete.id
+        (e) => e.id !== this.courseDelete.id
       )
-      axios.delete(`${url}course/delete/${this.userDelete.id}`)
+      axios.delete(`${url}course/delete/${this.courseDelete.id}`)
       this.busy = false
-      this.sourseDelete = {}
+      this.courseDelete = {}
     },
     getImg(name){
       console.log(name);
@@ -222,14 +226,7 @@ export default {
           <strong>Loading...</strong>
         </div>
       </template>
-      <template v-slot:cell(status)="course">
-        <span v-if="course.item.status === 0" class="text-danger text-bold">
-          Inactive
-        </span>
-        <span v-if="course.item.status === 1" class="text-success text-bold">
-          Active
-        </span>
-      </template>
+
 
       <template v-slot:cell(admin_id)="course">
         <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
@@ -419,7 +416,7 @@ export default {
           <p
             ><strong id="form-confirm-label"
               >Bạn có chắc muốn <span class="text-danger">xoá</span>
-              <span class="text-bold"> {{ sourseDelete.name }}</span></strong
+              <span class="text-bold"> {{ courseDelete.name }}</span></strong
             ></p
           >
           <div style="justify-content: center">
@@ -429,7 +426,7 @@ export default {
             <b-button
               variant="outline-danger"
               class="mr-3"
-              @click="tryRemoveSourse"
+              @click="tryRemoveCourse"
               >Xoá</b-button
             >
           </div>
