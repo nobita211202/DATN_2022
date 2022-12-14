@@ -136,6 +136,9 @@ BEGIN
 		FOR ele IN (
 			SELECT * FROM orders WHERE code = order_code_
 		)LOOP
+			IF ele.status = 1 THEN 
+				RAISE EXCEPTION 'Order % has been paid',order_code_;
+			END IF;
 			IF ele.effect_until < CURRENT_TIMESTAMP THEN
 				RAISE EXCEPTION 'order is experied';
 			END IF;
