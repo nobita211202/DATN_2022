@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
             return ResponseEntity.ok(Map.of("message","Payment success","status", HttpStatus.OK.value(),"order_code",code));
         }catch (Exception e){
             log.error("Payment fail");
-            return ResponseEntity.badRequest().body("Payment fail");
+            return ResponseEntity.ok(Map.of("message","Payment fail","status", HttpStatus.BAD_REQUEST.value(),"order_code",code));
         }
     }
 }
