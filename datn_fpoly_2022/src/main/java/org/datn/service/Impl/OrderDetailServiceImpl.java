@@ -5,6 +5,7 @@ import org.datn.dao.OrderDetailDao;
 import org.datn.entity.OrderDetail;
 import org.datn.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
@@ -28,5 +29,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     @Override
     public List<History> findByUserId(Long userId){
         return orderDetailDao.findByUserId(userId);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteOrderDetail(Long id) {
+        try {
+            orderDetailDao.deleteById(id);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

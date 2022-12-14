@@ -13,4 +13,6 @@ public interface OrderDetailDao extends JpaRepository<OrderDetail, Long> {
     void orderByUserIdAndMultiCourse(long userId, Long[] multiCourse);
     @Query(value = " SELECT * FROM view_order_detail_by_userid(?)",nativeQuery = true)
     List<History> findByUserId(Long userId);
+    @Query(value = "CALL delete_orderdetail_from_order(?1)",nativeQuery = true)
+    void deleteById(Long id);
 }
