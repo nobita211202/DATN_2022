@@ -95,3 +95,65 @@ AS $$
 					WHERE o.user_id = user_id_ ;
 				END;
 	$$ LANGUAGE plpgsql;
+
+-------- DELETE ORDER DETAIL
+
+CREATE OR REPLACE PROCEDURE delete_orderDetail_from_order(
+	order_detail_id_ BIGINT
+)LANGUAGE plpgsql
+AS $$
+BEGIN
+	IF order_detail_id_ IS NULL THEN
+		RAISE EXCEPTION 'Order detail id is not null';
+	END IF;
+	DECLARE 
+		is_exist_order_detail_id BIGINT := ( SELECT od_.order_detail_id 
+									 FROM 
+									 orders_detail od_
+									 WHERE od_.order_detail_id =order_detail_id_
+									);
+	BEGIN
+		IF is_exist_order_detail_id IS NULL THEN
+			RAISE EXCEPTION 'Order detail id is not exist';
+		END IF;
+		DELETE FROM orders_detail WHERE order_detail_id = order_detail_id_;
+		COMMIT;
+	END;
+END $$;
+--------Thanh toán
+CREATE OR REPLACE PROCEDURE update_status_pay_success(
+	order_code_ VARCHAR
+)LANGUAGE plpgsql
+AS $$
+BEGIN
+	DECLARE 
+		is_exist_code VARCHAR(100) := (SELECT code FROM orders WHERE code = order_code_);
+		ele record;
+	BEGIN
+		IF is_exist_code IS NULL THEN
+			RAISE EXCEPTION 'Code (%) not found',order_code_;
+		END IF;
+		FOR ele IN (
+			SELECT * FROM orders WHERE code = order_code_
+		)LOOP
+			IF ele.effect_until < CURRENT_TIMESTAMP THEN
+				RAISE EXCEPTION 'order is experied';
+			END IF;
+			IF ele.voucher_id IS NOT NULL THEN
+				UPDATE orders SET price = (
+					SELECT price FROM orders WHERE code = ele.code
+				) - (
+					SELECT discount FROM vouchers WHERE voucher_id = ele.voucher_id
+				) WHERE code = ele.code;
+					IF NOT FOUND THEN
+						ROLLBACK;
+						RAISE EXCEPTION 'Error when update price';
+					ELSE 
+						COMMIT;
+					END IF;
+			END IF;
+			UPDATE orders SET status = 1 WHERE code = ele.code; 
+		END LOOP;
+	END;
+END $$;
+
