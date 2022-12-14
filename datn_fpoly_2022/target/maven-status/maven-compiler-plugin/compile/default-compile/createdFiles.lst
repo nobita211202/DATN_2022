@@ -10,6 +10,7 @@ org\datn\service\ContactSubjectService.class
 org\datn\service\BlockUserService.class
 org\datn\dao\OrderDetailDao.class
 org\datn\service\IpAddressUserService.class
+org\datn\controller\OrderController.class
 org\datn\dao\CommentDao.class
 org\datn\entity\VoucherAttr.class
 org\datn\service\OrderService.class
@@ -56,6 +57,7 @@ org\datn\entity\Voucher.class
 org\datn\service\CommentService.class
 org\datn\controller\CategoryController.class
 org\datn\dao\MailOutQueueDao.class
+org\datn\service\Impl\OrderServiceImpl.class
 org\datn\entity\Admin.class
 org\datn\entity\Comment.class
 org\datn\entity\Video.class
