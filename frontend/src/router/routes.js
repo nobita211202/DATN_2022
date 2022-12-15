@@ -8,6 +8,11 @@ export default [
     component: () => lazyLoadView(import('@views/course/list-course.vue')),
   },
   {
+    path: '/cart',
+    name: 'cart',
+    component: () => lazyLoadView(import('@views/cart.vue')),
+  },
+  {
     path: '/course/:id',
     name: 'course',
     component: () => lazyLoadView(import('@views/course.vue')),
