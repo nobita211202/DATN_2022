@@ -5,35 +5,18 @@
       <b-row class="">
         <b-col sm="8" >
           <div class="py-2 lh-3 py-2">
-            <p class="fs-3 fw-bolder mb-0">Học đệm hát Guitar cùng Haketu</p>
-            <!-- <div class="d-flex ">
-              <b-avatar class="px-1 me-1 fs-5 bg-info"></b-avatar>
-              <span class="my-auto">Nguyễn Hoàng</span>
-              <span class="ms-5 my-auto">
-                <i class="fa fa-star text-warning"></i>
-                <i class="fa fa-star text-warning"></i>
-                <i class="fa fa-star text-warning"></i>
-                <i class="fa fa-star text-warning"></i>
-              </span>
-              <span class="ms-5 my-auto">
-                <i class="fa fa-users"></i>
-                123 Thành viên
-              </span>
-              <span class="ms-auto my-auto me-4">
-                <i class="fa fa-heart"></i>
-              </span>
-            </div> -->
+            <p class="fs-3 fw-bolder mb-0">{{course.name}}</p>
+
           </div>
         </b-col>
         <b-col sm="4" class="">
           <div class="position-absolute w-100 ">
             <div class="p-5 mt-3 bg-white">
               <span class="text-dark">
-                <span class="fs-3 text-dark">199,000</span>
-                <span>đ</span>
+                <span class="fs-3 text-dark">{{course.price | formatNumber}}</span>
               </span>
               <b-button variant="danger" class="my-2 w-100">Đăng kí ngay</b-button>
-              <b-button variant="success" class=" my-2 w-100"  @click.prevent="orderCourse"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
+              <b-button variant="success"  class=" my-2 w-100"  @click.prevent="cartCourse"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
               <span class="">
                 <ul class="pt-5 pb-2  text-dark d-flex flex-column">
                     <span class="my-1"><i class="fa fa-clock-o" ></i> Thời lượng:
@@ -114,7 +97,7 @@
           <div class="my-1 bg-white p-2">
             <strong class="fs-5 fw-bolder">Giới thiệu khóa học</strong>
           </div>
-          <div class="bg-white p-2">
+          <div class="bg-white p-2" v-html="course.describe">
 
           </div>
           <div class="my-1 bg-white p-2">
@@ -281,7 +264,7 @@
             <img  class="wh rounded my-auto" style="width: 50px;height: 50px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS95t740XwECjf9UqEXOR1q3ovhxhqxlmVElw&usqp=CAU" alt="">
             <div class="mx-2 my-auto lh-1">
               <div class="mb-2 fw-bold">Hoàng</div>
-              <div class="">Dạy như db </div>
+              <div class="">... </div>
             </div>
             <div class="ms-auto px-2 my-auto">
                 <i class="fa fa-star text-warning"></i>
@@ -312,16 +295,33 @@ export default {
   components:{
       Layout
   },methods: {
-    orderCourse(){
-      axios.post('/api/order-detail/order/15',[
-        this.$route.params.id
-      ]).then(res =>{
-        this.$toast.center(res.data.message);
-      }).catch(err =>{
-        console.log(err)
-      })
+    cartCourse(){
+      var  lstcourse = JSON.parse(this.$cookie.get("courses"))
+      lstcourse = lstcourse.filter(x => x !== this.course.id)
+      lstcourse.push(this.course.id)
+      this.$cookie.set("courses",JSON.stringify(lstcourse))
+      console.log(this.$cookie.get("courses"));
+
     }
   },
+  data(){
+    return{
+      // lstCourseLQ:[],
+      course:"",
+    }
+  },
+  filters:{
+    formatNumber:function(value){
+      return new Intl.NumberFormat().format(value)+"đ"
+    }
+  },
+  beforeCreate(){
+    axios.get(`/api/course/get/${this.$route.params.id}`)
+    .then((res)=>{
+      this.course=res.data
+    })
+    // axios.get(`/api/course/get/${this.$route.params.id}`)
+  }
 }
 </script>
 
