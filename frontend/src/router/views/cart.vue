@@ -46,8 +46,8 @@
           <div class=" bg-white row px-0">
             <div class="col-lg-7 col-12">
               <div v-for="cs,index in lstCourse" :key="index" class="d-flex py-2 border-bottom">
-                <div class="d-flex">
-                  <img :src="cs.image" class="w-100px my-auto" alt="">
+                <div class="d-flex w-100px">
+                  <img :src="cs.image" class="w-100 my-auto" alt="">
                 </div>
                 <span class="mx-2">
                   <span class="d-flex fw-bold fs-5 ">{{ cs.name }}</span>
@@ -109,7 +109,7 @@
                             <i class="fa fa-star-o co-or text-warning"></i>
                             <i class="fa fa-star-o co-or text-warning"></i>
                           </span>
-                          <span class="text-bold ms-auto">{{9999999 | formatNumber}}</span>
+                          <span class="text-bold ms-auto">{{c.price | formatNumber}}</span>
                         </span>
                       </div>
                   </div>
@@ -180,13 +180,9 @@ export default {
 </script>
 
 <style >
-  .hover-card :hover{
-    position: static !important;
-    width: 300px;
-  }
+
   .w-100px{
-    width: 200px;
-    height: auto;
+    width: 100px;
   }
   .w-card{
     width: 200px;

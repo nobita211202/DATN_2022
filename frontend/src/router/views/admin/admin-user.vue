@@ -177,7 +177,7 @@ export default {
     },
     getImg(name){
       console.log(name);
-      return `${url}img/get/${name}`
+      return `${url}image/get/${name}`
     }
   },
 }

@@ -297,6 +297,7 @@ export default {
   },methods: {
     cartCourse(){
       var  lstcourse = JSON.parse(this.$cookie.get("courses"))
+      if(lstcourse === null) lstcourse=[]
       lstcourse = lstcourse.filter(x => x !== this.course.id)
       lstcourse.push(this.course.id)
       this.$cookie.set("courses",JSON.stringify(lstcourse))
