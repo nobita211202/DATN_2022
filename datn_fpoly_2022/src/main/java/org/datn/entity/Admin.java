@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "admins")
@@ -34,7 +35,7 @@ public class Admin {
     private String name;
 
     @Column(name = "created")
-    private LocalDate created;
+    private Date created;
 
     @Column(name = "status")
     private Short status;
@@ -78,11 +79,11 @@ public class Admin {
         this.name = name;
     }
 
-    public LocalDate getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

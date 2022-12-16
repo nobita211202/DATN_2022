@@ -17,12 +17,12 @@ public class Cours {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( )
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne( )
     @JoinColumn(name = "category_attr_id", nullable = false)
     private CategoriesAttr categoryAttr;
 
