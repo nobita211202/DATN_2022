@@ -23,12 +23,12 @@ import java.util.Optional;
 public class CoursController {
     @Autowired
     CoursService coursService;
+
     @Autowired
     ImageService service;
 
     @GetMapping("/get")
     public ResponseEntity getAll() {                 //Lấy danh sách khóa học
-        List<Cours> s= coursService.findAll();
         return ResponseEntity.ok(coursService.findAll());
     }
     @PostMapping("/add")
@@ -39,6 +39,7 @@ public class CoursController {
         coursService.createCours(cours);
         return ResponseEntity.ok(cours);
     }
+
     @DeleteMapping("/delete/{id}")
     public void deleteCours (@PathVariable("id") Long id){      //Xóa khóa học theo id
         coursService.deleteCours(id);
@@ -58,8 +59,7 @@ public class CoursController {
     public Page<Cours> coursPagination(@PathVariable Optional<Integer> pageNumber,@PathVariable Integer pageSize){
         return coursService.getCoursPaging(pageNumber,pageSize);
     }
-
-    }
+}
 
 
 

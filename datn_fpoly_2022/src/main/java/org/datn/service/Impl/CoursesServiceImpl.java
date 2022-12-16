@@ -31,6 +31,7 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public Cours createCours(Cours co) {
+        co.setStatus((short)0);
         return cdao.save(co);
     }
 
