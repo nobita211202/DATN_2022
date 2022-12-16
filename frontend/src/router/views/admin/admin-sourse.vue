@@ -1,6 +1,6 @@
 <script>
 import axios from '@/node_modules/axios'
-const url="http://localhost:8080/api/"
+const url="/api/"
 export default {
   components:{
   },
@@ -145,14 +145,7 @@ export default {
     },
 
     onEditCourse() {
-      for (const obj of this.courses.data) {
-        if (obj.id === this.formEditCourse.id) {
-          obj.name = this.formEditCourse.name
-          obj.status = this.formEditCourse.status
-          obj.admin_id = this.formEditCourse.admin_id
-          break
-        }
-      }
+
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formEditCourse))
       dataForm.append("file",this.imageUP)
@@ -160,6 +153,17 @@ export default {
         headers:{
             'Content-Type':'multipart/form-data',
             'Accept':'application/json'}
+      }).then((res)=>{
+        this.formEditCourse.image = res.data.image
+        for (const obj of this.courses.data) {
+          if (obj.id === this.formEditCourse.id) {
+            obj.name = this.formEditCourse.name
+            obj.status = this.formEditCourse.status
+            obj.admin_id = this.formEditCourse.admin_id
+            obj.image = res.data.image
+            break
+          }
+        }
       })
       this.$bvModal.hide('modal-edit-course')
     },
@@ -185,8 +189,16 @@ export default {
       this.courseDelete = {}
     },
     getImg(name){
-      console.log(name);
-      return `${url}img/get/${name}`
+      return `${axios.defaults.baseURL}${url}image/get/${name}`
+    }
+  },
+  filters:{
+    formatNumber:function(value){
+      return new Intl.NumberFormat().format(value)+"đ"
+    },
+    formatDate: function(str) {
+      var date = new Date(str)
+      return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
     }
   },
 }
@@ -216,8 +228,8 @@ export default {
       :busy="courses.isBusy"
     >
       <template v-slot:cell(image)="course">
-        <span >
-          <img :src="getImg(course.item.image)" style="width: 50px;" alt="">
+        <span class="">
+          <img :src="getImg(course.item.image)" style="width: 150px;" alt="">
         </span>
       </template>
       <template v-slot:table-busy>
@@ -231,6 +243,12 @@ export default {
       <template v-slot:cell(admin_id)="course">
         <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
         <span v-if="course.item.admin_id === 2" class="text-bold"> Manager </span>
+      </template>
+      <template v-slot:cell(created)="course">
+        <span>{{ course.item.created | formatDate}}</span>
+      </template>
+      <template v-slot:cell(price)="course">
+        <span class="fw-bold">{{course.item.price | formatNumber}}</span>
       </template>
       <template v-slot:cell(action)="course">
         <b-button
