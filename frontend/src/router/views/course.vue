@@ -82,13 +82,14 @@
       <b-row>
         <b-col sm="8">
           <div  class="">
-            <b-embed
+            <!-- <b-embed
               class="h-800px"
               type="iframe"
               aspect="16by9"
               src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
               allowfullscreen
-            ></b-embed>
+            ></b-embed> -->
+            <img :src="getImg(course.image)" class="w-100" alt="">
           </div>
         </b-col>
       </b-row>
@@ -298,11 +299,20 @@ export default {
     cartCourse(){
       var  lstcourse = JSON.parse(this.$cookie.get("courses"))
       if(lstcourse === null) lstcourse=[]
-      lstcourse = lstcourse.filter(x => x !== this.course.id)
+      for(const id of lstcourse){
+        if(id === this.course.id){
+          this.$toast.center('<div class="px-2 py-1"><i class="fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã có khóa học này trong giỏ hàng rồi!Fuck you </p> </div>');
+          return
+        }
+      }
+      console.log(lstcourse);
       lstcourse.push(this.course.id)
       this.$cookie.set("courses",JSON.stringify(lstcourse))
-      console.log(this.$cookie.get("courses"));
-
+      this.$toast.center('<div class="px-2 py-1"><i class="fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Fuck you </p> </div>');
+    },
+    getImg(name){
+      if(name === undefined) return
+      return `${axios.defaults.baseURL}/api/image/get/${name}`
     }
   },
   data(){

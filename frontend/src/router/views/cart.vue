@@ -47,7 +47,7 @@
             <div class="col-lg-7 col-12">
               <div v-for="cs,index in lstCourse" :key="index" class="d-flex py-2 border-bottom">
                 <div class="d-flex w-100px">
-                  <img :src="cs.image" class="w-100 my-auto" alt="">
+                  <img :src="getImg(cs.image)" class="w-100 my-auto" alt="">
                 </div>
                 <span class="mx-2">
                   <span class="d-flex fw-bold fs-5 ">{{ cs.name }}</span>
@@ -97,7 +97,7 @@
                   :href="`/course/${c.id}`"
                 >
                   <div class="border p-0">
-                      <img :src="c.image" class="w-100" alt="">
+                      <img :src="getImg(c.image)" class="w-100" alt="">
                       <div class="mt-2 mx-1 d-flex mb-4 flex-column">
                         <span class="fw-bold">{{c.name}}</span>
                         <span class="text-muted">Giảng viên</span>
@@ -151,7 +151,7 @@ export default {
   created(){
     console.log(this.$cookie.get("courses"));
     this.lstIdCourse = JSON.parse(this.$cookie.get("courses"))
-    if(this.lstCourse === null) this.lstIdCourse=[]
+    if(this.lstIdCourse === null) this.lstIdCourse=[]
     this.lstIdCourse.forEach(
       cs => {axios.get(`/api/course/get/${cs}`).then(res => {this.lstCourse.push(res.data)})}
     )
@@ -169,6 +169,9 @@ export default {
       this.deleteCourse.name = name
       this.deleteCourse.id = id
       this.$bvModal.show("modal-rm-course")
+    },
+    getImg(name){
+      return `${axios.defaults.baseURL}/api/image/get/${name}`
     }
   },
   filters:{

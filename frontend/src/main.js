@@ -13,13 +13,20 @@ import Toast from 'vue2-toast';
 import App from './app.vue'
 // eslint-disable-next-line import/no-relative-parent-imports
 
+
 // Globally register all `_base`-prefixed components
 import '@components/_globals'
 Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
 axios.defaults.baseURL = 'http://localhost:8888'
 Vue.use(axios)
-Vue.use(Toast);
+// Vue.use(Toast);
+Vue.use(Toast, {
+  type: 'center',
+  duration: 3000,
+  wordWrap: true,
+  width: '250px'
+});
 Vue.use( CKEditor );
 // Install BootstrapVue
 Vue.use(BootstrapVue)
