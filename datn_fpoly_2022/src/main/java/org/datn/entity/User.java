@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -17,10 +17,6 @@ public class User {
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @JoinColumn()
-    @OneToMany()
-    List<UsersRole> Roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
@@ -57,14 +53,14 @@ public class User {
     private Float money;
 
     @Column(name = "created")
-    private LocalDate created;
+    private Date created;
 
     @Column(name = "creator")
     @Type(type = "org.hibernate.type.TextType")
     private String creator;
 
     @Column(name = "modified")
-    private LocalDate modified;
+    private Date modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")
@@ -72,14 +68,6 @@ public class User {
 
     @Column(name = "status")
     private Short status;
-
-    public List<UsersRole> getRoles() {
-        return Roles;
-    }
-
-    public void setRoles(List<UsersRole> roles) {
-        Roles = roles;
-    }
 
     public Long getId() {
         return id;
@@ -153,11 +141,11 @@ public class User {
         this.money = money;
     }
 
-    public LocalDate getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -169,11 +157,12 @@ public class User {
         this.creator = creator;
     }
 
-    public LocalDate getModified() {
+
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(LocalDate modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
@@ -201,4 +190,8 @@ public class User {
         this.token = token;
     }
 
+
+
+    public User() {
+    }
 }

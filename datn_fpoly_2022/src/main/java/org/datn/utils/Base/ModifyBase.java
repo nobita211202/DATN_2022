@@ -1,13 +1,14 @@
 package org.datn.utils.Base;
 
 import java.time.Instant;
+import java.util.Date;
 
 public class ModifyBase {
 
     private String modifier;
-    private Instant modified;
+    private Date modified;
     private String creator;
-    private Instant created;
+    private Date created;
 
     public String getModifier() {
         return modifier;
@@ -17,12 +18,20 @@ public class ModifyBase {
         this.modifier = modifier;
     }
 
-    public Instant getModified() {
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(Instant modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public String getCreator() {
@@ -33,11 +42,5 @@ public class ModifyBase {
         this.creator = creator;
     }
 
-    public Instant getCreated() {
-        return created;
-    }
 
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
 }

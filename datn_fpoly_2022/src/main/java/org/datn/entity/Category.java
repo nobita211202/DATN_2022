@@ -2,16 +2,21 @@ package org.datn.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "categories")
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
@@ -24,7 +29,7 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JsonIgnore
     @JoinColumn(name = "admin_id")
     private Admin admin;
@@ -40,7 +45,7 @@ public class Category {
     private Long like;
 
     @Column(name = "created")
-    private Instant created;
+    private Date created;
 
     @Size(max = 255)
     @Column(name = "image")
@@ -51,7 +56,7 @@ public class Category {
     private String creator;
 
     @Column(name = "modified")
-    private Instant modified;
+    private Date modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")
@@ -60,100 +65,5 @@ public class Category {
     @Column(name = "status")
     private Short status;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Category getParent() {
-        return parent;
-    }
-
-    public void setParent(Category parent) {
-        this.parent = parent;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getInterest() {
-        return interest;
-    }
-
-    public void setInterest(Long interest) {
-        this.interest = interest;
-    }
-
-    public Long getLike() {
-        return like;
-    }
-
-    public void setLike(Long like) {
-        this.like = like;
-    }
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Instant getModified() {
-        return modified;
-    }
-
-    public void setModified(Instant modified) {
-        this.modified = modified;
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-    public Short getStatus() {
-        return status;
-    }
-
-    public void setStatus(Short status) {
-        this.status = status;
-    }
 
 }
