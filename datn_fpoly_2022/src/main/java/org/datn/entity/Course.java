@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "courses")
-public class Cours {
+public class Course {
     @Id
     @Column(name = "course_id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)

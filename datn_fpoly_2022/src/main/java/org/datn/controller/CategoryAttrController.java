@@ -1,7 +1,6 @@
 package org.datn.controller;
 
 import org.datn.entity.CategoriesAttr;
-import org.datn.entity.Cours;
 import org.datn.service.CategoryAttrService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

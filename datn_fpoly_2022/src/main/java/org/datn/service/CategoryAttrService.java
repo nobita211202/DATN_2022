@@ -1,7 +1,6 @@
 package org.datn.service;
 
 import org.datn.entity.CategoriesAttr;
-import org.datn.entity.Cours;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
