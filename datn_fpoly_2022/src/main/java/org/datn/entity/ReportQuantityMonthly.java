@@ -24,7 +24,7 @@ public class ReportQuantityMonthly {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
-    private Cours course;
+    private Course course;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -63,11 +63,11 @@ public class ReportQuantityMonthly {
         this.category = category;
     }
 
-    public Cours getCourse() {
+    public Course getCourse() {
         return course;
     }
 
-    public void setCourse(Cours course) {
+    public void setCourse(Course course) {
         this.course = course;
     }
 

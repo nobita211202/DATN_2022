@@ -1,8 +1,7 @@
 package org.datn.service;
 
-import org.datn.entity.Cours;
+import org.datn.entity.Course;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,16 +9,17 @@ import java.util.Optional;
 
 @Service
 public interface CoursService {
-    List<Cours> findAll();
+    List<Course> findAll();
 
-    List<Cours> pagination();
+    List<Course> pagination();
 
-    Cours createCours(Cours co);
+    Course createCours(Course co);
 
     void deleteCours(Long id);
-    Cours updateCours(Cours co);
+    Course updateCours(Course co);
 
-    Cours findByIDCours(Long id);
+    List<Course> getByName(String name);
+    Course findByIDCours(Long id);
 
-    Page<Cours> getCoursPaging(Optional<Integer> pageNumber, Integer pageSize);
+    Page<Course> getCoursPaging(Optional<Integer> pageNumber, Integer pageSize);
 }

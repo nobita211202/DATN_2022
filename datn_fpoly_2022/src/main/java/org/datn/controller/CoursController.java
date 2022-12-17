@@ -2,7 +2,7 @@ package org.datn.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.datn.entity.Cours;
+import org.datn.entity.Course;
 
 import org.datn.service.CoursService;
 import org.datn.service.ImageService;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -32,12 +31,12 @@ public class CoursController {
         return ResponseEntity.ok(coursService.findAll());
     }
     @PostMapping("/add")
-    public ResponseEntity<Cours> addCours(@ModelAttribute EntityAndImage data) throws JsonProcessingException {    //Thêm khóa học
+    public ResponseEntity<Course> addCours(@ModelAttribute EntityAndImage data) throws JsonProcessingException {    //Thêm khóa học
         System.out.println(data.getJson());
-        Cours cours = (Cours) new ObjectMapper().readValue(data.getJson(),Cours.class);
-        cours.setImage(service.saveImage(data.getFile()));
-        coursService.createCours(cours);
-        return ResponseEntity.ok(cours);
+        Course course = (Course) new ObjectMapper().readValue(data.getJson(), Course.class);
+        course.setImage(service.saveImage(data.getFile()));
+        coursService.createCours(course);
+        return ResponseEntity.ok(course);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -45,19 +44,27 @@ public class CoursController {
         coursService.deleteCours(id);
     }
     @PutMapping("/update")
-    public Cours updateCours (@ModelAttribute EntityAndImage data) throws JsonProcessingException {   //Update khóa học
-        Cours cours = (Cours) new ObjectMapper().readValue(data.getJson(),Cours.class);
-        cours.setImage(service.saveImage(data.getFile()));
-        coursService.createCours(cours);
-        return coursService.updateCours(cours);
+    public Course updateCours (@ModelAttribute EntityAndImage data) throws JsonProcessingException {   //Update khóa học
+        Course course = (Course) new ObjectMapper().readValue(data.getJson(), Course.class);
+        course.setImage(service.saveImage(data.getFile()));
+        coursService.createCours(course);
+        return coursService.updateCours(course);
     }
     @GetMapping("/get/{id}")
-    public Cours getOne (@PathVariable("id") Long id){              //tìm kiếm
+    public Course getOne (@PathVariable("id") Long id){              //tìm kiếm
         return coursService.findByIDCours(id);
     }
     @GetMapping("/paging/{pageNumber}/{pageSize}")
-    public Page<Cours> coursPagination(@PathVariable Optional<Integer> pageNumber,@PathVariable Integer pageSize){
+    public Page<Course> coursPagination(@PathVariable Optional<Integer> pageNumber, @PathVariable Integer pageSize){
         return coursService.getCoursPaging(pageNumber,pageSize);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity search(
+            @RequestBody ()String name
+    ){
+        System.out.println(name);
+        return ResponseEntity.ok(coursService.getByName(name));
     }
 }
 

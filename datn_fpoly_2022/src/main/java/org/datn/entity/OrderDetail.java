@@ -17,7 +17,7 @@ public class OrderDetail {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
-    private Cours course;
+    private Course course;
     @Column(name = "price")
     private Float price;
     @Column(name = "created")
