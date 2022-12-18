@@ -195,11 +195,7 @@ export default {
       this.debounceSearch = setTimeout(
         ()=>{
           this.lstCourseGY = []
-          axios.post(`/api/course/search`,this.txtSearch,{
-            headers:{
-              "Content-Type":"application/json"
-            }
-          })
+          axios.get(`/api/course/search/${this.txtSearch}`)
           .then((res)=>{
             this.lstCourseGY = res.data
             console.log(this.lstCourseGY);
