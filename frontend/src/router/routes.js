@@ -8,6 +8,11 @@ export default [
     component: () => lazyLoadView(import('@views/course/list-course.vue')),
   },
   {
+    path: '/forgetpassword',
+    name: 'forgetpassword',
+    component: () => lazyLoadView(import('@views/forgetPassword.vue')),
+  },
+  {
     path: '/cart',
     name: 'cart',
     component: () => lazyLoadView(import('@views/cart.vue')),
