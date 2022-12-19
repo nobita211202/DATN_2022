@@ -46,7 +46,10 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public List<Course> getByName(String name) {
-        return cdao.findAllByNamel("%"+name+"%");
+        String search= "%"+name+"%";
+        System.out.println(search);
+
+        return cdao.findAllByNamel(search);
     }
 
     @Override

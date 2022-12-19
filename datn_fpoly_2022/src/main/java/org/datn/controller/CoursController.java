@@ -20,6 +20,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/course")
 public class CoursController {
+
     @Autowired
     CoursService coursService;
 
@@ -59,11 +60,10 @@ public class CoursController {
         return coursService.getCoursPaging(pageNumber,pageSize);
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search/{search}")
     public ResponseEntity search(
-            @RequestBody ()String name
+            @PathVariable("search")String name
     ){
-        System.out.println(name);
         return ResponseEntity.ok(coursService.getByName(name));
     }
 }

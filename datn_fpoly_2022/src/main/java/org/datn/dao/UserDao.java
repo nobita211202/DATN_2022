@@ -27,4 +27,7 @@ public interface UserDao extends JpaRepository<User, Long> {
 
     @Query("SELECT e FROM User e WHERE e.email LIKE :email AND e.password LIKE :password")
     User findOneByEmailIgnoreCaseAndPassword(String email, String password);
+
+
+    User findByUsernameOrEmail(String username,String email);
 }
