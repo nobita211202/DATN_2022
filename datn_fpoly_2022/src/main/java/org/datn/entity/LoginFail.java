@@ -1,5 +1,8 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -8,6 +11,9 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "login_fails")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginFail {
     @Id
     @Column(name = "login_fails_id", nullable = false)
@@ -34,61 +40,5 @@ public class LoginFail {
     @Column(name = "location_")
     @Type(type = "org.hibernate.type.TextType")
     private String location;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
-    public Integer getFailCount() {
-        return failCount;
-    }
-
-    public void setFailCount(Integer failCount) {
-        this.failCount = failCount;
-    }
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public String getOsName() {
-        return osName;
-    }
-
-    public void setOsName(String osName) {
-        this.osName = osName;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
 }

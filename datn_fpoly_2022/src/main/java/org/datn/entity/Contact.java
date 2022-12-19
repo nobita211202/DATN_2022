@@ -1,7 +1,9 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,6 +11,8 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "contacts")
+@Data
+@NoArgsConstructor@AllArgsConstructor
 public class Contact {
     @Id
     @Column(name = "contact_id", nullable = false)
@@ -37,61 +41,5 @@ public class Contact {
 
     @Column(name = "created")
     private Instant created;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ContactSubject getContactSubject() {
-        return contactSubject;
-    }
-
-    public void setContactSubject(ContactSubject contactSubject) {
-        this.contactSubject = contactSubject;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getDescribe() {
-        return describe;
-    }
-
-    public void setDescribe(String describe) {
-        this.describe = describe;
-    }
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
 
 }

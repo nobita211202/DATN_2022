@@ -1,7 +1,6 @@
 package org.datn.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -11,8 +10,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Entity
-@Getter
-@Setter
+@Data@NoArgsConstructor@AllArgsConstructor
 @Table(name = "categories_attr")
 public class CategoriesAttr {
     @Id
@@ -65,6 +63,4 @@ public class CategoriesAttr {
 
     @Column(name = "status")
     private Short status;
-
-
 }
