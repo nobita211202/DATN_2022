@@ -10,10 +10,13 @@ import org.datn.entity.Admin;
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
 import org.datn.service.UserAccountService;
+import org.datn.utils.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
@@ -28,6 +31,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     AdminDao adao;
     @Autowired
     BlockUserDao bldao;
+
     int x = 0;
     @Override
     public User findById(String email) {
@@ -120,7 +124,23 @@ public class UserAccountServiceImpl implements UserAccountService {
     public User findOneByEmailIgnoreCaseAndPassword(String email, String password) {
         return udao.findOneByEmailIgnoreCaseAndPassword(email, password);
     }
-
+    public String existsByUsernameOrPassword(String usernameAndEmail){
+        User user= udao.findByUsernameOrEmail(usernameAndEmail,usernameAndEmail);
+        if (user == null) return null;
+        return user.getEmail();
+    }
+    public boolean sendEmail(String email)  {
+        try {
+            String pass=""+ Math.round(Math.random()*1236271);
+            String title="Đổi mật khẩu";
+            String content="Mật khẩu mới của bạn là: "+pass;
+            System.out.println(content);
+            MailSender.sendCode("hoangndph13827@fpt.edu.vn",content,title);
+        }catch (Exception m){
+            m.printStackTrace();
+        }
+        return true;
+    }
 }
 //if (user2 == null){
 //                responseData.setStatus(404);

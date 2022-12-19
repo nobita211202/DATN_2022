@@ -33,6 +33,8 @@ public interface UserAccountService  {
     List<Admin> findAllAdmin();
     List<User> getAdministrators();
 
+    String existsByUsernameOrPassword(String usernameOrPassword);
+    boolean sendEmail(String email);
 
     ResponseData login(User user) throws UnknownHostException;
     User findOneByEmailIgnoreCaseAndPassword(String email, String password);
