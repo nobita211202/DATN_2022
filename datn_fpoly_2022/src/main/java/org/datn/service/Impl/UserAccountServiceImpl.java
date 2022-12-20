@@ -79,6 +79,13 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    public String existsByUsernameOrEmail(String usernameOrEmail) {
+        User user= udao.findByUsernameOrEmail(usernameOrEmail,usernameOrEmail);
+        if (user == null) return null;
+        return user.getEmail();
+    }
+
+    @Override
     public ResponseData login(User user) throws UnknownHostException {
 
         ResponseData responseData=new ResponseData();
@@ -136,6 +143,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             String content="Mật khẩu mới của bạn là: "+pass;
             System.out.println(content);
             MailSender.sendCode("hoangndph13827@fpt.edu.vn",content,title);
+            udao.repass(email,pass);
         }catch (Exception m){
             m.printStackTrace();
         }
