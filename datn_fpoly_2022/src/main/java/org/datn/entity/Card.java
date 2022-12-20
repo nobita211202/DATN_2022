@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 @Entity
 @Table(name = "card",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"seri", "code"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"seri", "code","trans_code"})
 )
 @Data
 @NoArgsConstructor@AllArgsConstructor
@@ -28,5 +28,9 @@ public class Card implements Serializable {
     private CardPrice cardPrice;
     private String seri;
     private String code;
-    private Integer status;
+    @Column(name = "trans_code")
+    private String transCode;
+    private Integer status = 1;
+    // status_1: chưa duyệt
+    // status_2: đã duyệt
 }
