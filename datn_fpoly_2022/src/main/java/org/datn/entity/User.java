@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -73,5 +74,6 @@ public class User {
     private Short status;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,targetEntity = Card.class)
     @JsonIgnore
+    @ToString.Exclude
     private List<User> users;
 }

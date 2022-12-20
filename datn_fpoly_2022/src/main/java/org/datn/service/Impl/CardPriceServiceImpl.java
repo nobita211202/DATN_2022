@@ -49,9 +49,9 @@ public class CardPriceServiceImpl implements Services<CardPrice> {
     }
 
     @Override
-    public ResponseEntity<?> findById(Long id) {
+    public CardPrice findById(Long id) {
         log.info("Find card price by id: {}", id);
-        return ResponseEntity.ok(cardPriceDao.findById(id).orElseThrow(() -> new RuntimeException("Card price not found")));
+        return cardPriceDao.findById(id).orElseThrow(() -> new RuntimeException("Card price not found"));
     }
 
     @Override

@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 @Table(name = "card",
     uniqueConstraints = @UniqueConstraint(columnNames = {"seri", "code","trans_code"})
@@ -30,6 +32,8 @@ public class Card implements Serializable {
     private String code;
     @Column(name = "trans_code")
     private String transCode;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
     private Integer status = 1;
     // status_1: chưa duyệt
     // status_2: đã duyệt

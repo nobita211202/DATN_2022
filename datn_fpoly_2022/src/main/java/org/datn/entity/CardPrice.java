@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,5 +25,6 @@ public class CardPrice implements Serializable {
     private Double price;
     @OneToMany(mappedBy = "cardPrice", fetch = FetchType.LAZY,targetEntity = Card.class)
     @JsonIgnore
+    @ToString.Exclude
     private List<CardPrice> cardPrices;
 }

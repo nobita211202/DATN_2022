@@ -1,12 +1,17 @@
 package org.datn.service.Impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okhttp3.RequestBody;
+import org.datn.bean.CardRequest;
 import org.datn.entity.Card;
+import org.datn.entity.CardPrice;
+import org.datn.service.Services;
+import org.datn.service.UserService;
 import org.datn.utils.HashAlgorithm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,21 +23,26 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+class RequestData{
+    private Integer tran_id,request_id,status;
+    private String callback_sign,telco,code,serial;
+    private Float declared_value,amount,value;
+    private String message;
+}
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(rollbackOn = RuntimeException.class)
+
 public class CardPushDataService{
     private final CardServiceImpl cardService;
+    private final Services<CardPrice> cardPriceService;
+    private final UserService userService;
     public ResponseEntity<?> callback(HttpServletRequest request) throws IOException {
-        @Data
-        class RequestData{
-            private Integer tran_id;
-            private String sign,type,code,serial;
-            private Float declare,amount,money,balance;
-            private String message;
-        }
+        log.info("callback had called");
         Scanner sc = new Scanner(request.getInputStream());
         StringBuilder sb = new StringBuilder();
         while (sc.hasNext())
@@ -41,13 +51,14 @@ public class CardPushDataService{
         ObjectMapper objectMapper = new ObjectMapper();
         RequestData dataRequest = objectMapper.readValue(sb.toString(), RequestData.class);
         Card card = cardService.findByTransactionIdAndStatus(String.valueOf(dataRequest.getTran_id()), 1);
+        log.info("Card: {}", card.toString());
         if (card == null) {
             log.error("Card not found");
             return ResponseEntity.ok("Card not found");
         }
-        Float money = dataRequest.getMoney();
+        Float money = dataRequest.getValue();
 
-        if(money!= null && dataRequest.getMoney() > 0){
+        if(money!= null && dataRequest.getValue() > 0){
            card.getUser().setMoney(card.getUser().getMoney() + money);
            log.info("Money: {}", money);
            log.info("charge money success with username: {}", card.getUser().getUsername());
@@ -57,41 +68,53 @@ public class CardPushDataService{
         assert money != null;
         return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(), "message", "Successfully", "money", money));
     }
-    public ResponseEntity<?> pushCard(Card card) throws IOException {
-        String url = "https://napthe247.vn/api/charging/send_card.html" ;
-        String partnerId = "850810EB-83F2-4BDA-B4FB-2EE46FB0AF65" ;
-        String type = card.getCardPrice().getTelecom().getCode();
+    public ResponseEntity<?> pushCard(CardRequest card) throws IOException {
+        String url = "https://gachthe1s.com/chargingws/v2" ;
+        CardPrice cardPrice = cardPriceService.findById(card.getCardPriceId());
+        String partnerId = "48176749913" ;
+        String type = cardPrice.getTelecom().getCode();
         String code = card.getCode();
         String serial = card.getSeri();
-        String amount = card.getCardPrice().getPrice().toString();
-        String partnerKey = "937799416055" ;
+        String amount = cardPrice.getPrice()+"";
+        String partnerKey = "dd0ab6df5ccc272f30f4ff94a79290d5" ;
         String transId = String.valueOf(new Random().nextInt(100000000));
-        String signature = HashAlgorithm.MD5(partnerKey + transId);
+        String requestId = String.valueOf(new Random().nextInt(100000000)+new Random().nextInt(1000000));
+        String signature = HashAlgorithm.MD5(partnerKey + code + serial);
         log.info("signature {} encoded md5  : " + signature);
-        String callbackUrl="http://fpolycourse.xyz:8888/api/auto-card/callback";
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("type",type)
+                .addFormDataPart("telco",type)
                 .addFormDataPart("code",code)
                 .addFormDataPart("serial",serial)
                 .addFormDataPart("amount",amount)
-                .addFormDataPart("tran_id",transId)
+                .addFormDataPart("request_id",requestId)
                 .addFormDataPart("partner_id",partnerId)
                 .addFormDataPart("sign",signature == null ? "" : signature)
-                .addFormDataPart("callback",callbackUrl)
+                //.addFormDataPart("callback",callbackUrl)
+                .addFormDataPart("command","charging")
                 .build();
         Request request = new Request.Builder().
                 url(url).
                 method("POST", body).
-                addHeader("Content-Type", MediaType.ALL_VALUE).
+                addHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE).
                 build();
-     try (Response response = client.newCall(request).execute()) {
-         assert response.body() != null;
-         card.setTransCode(transId);
-         cardService.save(card);
+     try {
+         Response response = client.newCall(request).execute();
+         Card card1 = new Card();
+         card1.setCardPrice(cardPrice);
+         card1.setSeri(serial);
+         card1.setCode(code);
+         card1.setTransCode(transId);
+         card1.setUser(userService.findById(card.getUserId()).orElseThrow(()-> new RuntimeException("User not found")));
+         card1.setStatus(1);
+         cardService.save(card1);
          log.info("Save card serial : {} success", card.getSeri());
          return ResponseEntity.ok(response.body().string());
-        }
+     }catch (Exception e){
+         log.error("Error: {}", e.getMessage());
+         e.printStackTrace();
+         return ResponseEntity.ok(e.getMessage());
+     }
     }
 }

@@ -18,8 +18,15 @@ public class CardServiceImpl implements Services<Card> {
     private final CardDao cardDao;
     @Override
     public ResponseEntity<?> save(Card entity) {
-        log.info("Save card: {}", entity);
-        return ResponseEntity.ok(cardDao.save(entity));
+       try {
+           log.info("Save card: {}", entity);
+           return ResponseEntity.ok(cardDao.save(entity));
+       } catch (Exception e) {
+           log.error("Save card error: {}", e.getMessage());
+           e.printStackTrace();
+           return ResponseEntity.badRequest().body("Save card error");
+
+       }
     }
 
     @Override
@@ -52,8 +59,8 @@ public class CardServiceImpl implements Services<Card> {
     }
 
     @Override
-    public ResponseEntity<?> findById(Long id) {
-        return ResponseEntity.ok(cardDao.findById(id).orElseThrow(() -> new RuntimeException("Card not found")));
+    public Card findById(Long id) {
+        return cardDao.findById(id).orElseThrow(() -> new RuntimeException("Card not found"));
     }
 
     @Override

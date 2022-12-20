@@ -54,8 +54,8 @@ public class TelecomServiceImpl implements Services<Telecom> {
     }
 
     @Override
-    public ResponseEntity<?> findById(Long id) {
-        return ResponseEntity.ok(telecomDao.findById(id).orElseThrow(() -> new RuntimeException("Telecom not found")));
+    public Telecom findById(Long id) {
+        return telecomDao.findById(id).orElseThrow(() -> new RuntimeException("Telecom not found"));
     }
 
     @Override

@@ -10,6 +10,6 @@ public interface Services<T extends Serializable> {
     ResponseEntity<?> update(T entity);
     ResponseEntity<?> delete(T entity);
     ResponseEntity<?> deleteById(Long id);
-    ResponseEntity<?> findById(Long id);
+    T findById(Long id);
     ResponseEntity<Collection<?>> findAll();
 }
