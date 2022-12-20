@@ -20,4 +20,11 @@ public class SignInController {
         userService.save(user);
         return ResponseEntity.ok("");
     }
+
+    @PostMapping("/changePassword")
+    public void changePassword(
+            @RequestBody User user
+    ){
+        userService.put(user);
+    }
 }
