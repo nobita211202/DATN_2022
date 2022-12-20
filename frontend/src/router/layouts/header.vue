@@ -1,13 +1,44 @@
 <script>
+import axios from '@/node_modules/axios'
+
 export default {
   data() {
     return {
       currentUser: {
         name: 'admin',
         is_admin: true,
+
       },
+      oldPassword:"",
+      newPassword:"",
+      confirmPassword:"",
+      errMsg:"",
     }
   },
+  methods:{
+    changePassword(){
+      if(this.newPassword === this.confirmPassword){
+        var user= JSON.parse(localStorage.getItem("user"))
+        console.log(user );
+        if(user.password !== this.oldPassword){
+          this.errMsg = "Mật khẩu cũ không đúng"
+          return
+        }
+        this.errMsg = ""
+        user.password=this.newPassword
+        axios.post("/api/changePassword",user)
+        .then(()=>{
+          this.errMsg=""
+          localStorage.setItem("user",JSON.stringify(user))
+          this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đổi thành công</p> </div>')
+          this.$bvModal.hide("modal-dmk")
+        })
+      }
+      else{
+        this.errMsg = "Mật khẩu xác nhận chưa khớp"
+      }
+    },
+  }
 }
 </script>
 
@@ -55,7 +86,7 @@ export default {
                     class="nav-link leading-none d-flex icon"
                     title="Trang chủ"
                   >
-                    <i class="fe fe-home"></i>
+                    <i class="text-dark fe fe-home"></i>
                   </a>
                 </div>
 
@@ -65,7 +96,7 @@ export default {
                     data-bs-toggle="dropdown"
                     class="nav-link leading-none d-flex icon"
                   >
-                    <i class="fe fe-user"></i>
+                    <i class="text-dark fe fe-user"></i>
                   </a>
                   <div
                     class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"
@@ -96,13 +127,54 @@ export default {
                     <a href="/my-profile" class="dropdown-item">
                       <i class="dropdown-icon fe fe-user"></i> Quản lý tài khoản
                     </a>
-                    <a class="dropdown-item" href="/logout-all">
-                      <i class="dropdown-icon fe fe-x"></i> Xoá toàn bộ session
+                    <a class="dropdown-item btn " @click="$bvModal.show('modal-dmk')">
+                      <i class="dropdown-icon fe fe-x"></i> Đổi mật khẩu
                     </a>
                     <a class="dropdown-item" href="/logout">
                       <i class="dropdown-icon fe fe-log-out"></i> Đăng xuất
                     </a>
                   </div>
+                  <b-modal
+                    id="modal-dmk"
+                    size="lg"
+                    centered
+                    scrollable
+                    hide-backdrop
+                    hide-header-close
+                  >
+                    <template v-slot:modal-title> Đổi mật khẩu </template>
+                    <b-form >
+                        <b-form-group label="Mật khẩu cũ" label-for="newPass">
+                          <b-form-input
+                            id="newPass"
+                            v-model="oldPassword"
+                            type="password"
+                          ></b-form-input>
+                        </b-form-group>
+                        <b-form-group label="Mật khẩu mới" label-for="pass">
+                          <b-form-input
+                            id="pass"
+                            v-model="newPassword"
+                            type="password"
+                          ></b-form-input>
+                        </b-form-group>
+                        <b-form-group label="Xác nhận mật khẩu mới" label-for="cpass">
+                          <b-form-input
+                            id="cpass"
+                            type="password"
+                            v-model="confirmPassword"
+                          ></b-form-input>
+                        </b-form-group>
+                        <b-row>
+                          <p class="text-danger">{{ errMsg }}</p>
+                        </b-row>
+                    </b-form>
+                    <template v-slot:modal-footer>
+                      <b-button type="button" @click="changePassword" variant="primary" >
+                        Xác nhận</b-button
+                      >
+                    </template>
+                  </b-modal>
                 </div>
                 <div v-else class="dropdown d-flex profile-1">
                   <a
