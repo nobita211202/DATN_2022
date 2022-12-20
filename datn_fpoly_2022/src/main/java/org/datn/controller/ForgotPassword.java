@@ -3,6 +3,7 @@ package org.datn.controller;
 import org.datn.entity.User;
 import org.datn.service.Impl.UserAccountServiceImpl;
 import org.datn.service.UserAccountService;
+import org.datn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ForgotPassword {
     public ResponseEntity getExistsUsernameOrEmail(
             @PathVariable("usernameOrEmail") String usernameOrEmail
     ){
-        String email = userAccountService.existsByUsernameOrPassword(usernameOrEmail);
+        String email = userAccountService.existsByUsernameOrEmail(usernameOrEmail);
         if(email==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(email);
     }

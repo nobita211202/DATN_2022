@@ -3,6 +3,7 @@ package org.datn.service.Impl;
 import org.datn.dao.UserDao;
 import org.datn.entity.User;
 import org.datn.service.UserService;
+import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
-
+    @Autowired
+    Bases<User> bases;
     @Override
     public List<User> getAll() {
         return userDao.findAll();
@@ -25,7 +27,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return userDao.save(user);
+        user.setImage("default-user.jpg");
+        return userDao.save(bases.getBase(user,Bases.CREATE));
     }
 
     @Override
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User put(User user) {
-        return userDao.save(user);
+        return userDao.save(bases.getBase(user,Bases.UPDATE));
     }
 
     @Override

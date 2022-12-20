@@ -3,13 +3,19 @@ package org.datn.dao;
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.time.Instant;
 import java.util.List;
 
+@Repository
+@Transactional
 public interface UserDao extends JpaRepository<User, Long> {
 
     @Query("SELECT e FROM User e WHERE e.email LIKE :email")
@@ -18,7 +24,9 @@ public interface UserDao extends JpaRepository<User, Long> {
     BlockUser findByEmailInBlockUser(User u);
     @Query("SELECT DISTINCT ar.user FROM UsersRole ar WHERE ar.role.name IN ('DIRE','STAF')")
     List<User> getAdministrators();
-
+    @Modifying
+    @Query(value = "update User c set c.password =:pass where c.email =:email")
+    void repass(@Param("email") String email, @Param("pass") String pass);
     @Query("SELECT i FROM BlockUser i WHERE i.ipAddress LIKE :i AND i.effectUntil = :d")
     BlockUser findByIPInBlockUser(String i,Instant d);
 
