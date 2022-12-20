@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        user.setImage("default-user.jpg");
         return userDao.save(user);
     }
 
