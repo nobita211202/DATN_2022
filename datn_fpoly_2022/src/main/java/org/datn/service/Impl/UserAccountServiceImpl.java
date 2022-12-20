@@ -79,11 +79,6 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
-    public String existsByUsernameOrEmail(String usernameOrPassword) {
-        return null;
-    }
-
-    @Override
     public ResponseData login(User user) throws UnknownHostException {
 
         ResponseData responseData=new ResponseData();
@@ -103,24 +98,24 @@ public class UserAccountServiceImpl implements UserAccountService {
                 responseData.setMessage("Bị khóa trong 15'");
             }
         }else{
-            if (user2 == null){
-                responseData.setStatus(HttpStatus.NOT_FOUND.value());
-                responseData.setMessage("Email không tồn tại");
-            } else if (user1 == null) {
-                responseData.setStatus(HttpStatus.NO_CONTENT.value());
-                responseData.setMessage("Email hoặc mật khẩu sai");
-            }else {
-                BlockUser user3 =udao.findByEmailInBlockUser(user2);
-                if (user3==null){
-                    responseData.setStatus(HttpStatus.OK.value());
-                    responseData.setMessage("Đăng nhập thành công");
+                if (user2 == null){
+                    responseData.setStatus(HttpStatus.NOT_FOUND.value());
+                    responseData.setMessage("Email không tồn tại");
+                } else if (user1 == null) {
+                    responseData.setStatus(HttpStatus.NO_CONTENT.value());
+                    responseData.setMessage("Email hoặc mật khẩu sai");
                 }else {
-                    System.out.println(user3.getUser().getEmail());
-                    responseData.setStatus(HttpStatus.FORBIDDEN.value());
-                    responseData.setMessage("Tài khoản đã bị khóa");
+                    BlockUser user3 =udao.findByEmailInBlockUser(user2);
+                    if (user3==null){
+                        responseData.setStatus(HttpStatus.OK.value());
+                        responseData.setMessage("Đăng nhập thành công");
+                    }else {
+                        System.out.println(user3.getUser().getEmail());
+                        responseData.setStatus(HttpStatus.FORBIDDEN.value());
+                        responseData.setMessage("Tài khoản đã bị khóa");
+                    }
                 }
             }
-        }
 
 
         responseData.setError(responseData.getMessage());
