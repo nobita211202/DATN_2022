@@ -74,10 +74,13 @@
       methods:{
           login(){
               if(this.validate(this.acc)) throw new Error("ERROR_VALIDATE")
+              this.acc.email= this.acc.username
               axios.post("/api/login",this.acc)
               .then((res)=>{
-                console.log(res.data);
-                this.$cookie.set("acc",res.data)
+                console.log(res.data.value);
+                // this.$cookie.set("acc",res.data)
+                this.loginFalseMsg=false
+                localStorage.setItem("user",JSON.stringify(res.data.value))
                 this.$router.push("/admin")
               }).catch(()=>{
                 this.loginFalseMsg=true
