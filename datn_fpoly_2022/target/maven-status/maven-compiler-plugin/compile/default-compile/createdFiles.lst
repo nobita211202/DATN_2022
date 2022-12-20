@@ -7,6 +7,7 @@ org\datn\dao\PaymentMethodDao.class
 org\datn\controller\RoleController.class
 org\datn\ConfigurationSpringSecurity.class
 org\datn\utils\MailSender.class
+org\datn\service\Impl\CardPushDataService.class
 org\datn\service\ContactSubjectService.class
 org\datn\service\BlockUserService.class
 org\datn\service\Impl\CartServiceImpl.class
@@ -93,6 +94,7 @@ org\datn\controller\CoursController.class
 org\datn\dao\PaymentDao.class
 org\datn\utils\Base\Bases.class
 org\datn\entity\CourseAttr.class
+org\datn\controller\ForgotPassword.class
 org\datn\entity\IpAddressUser.class
 org\datn\utils\DoubleUtils$2.class
 org\datn\dao\RoleDao.class
