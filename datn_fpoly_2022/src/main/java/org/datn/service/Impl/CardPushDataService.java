@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -89,7 +88,6 @@ public class CardPushDataService{
                 build();
      try (Response response = client.newCall(request).execute()) {
          assert response.body() != null;
-         log.info("Response: {}", response.body().string() == null ? "null" : response.body().string());
          card.setTransCode(transId);
          cardService.save(card);
          log.info("Save card serial : {} success", card.getSeri());
