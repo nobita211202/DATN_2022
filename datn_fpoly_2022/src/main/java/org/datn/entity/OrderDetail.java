@@ -1,11 +1,18 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 @Table(name = "orders_detail")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderDetail {
     @Id
     @Column(name = "order_detail_id", nullable = false)

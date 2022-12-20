@@ -16,7 +16,7 @@
                 <span class="fs-3 text-dark">{{course.price | formatNumber}}</span>
               </span>
               <b-button variant="danger" class="my-2 w-100">Đăng kí ngay</b-button>
-              <b-button variant="success"  class=" my-2 w-100"  @click.prevent="cartCourse"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
+              <b-button variant="success"  class=" my-2 w-100"  @click.prevent="timer(cartCourse)"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
               <span class="">
                 <ul class="pt-5 pb-2  text-dark d-flex flex-column">
                     <span class="my-1"><i class="fa fa-clock-o" ></i> Thời lượng:
@@ -82,13 +82,14 @@
       <b-row>
         <b-col sm="8">
           <div  class="">
-            <b-embed
+            <!-- <b-embed
               class="h-800px"
               type="iframe"
               aspect="16by9"
               src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
               allowfullscreen
-            ></b-embed>
+            ></b-embed> -->
+            <img :src="getImg(course.image)" class="w-100" alt="">
           </div>
         </b-col>
       </b-row>
@@ -286,28 +287,37 @@
 import Layout from '@layouts/main.vue'
 import axios from '@/node_modules/axios'
 export default {
-  prop:{
-    idCourse:{
-      type:Number,
-      default:0
-    }
-  },
+
   components:{
       Layout
   },methods: {
+    timer(callback){
+      if(this.debounceAddCart !== null)
+      clearTimeout(this.debounceAddCart)
+      this.debounceAddCart= setTimeout(callback,900)
+    },
     cartCourse(){
-      var  lstcourse = JSON.parse(this.$cookie.get("courses"))
-      lstcourse = lstcourse.filter(x => x !== this.course.id)
-      lstcourse.push(this.course.id)
-      this.$cookie.set("courses",JSON.stringify(lstcourse))
-      console.log(this.$cookie.get("courses"));
-
+      var cart = {
+        "user":{id:"15"},
+        "course":this.course
+      }
+      axios.post("/api/cart/add",cart)
+      .then( _ =>
+      this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã thêm</p> </div>')
+      ).catch(_ =>
+        this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã có khóa học này trong giỏ hàng rồi. </p> </div>')
+      )
+    },
+    getImg(name){
+      if(name === undefined) return
+      return `${axios.defaults.baseURL}/api/image/get/${name}`
     }
   },
   data(){
     return{
       // lstCourseLQ:[],
       course:"",
+      debounceAddCart:null
     }
   },
   filters:{

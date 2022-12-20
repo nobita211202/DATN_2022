@@ -1,5 +1,8 @@
 package org.datn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -11,6 +14,9 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "voucher_type")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class VoucherType {
     @Id
     @Column(name = "voucher_type_id", nullable = false)
@@ -34,53 +40,4 @@ public class VoucherType {
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")
     private String modifier;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Instant getCreated() {
-        return created;
-    }
-
-    public void setCreated(Instant created) {
-        this.created = created;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Instant getModified() {
-        return modified;
-    }
-
-    public void setModified(Instant modified) {
-        this.modified = modified;
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
 }

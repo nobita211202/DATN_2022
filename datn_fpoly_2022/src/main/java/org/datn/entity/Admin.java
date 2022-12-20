@@ -1,6 +1,8 @@
 package org.datn.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name = "admins")
 @AllArgsConstructor
+@Data@NoArgsConstructor
 public class Admin {
     @Id
     @Column(name = "admin_id", nullable = false)
@@ -39,60 +42,4 @@ public class Admin {
 
     @Column(name = "status")
     private Short status;
-
-    public Admin(Long id) {
-    }
-
-    public Admin() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Short getStatus() {
-        return status;
-    }
-
-    public void setStatus(Short status) {
-        this.status = status;
-    }
-
 }
