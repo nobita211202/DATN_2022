@@ -12,8 +12,6 @@ import org.datn.entity.User;
 import org.datn.service.UserAccountService;
 import org.datn.utils.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +79,11 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     @Override
+    public String existsByUsernameOrEmail(String usernameOrPassword) {
+        return null;
+    }
+
+    @Override
     public ResponseData login(User user) throws UnknownHostException {
 
         ResponseData responseData=new ResponseData();
@@ -100,24 +103,24 @@ public class UserAccountServiceImpl implements UserAccountService {
                 responseData.setMessage("Bị khóa trong 15'");
             }
         }else{
-                if (user2 == null){
-                    responseData.setStatus(HttpStatus.NOT_FOUND.value());
-                    responseData.setMessage("Email không tồn tại");
-                } else if (user1 == null) {
-                    responseData.setStatus(HttpStatus.NO_CONTENT.value());
-                    responseData.setMessage("Email hoặc mật khẩu sai");
+            if (user2 == null){
+                responseData.setStatus(HttpStatus.NOT_FOUND.value());
+                responseData.setMessage("Email không tồn tại");
+            } else if (user1 == null) {
+                responseData.setStatus(HttpStatus.NO_CONTENT.value());
+                responseData.setMessage("Email hoặc mật khẩu sai");
+            }else {
+                BlockUser user3 =udao.findByEmailInBlockUser(user2);
+                if (user3==null){
+                    responseData.setStatus(HttpStatus.OK.value());
+                    responseData.setMessage("Đăng nhập thành công");
                 }else {
-                    BlockUser user3 =udao.findByEmailInBlockUser(user2);
-                    if (user3==null){
-                        responseData.setStatus(HttpStatus.OK.value());
-                        responseData.setMessage("Đăng nhập thành công");
-                    }else {
-                        System.out.println(user3.getUser().getEmail());
-                        responseData.setStatus(HttpStatus.FORBIDDEN.value());
-                        responseData.setMessage("Tài khoản đã bị khóa");
-                    }
+                    System.out.println(user3.getUser().getEmail());
+                    responseData.setStatus(HttpStatus.FORBIDDEN.value());
+                    responseData.setMessage("Tài khoản đã bị khóa");
                 }
             }
+        }
 
 
         responseData.setError(responseData.getMessage());
@@ -126,7 +129,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public User findOneByEmailIgnoreCaseAndPassword(String email, String password) {
         return udao.findOneByEmailIgnoreCaseAndPassword(email, password);
     }
-    public String existsByUsernameOrEmail(String usernameAndEmail){
+    public String existsByUsernameOrPassword(String usernameAndEmail){
         User user= udao.findByUsernameOrEmail(usernameAndEmail,usernameAndEmail);
         if (user == null) return null;
         return user.getEmail();
@@ -137,15 +140,12 @@ public class UserAccountServiceImpl implements UserAccountService {
             String title="Đổi mật khẩu";
             String content="Mật khẩu mới của bạn là: "+pass;
             System.out.println(content);
-//            MailSender.sendCode("hoangndph13827@fpt.edu.vn",content,title);
-            udao.repass(email,pass);
+            MailSender.sendCode("hoangndph13827@fpt.edu.vn",content,title);
         }catch (Exception m){
             m.printStackTrace();
         }
         return true;
     }
-
-
 }
 //if (user2 == null){
 //                responseData.setStatus(404);
