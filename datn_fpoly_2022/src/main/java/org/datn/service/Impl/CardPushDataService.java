@@ -60,16 +60,16 @@ public class CardPushDataService{
             return ResponseEntity.ok("Card not found");
         }
         Float money = dataRequest.getValue();
-
         if(money!= null && dataRequest.getValue() > 0){
            card.getUser().setMoney(card.getUser().getMoney() + money);
            log.info("Money: {}", money);
            log.info("charge money success with username: {}", card.getUser().getUsername());
+           card.setStatus(0);
+           cardService.save(card);
+           assert money != null;
+           return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(), "message", "Successfully", "money", money));
         }
-        card.setStatus(1);
-        cardService.save(card);
-        assert money != null;
-        return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(), "message", "Successfully", "money", money));
+       return ResponseEntity.ok(Map.of("status",HttpStatus.BAD_REQUEST.value(),"message","Fail"));
     }
     public ResponseEntity<?> pushCard(CardRequest card) throws IOException {
         String url = "https://thecaosieure.com/chargingws/v2" ;
@@ -93,7 +93,6 @@ public class CardPushDataService{
                 .addFormDataPart("request_id",requestId)
                 .addFormDataPart("partner_id",partnerId)
                 .addFormDataPart("sign",signature == null ? "" : signature)
-                //.addFormDataPart("callback",callbackUrl)
                 .addFormDataPart("command","charging")
                 .build();
         Request request = new Request.Builder().
@@ -107,7 +106,7 @@ public class CardPushDataService{
          card1.setCardPrice(cardPrice);
          card1.setSeri(serial);
          card1.setCode(code);
-         card1.setTransCode(requestId);
+         card1.setRequestCode(requestId);
          card1.setUser(userService.findById(card.getUserId()).orElseThrow(()-> new RuntimeException("User not found")));
          card1.setStatus(1);
          cardService.save(card1);
