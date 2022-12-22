@@ -2,7 +2,9 @@ package org.datn.service.Impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -25,6 +27,7 @@ import java.util.Random;
 import java.util.Scanner;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NoArgsConstructor@AllArgsConstructor
 class RequestData{
     private Integer tran_id,request_id,status;
     private String callback_sign,telco,code,serial;
@@ -50,8 +53,8 @@ public class CardPushDataService{
         log.info("Data: {}", sb);
         ObjectMapper objectMapper = new ObjectMapper();
         RequestData dataRequest = objectMapper.readValue(sb.toString(), RequestData.class);
-        Card card = cardService.findByTransactionIdAndStatus(String.valueOf(dataRequest.getTran_id()), 1);
-        log.info("Card: {}", card.toString());
+        Card card = cardService.findByRequestIdAndStatus(String.valueOf(dataRequest.getRequest_id()), 1);
+        log.info("data callback card is : {}", card.toString());
         if (card == null) {
             log.error("Card not found");
             return ResponseEntity.ok("Card not found");
@@ -69,15 +72,14 @@ public class CardPushDataService{
         return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(), "message", "Successfully", "money", money));
     }
     public ResponseEntity<?> pushCard(CardRequest card) throws IOException {
-        String url = "https://gachthe1s.com/chargingws/v2" ;
+        String url = "https://thecaosieure.com/chargingws/v2" ;
         CardPrice cardPrice = cardPriceService.findById(card.getCardPriceId());
-        String partnerId = "48176749913" ;
+        String partnerId = "73485247815" ;
         String type = cardPrice.getTelecom().getCode();
         String code = card.getCode();
         String serial = card.getSeri();
         String amount = cardPrice.getPrice()+"";
-        String partnerKey = "dd0ab6df5ccc272f30f4ff94a79290d5" ;
-        String transId = String.valueOf(new Random().nextInt(100000000));
+        String partnerKey = "b80e9083425d4be6d7496d38dc80932b" ;
         String requestId = String.valueOf(new Random().nextInt(100000000)+new Random().nextInt(1000000));
         String signature = HashAlgorithm.MD5(partnerKey + code + serial);
         log.info("signature {} encoded md5  : " + signature);
@@ -105,7 +107,7 @@ public class CardPushDataService{
          card1.setCardPrice(cardPrice);
          card1.setSeri(serial);
          card1.setCode(code);
-         card1.setTransCode(transId);
+         card1.setTransCode(requestId);
          card1.setUser(userService.findById(card.getUserId()).orElseThrow(()-> new RuntimeException("User not found")));
          card1.setStatus(1);
          cardService.save(card1);

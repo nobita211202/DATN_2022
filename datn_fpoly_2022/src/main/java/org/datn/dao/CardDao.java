@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CardDao extends JpaRepository<Card,Long> {
     Card findByCode(String code);
-    @Query(value = "select * from card where trans_code = ?1 and status = ?2",nativeQuery = true)
+    @Query(value = "select * from card where request_code = ?1 and status = ?2",nativeQuery = true)
     Card findByTransactionIdAndStatus(String transactionId, Integer status);
 }

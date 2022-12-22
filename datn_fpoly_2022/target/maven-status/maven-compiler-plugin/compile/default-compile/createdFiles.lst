@@ -42,6 +42,7 @@ org\datn\dao\TelecomDao.class
 org\datn\service\Impl\CategoryServiceImpl.class
 org\datn\utils\DoubleUtils$1.class
 org\datn\utils\DoubleUtils.class
+org\datn\dto\Repass.class
 org\datn\controller\TokenController.class
 org\datn\entity\VoucherType.class
 org\datn\service\UsersRoleService.class
@@ -50,6 +51,7 @@ org\datn\dao\VoucherAttrDao.class
 org\datn\entity\CardPrice.class
 org\datn\entity\BlockUser.class
 org\datn\service\ContactService.class
+org\datn\controller\SignInController.class
 org\datn\service\CategoryService.class
 org\datn\entity\LoginFail.class
 org\datn\service\VoucherService.class

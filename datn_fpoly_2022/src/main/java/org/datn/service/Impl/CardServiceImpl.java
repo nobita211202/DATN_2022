@@ -67,7 +67,7 @@ public class CardServiceImpl implements Services<Card> {
     public ResponseEntity<Collection<?>> findAll() {
         return ResponseEntity.ok(cardDao.findAll());
     }
-    public Card findByTransactionIdAndStatus(String transactionId, Integer status) {
+    public Card findByRequestIdAndStatus(String transactionId, Integer status) {
         return cardDao.findByTransactionIdAndStatus(transactionId, status);
     }
 }
