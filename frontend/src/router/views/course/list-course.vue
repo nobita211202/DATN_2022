@@ -1,6 +1,7 @@
 <script>
 import axios from '@/node_modules/axios';
 import Layout from '@layouts/main.vue'
+import Carousel from "@/src/components/lstcourse.vue"
 export default {
   page: {
     title: 'Danh sách khoá học',
@@ -8,6 +9,7 @@ export default {
 
   components: {
     Layout,
+    Carousel
   },
   data() {
     return {
@@ -42,6 +44,9 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
+    },
+    getImg(name){
+      return `${axios.defaults.baseURL}/api/image/get/${name}`
     }
   }
 }
@@ -69,190 +74,63 @@ export default {
 .list-group-item {
   margin-bottom: 10px !important;
 }
+
+.before::before{
+  content: "";
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  opacity: 0.25;
+  height: 100%;
+  width: 100%;
+  background-image: url(https://www.ox.ac.uk/sites/files/oxford/field/field_image_main/learning.jpg);
+  background-attachment: fixed;
+}
+.bg-fixed{
+  background-attachment: fixed;
+}
+
+.fw-blod{
+  font-weight: 700 !important;
+}
+
 </style>
 
 <template>
   <Layout>
-    <b-col id="main-container" cols="11">
-      <h2 id="main-title">DANH SÁCH KHOÁ HỌC</h2>
-      <div class="row">
-        <div class="col-3">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Chuyên ngành</div>
-            </div>
-            <div class="card-body">
-              <ul class="list-group" >
-                <li  v-for="item,index2 in categoryParent" :key="index2" class="list-group-item border-0 p-0" >
-                  <a  href="#collapse"
-                  data-toggle="collapse"  role="button" aria-expanded="false" aria-controls="collapseExample" >
-                  <i class="fe fe-chevron-right"></i> {{item.name}} </a
-                  ><span class="product-label">22</span>
-                  <div class="" id="collapse">
-                    <div v-for="item2,index in getCategoryChildByParentId(item.id)" :key="index" class="card card-body" >
-                      {{item2.name}}
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Đánh giá</div>
-            </div>
-            <div class="card-body">
-              <ul class="list-group">
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> 1 sao </a
-                  ><span class="product-label">22</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> 2 sao</a
-                  ><span class="product-label">15</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> 3 sao </a
-                  ><span class="product-label">10</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> 4 sao </a
-                  ><span class="product-label">88</span>
-                </li>
-                <li class="list-group-item border-0 p-0">
-                  <a href="javascript:void(0)"
-                    ><i class="fe fe-chevron-right"></i> 5 sao </a
-                  ><span class="product-label">88</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-9">
-          <div class="row">
-            <div class="col-xl-12">
-              <div class="card p-0">
-                <div class="card-body p-4">
-                  <div class="row">
-                    <div class="col-xl-5 col-lg-8 col-md-8 col-sm-8">
-                      <div class="input-group d-flex w-100 float-start">
-                        <input
-                          type="text"
-                          class="form-control border-end-0 my-2"
-                          placeholder="Tìm kiếm"
-                        />
-                        <button
-                          class="btn input-group-text bg-transparent border-start-0 text-muted my-2"
-                        >
-                          <i
-                            class="fe fe-search text-muted"
-                            aria-hidden="true"
-                          ></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+    <div class="bg-dark  w-100" >
+      <div class="h-1000 before position-relative ">
+        <!-- <div  class="w-100 h-100 position-absolute bg-dark opacity-75">
+        </div> -->
+        <div class="d-flex flex-column w-100 h-100">
+            <div class="container-xxl text-white mt-5">
+              <div class="border-bottom border-white py-2">
+                <a href="#" class="text-white" v-for="c,index in categoryParent" :key="index">
+                {{ c.name }}
+                  <span v-show="index < ( categoryParent.length - 1)" class="px-2">/</span>
+                </a>
+              </div>
+              <div>
+                <span class="fs-1 fw-blod">Top 8 khóa học bán chạy trong tuần</span>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div
-              v-for="course in listCouses.data"
-              :key="course.id"
-              class="col-xl-4 col-md-6 col-sm-6"
-            >
-              <div class="card">
-                <div class="product-grid6">
-                  <div class="product-image6 p-5">
-                    <a :href="`course/${course.id}`" class="bg-light">
-                      <img
-                        class="img-fluid br-7 w-100"
-                        :src="course.image"
-                        alt="img"
-                      />
-                    </a>
-                  </div>
-                  <div class="card-body pt-0">
-                    <div class="product-content">
-                      <h1 class="title fw-bold fs-20"
-                        ><a :href="`course/${course.id}`"
-                          >{{course.name}}</a
-                        ></h1
-                      >
-                      <h1 class="teacher-title fw-bold fs-20"
-                        ><a :href="`teacher/${course.user.username}`">{{
-                          course.user.username
-                        }}</a></h1
-                      >
-                      <div class="mb-2 text-warning">
-                        <i
-                          v-for="star in course.interest"
-                          :key="star"
-                          class="fa fa-star text-warning"
-                        ></i>
-                        <i
-                          v-for="star in course.interest"
-                          :key="star"
-                          class="fa fa-star-half-o text-warning"
-                        ></i>
-                        <i
-                          v-for="star in course.interest"
-                          :key="star"
-                          class="fa fa-star-o text-warning"
-                        ></i>
-                        <span class="text-muted ml-2"
-                          >({{ course.interest}})</span
-                        >
-                      </div>
-                      <div class="price"
-                        >{{ course.price }} <sup>đ</sup>
-                        <span class="ms-4"
-                          >{{ course.price }} <sup>đ</sup></span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="my-auto container-xxl">
+              <b-row>
+                <b-col sm="12">
+                  <Carousel class="text-white" :listCourse="listCouses.data" />
+                </b-col>
+              </b-row>
             </div>
-
-            <div class="mb-5">
-              <div class="float-end">
-                <ul class="pagination">
-                  <li class="page-item page-prev disabled">
-                    <a class="page-link" href="javascript:void(0)" tabindex="-1"
-                      >Trước</a
-                    >
-                  </li>
-                  <li class="page-item active"
-                    ><a class="page-link" href="javascript:void(0)">1</a></li
-                  >
-                  <li class="page-item"
-                    ><a class="page-link" href="javascript:void(0)">2</a></li
-                  >
-                  <li class="page-item"
-                    ><a class="page-link" href="javascript:void(0)">3</a></li
-                  >
-                  <li class="page-item"
-                    ><a class="page-link" href="javascript:void(0)">4</a></li
-                  >
-                  <li class="page-item"
-                    ><a class="page-link" href="javascript:void(0)">5</a></li
-                  >
-                  <li class="page-item page-next">
-                    <a class="page-link" href="javascript:void(0)">Sau</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </b-col>
+    </div>
+    <div class="container-xxl mt-5">
+      <div>
+        <span class="fs-1 fw-blod">Khóa học được học nhiều nhất</span>
+      </div>
+      <Carousel class="text-dark" :listCourse="listCouses.data" />
+
+    </div>
   </Layout>
 </template>

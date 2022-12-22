@@ -73,7 +73,7 @@
       },
       methods:{
           login(){
-              if(this.validate(this.acc)) throw new Error("ERROR_VALIDATE")
+              if(this.validate(this.acc)) return
               this.acc.email= this.acc.username
               axios.post("/api/login",this.acc)
               .then((res)=>{

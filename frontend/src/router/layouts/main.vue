@@ -6,16 +6,12 @@ export default {
 </script>
 
 <template>
-  <div class="position-relative">
+  <div class="position-relative bg-white">
     <div class="page">
       <div class="page-main">
         <Header />
-        <div class="main-content mt-0">
-          <div class="container-fluid">
-            <div class="row mt-1">
-              <slot />
-            </div>
-          </div>
+        <div class="">
+          <slot />
         </div>
         <div class="py-5"></div>
         <div class="footer border-top-0 position-absolute bottom-0 w-100 footer-1" style="background: #fff">
