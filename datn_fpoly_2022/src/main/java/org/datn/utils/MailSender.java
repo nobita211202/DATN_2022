@@ -22,7 +22,7 @@ public class MailSender {
         getMailSession = Session.getDefaultInstance(mailServerProperties, null);
         mailMessage = new MimeMessage(getMailSession);
         mailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-        mailMessage.setText(text);
+        mailMessage.setContent(text,"text/html;charset = UTF-8");
         mailMessage.setSubject(content);
         Transport transport = getMailSession.getTransport("smtp");
         transport.connect("smtp.gmail.com", "lavantho0508@gmail.com", "zjipajndhlovrtvk");
