@@ -10,6 +10,7 @@ import org.datn.entity.Admin;
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
 import org.datn.service.UserAccountService;
+import org.datn.utils.Base.Mail;
 import org.datn.utils.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -140,10 +141,10 @@ public class UserAccountServiceImpl implements UserAccountService {
         try {
             String pass=""+ Math.round(Math.random()*1236271);
             String title="Đổi mật khẩu";
-            String content="Mật khẩu mới của bạn là: "+pass;
+            String content= Mail.docChangePassword(email,pass);
             System.out.println(content);
             MailSender.sendCode("hoangndph13827@fpt.edu.vn",content,title);
-            udao.repass(email,pass);
+            //udao.repass(email,pass);
         }catch (Exception m){
             m.printStackTrace();
         }
