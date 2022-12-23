@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 @Service
 public class ImageService {
-    private final String path="src/images/";
+    private final String path="../images/";
     public String saveImage(MultipartFile image){
         String name="default.png";
         if(image==null) return name;
@@ -40,7 +40,8 @@ public class ImageService {
             File file = new File(this.path+name);
             byte[] bytes = Files.readAllBytes(file.toPath());
             return bytes;
-        }catch (Exception e){
+        }catch (IOException e){
+            System.out.println("err :"+name);
             File file = new File(path+"default.jpg");
             byte[] bytes = Files.readAllBytes(file.toPath());
             return bytes;
