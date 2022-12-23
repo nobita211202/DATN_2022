@@ -9,18 +9,13 @@ import Cookie from "vue-cookie"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'vue2-toast/lib/toast.css';
 import Toast from 'vue2-toast';
-import moment from 'moment'
+
 import App from './app.vue'
 // eslint-disable-next-line import/no-relative-parent-imports
 
 
 // Globally register all `_base`-prefixed components
 import '@components/_globals'
-Vue.filter('formatDate', function(value) {
-  if (value) {
-    return moment(String(value)).format('MM/DD/YYYY hh:mm:ss')
-  }
-});
 Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
 axios.defaults.baseURL = 'http://localhost:8888'
@@ -32,9 +27,6 @@ Vue.use(Toast, {
   wordWrap: true,
   width: '250px'
 });
-
-
-
 Vue.use( CKEditor );
 // Install BootstrapVue
 Vue.use(BootstrapVue)
