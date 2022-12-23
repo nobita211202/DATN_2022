@@ -1,30 +1,22 @@
 package org.datn.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.datn.dao.UserDao;
 import org.datn.entity.User;
 import org.datn.service.ImageService;
 import org.datn.service.UserService;
-import org.datn.utils.Base.Bases;
 import org.datn.utils.Base.EntityAndImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.websocket.server.PathParam;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/user")
+@SuppressWarnings("unused")
 public class UserController {
     @Autowired
     UserService userService;
@@ -37,11 +29,7 @@ public class UserController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getId(@PathVariable("id") Long id) {
-        Optional<User> optional = userService.findById(id);
-        if (!optional.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(optional.get());
+        return ResponseEntity.ok(userService.findById(id).orElse(null));
     }
 
     @PostMapping("/add")

@@ -68,8 +68,12 @@ public class CardPushDataService{
            cardService.save(card);
            assert money != null;
            return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(), "message", "Successfully", "money", money));
+        }else {
+            log.error("Charge money failed because card code {} is invalid", card.getCode());
+            card.setStatus(2);
+            cardService.save(card);
+            return ResponseEntity.ok(Map.of("status", HttpStatus.BAD_REQUEST.value(), "message", "Failed"));
         }
-       return ResponseEntity.ok(Map.of("status",HttpStatus.BAD_REQUEST.value(),"message","Fail"));
     }
     public ResponseEntity<?> pushCard(CardRequest card) throws IOException {
         String url = "https://thecaosieure.com/chargingws/v2" ;

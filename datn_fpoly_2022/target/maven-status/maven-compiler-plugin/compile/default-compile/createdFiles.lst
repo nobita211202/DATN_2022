@@ -11,6 +11,7 @@ org\datn\service\Impl\CardPushDataService.class
 org\datn\service\ContactSubjectService.class
 org\datn\service\BlockUserService.class
 org\datn\service\Impl\CartServiceImpl.class
+org\datn\controller\CardPriceController.class
 org\datn\dao\OrderDetailDao.class
 org\datn\entity\Cart.class
 org\datn\service\ImageService.class

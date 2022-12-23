@@ -59,4 +59,8 @@ public class CardPriceServiceImpl implements Services<CardPrice> {
         log.info("Find all card price");
         return ResponseEntity.ok(cardPriceDao.findAll());
     }
+    public Collection<CardPrice> findAllByTelecom(Long telecomId){
+        log.info("Find all card price by telecom: {}", telecomId);
+        return cardPriceDao.findByCardType(telecomId);
+    }
 }
