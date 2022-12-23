@@ -123,6 +123,11 @@ export default [
     path: '*',
     redirect: '404',
   },
+  {
+    path: '/user/charge-card',
+    name: 'charge-card',
+    component: () => lazyLoadView(import('@views/card/ChargeCard.vue')),
+  }
 ]
 
 // Lazy-loads view components, but with better UX. A loading view
