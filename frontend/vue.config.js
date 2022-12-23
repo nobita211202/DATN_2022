@@ -2,6 +2,7 @@ const appConfig = require('./src/app.config')
 
 /** @type import('@vue/cli-service').ProjectOptions */
 module.exports = {
+  publicPath : '/',
   // https://github.com/neutrinojs/webpack-chain/tree/v4#getting-started
   chainWebpack(config) {
     // We provide the app's title in Webpack's name field, so that
@@ -37,3 +38,4 @@ module.exports = {
         { before: require('./tests/mock-api') }),
   },
 }
+
