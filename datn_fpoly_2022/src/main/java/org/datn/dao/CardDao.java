@@ -4,8 +4,10 @@ import org.datn.entity.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 
+@Transactional
 public interface CardDao extends JpaRepository<Card,Long> {
     Card findByCode(String code);
     @Query(value = "select * from card where request_code = ?1 and status = ?2",nativeQuery = true)
@@ -14,4 +16,7 @@ public interface CardDao extends JpaRepository<Card,Long> {
     Card findByCodeOrSerial(String code, String serial);
     @Query(value = "select * from card where user_id = ?1",nativeQuery = true)
     Collection<Card> getAllHistoryByUserId(Long userId);
+
+    @Query(value = "select * from card where request_code = ?1",nativeQuery = true)
+    Card findByRequestId(String requestCode);
 }

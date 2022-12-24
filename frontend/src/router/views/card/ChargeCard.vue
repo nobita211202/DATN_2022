@@ -1,5 +1,9 @@
 <template>
   <div class="container">
+    <div class="loading" v-show="isShow">
+            <div class="spinner-border text-primary spinner-center" role="status">
+            </div>
+        </div>
     <div class="title text-center">
       <h1>Nạp tiền</h1>
     </div>
@@ -99,7 +103,7 @@ export default {
         cardPriceId : '',
         seri : '',
         code : ''
-      }
+      },isShow : false
     }
   },mounted() {
     this.getTelecom();
@@ -119,11 +123,39 @@ export default {
         this.history = response.data
       })
     },pushCard(){
+      this.show=true;
       axios.post('/api/auto-card/push?userId='+this.card.userId+"&cardPriceId="+this.card.cardPriceId+"&seri="+this.card.seri+"&code="+this.card.code).then((response) => {
         this.getHistory();
-        console.log(response.data);
+        if(response.data.trans_id === null || response.data.trans_id === undefined){
+          axios.put("/api/auto-card/update-status/" + response.data.request_id).then(res => {
+            this.getHistory();
+            console.log(res.data)
+          })
+        }
+
       })
+      setTimeout(() => {
+          this.isShow = false;
+        }, 3000);
     }
   }
 }
 </script>
+
+<style scoped>
+.loading {
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.spinner-center {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+</style>
