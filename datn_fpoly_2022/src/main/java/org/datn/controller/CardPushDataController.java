@@ -1,7 +1,6 @@
 package org.datn.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.datn.bean.CardRequest;
 import org.datn.service.Impl.CardPushDataService;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +11,8 @@ import java.io.Serializable;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auto-card")
-@Slf4j
 @SuppressWarnings("unused")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CardPushDataController implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -9,16 +9,16 @@
         <option selected disabled>Vui lòng chọn loại thẻ</option>
         <option class="text-dark" v-for="item in telecom" :value="item.id" :key="item.id">{{item.name}}</option>
       </select>
-      <select class="form-select" v-model="cardPriceId">
+      <select class="form-select" v-model="card.cardPriceId">
         <option selected disabled>Vui lòng chọn mệnh giá</option>
         <option class="text-dark" v-for="item in cardType" :value="item.id" :key="item.id">{{item.price}}</option>
       </select>
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="floatingInput"  v-model="seri" placeholder="Serial">
+        <input type="text" class="form-control" id="floatingInput"  v-model="card.seri" placeholder="Serial">
         <label for="floatingInput">Seri(*)</label>
       </div>
       <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="floatingInput"  v-model="code" placeholder="Mã thẻ nạp">
+        <input type="text" class="form-control" id="floatingInput"  v-model="card.code" placeholder="Mã thẻ nạp">
         <label for="floatingInput">Mã thẻ(*)</label>
       </div>
       <button class="btn btn-sm btn-success">Nạp tiền</button>
@@ -119,8 +119,9 @@ export default {
         this.history = response.data
       })
     },pushCard(){
-      axios.post('/api/card-price/push',this.card).then((response) => {
-        console.log(response.data)
+      axios.post('/api/auto-card/push?userId='+this.card.userId+"&cardPriceId="+this.card.cardPriceId+"&seri="+this.card.seri+"&code="+this.card.code).then((response) => {
+        this.getHistory();
+        console.log(response.data);
       })
     }
   }
