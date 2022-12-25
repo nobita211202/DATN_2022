@@ -39,8 +39,9 @@ export default {
         console.log(error)
       })
     },getCourse(){
-      axios.get('/api/course/get').then((response) => {
+      axios.get(`/api/course/getCourseAndLike/${15}`).then((response) => {
         this.listCouses.data = response.data
+        console.log(response.data);
       }).catch((error) => {
         console.log(error)
       })
@@ -106,7 +107,7 @@ export default {
         <div class="d-flex flex-column w-100 h-100">
             <div class="container-xxl text-white mt-5">
               <div class="border-bottom border-white py-2">
-                <a href="#" class="text-white" v-for="c,index in categoryParent" :key="index">
+                <a  v-for="c,index in categoryParent"  :key="index" href="#" class="text-white">
                 {{ c.name }}
                   <span v-show="index < ( categoryParent.length - 1)" class="px-2">/</span>
                 </a>
@@ -118,7 +119,7 @@ export default {
             <div class="my-auto container-xxl">
               <b-row>
                 <b-col sm="12">
-                  <Carousel class="text-white" :listCourse="listCouses.data" />
+                  <Carousel :classtext="'text-white'" class="text-white" :listCourse="listCouses.data" />
                 </b-col>
               </b-row>
             </div>
@@ -129,7 +130,7 @@ export default {
       <div>
         <span class="fs-1 fw-blod">Khóa học được học nhiều nhất</span>
       </div>
-      <Carousel class="text-dark" :listCourse="listCouses.data" />
+      <!-- <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data" /> -->
 
     </div>
   </Layout>
