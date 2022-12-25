@@ -6,6 +6,7 @@ import org.datn.entity.Course;
 
 import org.datn.service.CoursService;
 import org.datn.service.ImageService;
+import org.datn.service.LikeService;
 import org.datn.utils.Base.EntityAndImage;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import java.util.Vector;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -23,13 +25,23 @@ public class CoursController {
 
     @Autowired
     CoursService coursService;
-
+    @Autowired
+    LikeService likeService;
     @Autowired
     ImageService service;
 
     @GetMapping("/get")
     public ResponseEntity getAll() {                 //Lấy danh sách khóa học
         return ResponseEntity.ok(coursService.findAll());
+    }
+    @GetMapping("/getCourseAndLike/{user_id}")
+    public ResponseEntity getCourseAnhLike(
+            @PathVariable("user_id") long idUser
+    ) {                 //Lấy danh sách khóa học
+        return ResponseEntity.ok(coursService.findAll().stream().map(course -> new Object[]{
+                    course,likeService.exists(course,idUser)
+            }
+        ));
     }
     @PostMapping("/add")
     public ResponseEntity<Course> addCours(@ModelAttribute EntityAndImage data) throws JsonProcessingException {    //Thêm khóa học
@@ -66,6 +78,7 @@ public class CoursController {
     ){
         return ResponseEntity.ok(coursService.getByName(name));
     }
+
 }
 
 
