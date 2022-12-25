@@ -149,7 +149,7 @@ export default {
 
 
 
-    axios.get("api/course/get").then( res => {this.lstCourseGY = res.data})
+    axios.get(`/api/course/getCourseAndLike/${15}`).then( res => {this.lstCourseGY = res.data})
   },
   methods:{
     rmCourse(id){
