@@ -6,6 +6,7 @@ org\datn\dao\VoucherTypeDao.class
 org\datn\dao\PaymentMethodDao.class
 org\datn\controller\RoleController.class
 org\datn\ConfigurationSpringSecurity.class
+org\datn\service\LikeService.class
 org\datn\utils\MailSender.class
 org\datn\service\Impl\CardPushDataService.class
 org\datn\service\ContactSubjectService.class
@@ -67,6 +68,7 @@ org\datn\service\LoginFailService.class
 org\datn\dao\ForgotPasswordDao.class
 org\datn\entity\ForgotPassword.class
 org\datn\dao\CoursDao.class
+org\datn\entity\Likes.class
 org\datn\entity\Voucher.class
 org\datn\service\CommentService.class
 org\datn\controller\CategoryController.class
@@ -97,6 +99,7 @@ org\datn\entity\Token.class
 org\datn\service\Impl\UserServiceImpl.class
 org\datn\service\TokenService.class
 org\datn\dao\TokenDAO.class
+org\datn\controller\LikeController.class
 org\datn\service\Impl\CoursesServiceImpl.class
 org\datn\entity\Payment.class
 org\datn\dao\CourseAttrDao.class
@@ -105,6 +108,7 @@ org\datn\dao\PaymentDao.class
 org\datn\utils\Base\Bases.class
 org\datn\entity\CourseAttr.class
 org\datn\controller\ForgotPassword.class
+org\datn\service\Impl\LikeServiceImpl.class
 org\datn\dao\CardPriceDao.class
 org\datn\service\Impl\CardServiceImpl.class
 org\datn\entity\IpAddressUser.class
@@ -133,6 +137,7 @@ org\datn\dao\AdminDao.class
 org\datn\DatnFpoly2022Application.class
 org\datn\service\Impl\CardPriceServiceImpl.class
 org\datn\utils\Base\ModifyBase.class
+org\datn\dao\LikeDao.class
 org\datn\entity\UsersRole.class
 org\datn\bean\ResponseData.class
 org\datn\entity\ContactSubject.class

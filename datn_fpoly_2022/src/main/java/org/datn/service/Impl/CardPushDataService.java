@@ -1,5 +1,6 @@
 package org.datn.service.Impl;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,7 @@ public class CardPushDataService{
     private final CardServiceImpl cardService;
     private final Services<CardPrice> cardPriceService;
     private final UserService userService;
+    private final SocketIOServer socketIOServer;
     public ResponseEntity<?> callback(HttpServletRequest request) throws IOException {
         log.info("callback had called");
         Scanner sc = new Scanner(request.getInputStream());
@@ -55,10 +57,6 @@ public class CardPushDataService{
         RequestData dataRequest = objectMapper.readValue(sb.toString(), RequestData.class);
         Card card = cardService.findByRequestIdAndStatus(String.valueOf(dataRequest.getRequest_id()), 1);
         log.info("data callback card is : {}", card.toString());
-        if (card == null) {
-            log.error("Card not found");
-            return ResponseEntity.ok("Card not found");
-        }
         Float money = dataRequest.getValue();
         if(money!= null && dataRequest.getValue() > 0){
            card.getUser().setMoney(card.getUser().getMoney() + money);
@@ -66,25 +64,32 @@ public class CardPushDataService{
            log.info("charge money success with username: {}", card.getUser().getUsername());
            card.setStatus(0);
            cardService.save(card);
-           assert money != null;
+            socketIOServer.addConnectListener(client -> {
+                log.info("Client connected: {}", client.getSessionId());
+                client.sendEvent("reload", true);
+            });
            return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value(), "message", "Successfully", "money", money));
-        }else {
+        }else{
             log.error("Charge money failed because card code {} is invalid", card.getCode());
             card.setStatus(2);
             cardService.save(card);
+            socketIOServer.addConnectListener(client -> {
+                log.info("Client connected: {}", client.getSessionId());
+                client.sendEvent("reload", true);
+            });
             return ResponseEntity.ok(Map.of("status", HttpStatus.BAD_REQUEST.value(), "message", "Failed"));
         }
     }
-    public ResponseEntity<?> pushCard(CardRequest card) throws IOException {
+    public ResponseEntity<?> pushCard(CardRequest card) {
         String url = "https://thecaosieure.com/chargingws/v2" ;
         CardPrice cardPrice = cardPriceService.findById(card.getCardPriceId());
-        String partnerId = "73485247815" ;
+        String partnerId = "73485247815";
         String type = cardPrice.getTelecom().getCode();
         String code = card.getCode();
         String serial = card.getSeri();
-        String amount = cardPrice.getPrice()+"";
+        String amount = cardPrice.getPrice() + "";
         String partnerKey = "b80e9083425d4be6d7496d38dc80932b" ;
-        String requestId = String.valueOf(new Random().nextInt(100000000)+new Random().nextInt(1000000));
+        String requestId = String.valueOf(new Random().nextInt(100000000)+ new Random().nextInt(1000000));
         String signature = HashAlgorithm.MD5(partnerKey + code + serial);
         log.info("signature {} encoded md5  : " + signature);
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -96,7 +101,7 @@ public class CardPushDataService{
                 .addFormDataPart("amount",amount)
                 .addFormDataPart("request_id",requestId)
                 .addFormDataPart("partner_id",partnerId)
-                .addFormDataPart("sign",signature == null ? "" : signature)
+                .addFormDataPart("sign", signature == null ? "" : signature)
                 .addFormDataPart("command","charging")
                 .build();
         Request request = new Request.Builder().

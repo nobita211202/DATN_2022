@@ -81,6 +81,8 @@
 
 <script>
 import axios from '@/node_modules/axios';
+import io from '@/node_modules/socket.io-client';
+const socket = io('http://fpolycourse.xyz:3636');
 export default {
   name: 'ChargeCard',
   data () {
@@ -105,11 +107,12 @@ export default {
         code : ''
       },isShow : false
     }
-  },mounted() {
+  },created() {
     this.getTelecom();
     this.getHistory();
+    this.reloadWhenChangeData();
   },methods: {
-    getCardType (id) {
+    getCardType(id) {
       axios.get('/api/card-price/find-by-telecom/'+id).then((response) => {
         this.cardType = response.data
       })
@@ -132,11 +135,16 @@ export default {
             console.log(res.data)
           })
         }
-
       })
       setTimeout(() => {
           this.isShow = false;
         }, 3000);
+    },reloadWhenChangeData(){
+      socket.on('reload', (data) => {
+        if(data !== null || data !== undefined){
+          this.getHistory();
+        }
+      })
     }
   }
 }

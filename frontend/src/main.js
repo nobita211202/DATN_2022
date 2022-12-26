@@ -11,11 +11,13 @@ import 'vue2-toast/lib/toast.css';
 import Toast from 'vue2-toast';
 
 import App from './app.vue'
+
 // eslint-disable-next-line import/no-relative-parent-imports
 
 
 // Globally register all `_base`-prefixed components
 import '@components/_globals'
+
 Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
 axios.defaults.baseURL = 'http://fpolycourse.xyz:8888'
@@ -27,6 +29,8 @@ Vue.use(Toast, {
   wordWrap: true,
   width: '250px'
 });
+Vue.config.productionTip = false
+
 Vue.use( CKEditor );
 // Install BootstrapVue
 Vue.use(BootstrapVue)
