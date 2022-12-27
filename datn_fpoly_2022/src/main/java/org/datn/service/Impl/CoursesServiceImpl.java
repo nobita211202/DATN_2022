@@ -66,4 +66,9 @@ public class CoursesServiceImpl implements CoursService {
         Pageable pageable = PageRequest.of(pageNumber.orElse(0),pageSize,sort);
         return cdao.findAll(pageable);
     }
+
+    @Override
+    public List<Course> findTop5CoursePurchase() {
+        return cdao.findTop5CoursePurchase();
+    }
 }

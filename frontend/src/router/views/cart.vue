@@ -34,7 +34,7 @@
       <div class=" px-0 mt-2 ">
         <div v-if="lstCart.length !== 0" class="my-5 ">
           <div class="bg-success">
-            <div class="container ">
+            <div class="container-xxl ">
               <span class="d-flex mb-2 p-3  row text-white">
               <span class="border-end pe-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30"  fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="bg-white ">
-            <div class=" container px-0">
+            <div class="container-xxl">
               <div class="row">
                 <div class="col-lg-7 col-12">
                   <div v-for="cs,index in lstCart" :key="index" class="d-flex py-2 border-bottom">
@@ -86,46 +86,27 @@
                   </div>
                 </div>
               </div>
-          </div>
-          </div>
-
-
-          <div class="container-fluid mt-5 row bg-white py-5 bg-white">
-            <p class="fs-4 pt-3 fw-bold">Khóa học gợi ý</p>
-            <div class="">
-              <b-form-input class="col-6" v-model="txtSearch" placeholder="Tìm kiếm"></b-form-input>
             </div>
-              <b-overlay :show="overlayGY" rounded="sm" >
-                <div class="mt-2 border-top">
-                  <div class="mt-5 row">
-
-                    <a
-                      v-for="c,index in lstCourseGY"
-                      :key="index"
-                      class="col-sm-3 col-4 col-xl-2 mb-3 text-dark"
-                      :href="`/course/${c.id}`"
-                    >
-                      <div class="border d-flex flex-column p-0 h-100">
-                          <img :src="getImg(c.image)" class="w-100" alt="">
-                          <div class="mt-2 mx-1 d-flex mb-4 flex-column">
-                            <span class="fw-bold">{{c.name}}</span>
-                            <span class="text-muted">Giảng viên</span>
-                          </div>
-                          <span class="d-flex mx-1 mb-2 mt-auto">
-                              <span>
-                                <i class="fa fa-star-o co-or text-warning"></i>
-                                <i class="fa fa-star-o co-or text-warning"></i>
-                                <i class="fa fa-star-o co-or text-warning"></i>
-                                <i class="fa fa-star-o co-or text-warning"></i>
-                                <i class="fa fa-star-o co-or text-warning"></i>
-                              </span>
-                              <span class="text-bold ms-auto">{{c.price | formatNumber}}</span>
-                            </span>
-                      </div>
-                    </a>
+          </div>
+          <div class="bg-light">
+            <div class="container-xxl mt-5 py-5  ">
+              <p class="fs-4 pt-3 fw-bold">Khóa học gợi ý</p>
+              <div class="">
+                <form class="d-flex w-100 py-1 bg-white border mx-lg-auto">
+                  <span class="px-2">
+                    <i class="fs-4 bi bi-search"></i>
+                  </span>
+                  <input class="w-75" v-model="txtSearch" type="search" placeholder="Search" aria-label="Search">
+                </form>
+              </div>
+                <b-overlay :show="overlayGY" rounded="sm" >
+                  <div class="mt-2 border-top">
+                    <div class="mt-5 row">
+                      <LstcourseVue :listCourse="lstCourseGY" />
+                    </div>
                   </div>
-                </div>
-              </b-overlay>
+                </b-overlay>
+            </div>
           </div>
         </div>
 
@@ -138,9 +119,11 @@
 <script>
 import axios from '@/node_modules/axios';
 import Main from '@layouts/main.vue'
+import LstcourseVue from '@/src/components/lstcourse.vue';
 export default {
   components:{
-    Main
+    Main,
+    LstcourseVue
   },
   data(){
     return{
@@ -166,7 +149,7 @@ export default {
 
 
 
-    axios.get("api/course/get").then( res => {this.lstCourseGY = res.data})
+    axios.get(`/api/course/getCourseAndLike/${15}`).then( res => {this.lstCourseGY = res.data})
   },
   methods:{
     rmCourse(id){
@@ -220,15 +203,16 @@ export default {
   .w-card{
     width: 200px;
   }
-  .container-1200px{
-    width: 1200px;
-    margin: 0 auto;
-  }
   .shadow{
     box-shadow: -50px 0px 40px rgba(156, 156, 156, 0.323) !important;
   }
   .w-pay{
     width: 300px;
+  }
+  input{
+    outline: none;
+    border-radius: 0;
+    border: none !important;
   }
 
 </style>

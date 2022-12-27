@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,5 +26,6 @@ public class Telecom implements Serializable {
     private String name;
     @OneToMany(mappedBy = "telecom", fetch = FetchType.LAZY,targetEntity = CardPrice.class)
     @JsonIgnore
+    @ToString.Exclude
     private List<Telecom> telecoms;
 }

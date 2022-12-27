@@ -4,8 +4,13 @@ export default [
 
   {
     path: '/',
-    name: 'listCourses',
+    name: 'home',
     component: () => lazyLoadView(import('@views/course/list-course.vue')),
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: () => lazyLoadView(import('@views/signin.vue')),
   },
   {
     path: '/forgetpassword',
@@ -43,10 +48,10 @@ export default [
     path: '/profile',
     name: 'profile',
     component: () => lazyLoadView(import('@views/profile.vue')),
-    meta: {
-      authRequired: true,
-    },
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    // meta: {
+    //   authRequired: true,
+    // },
+    // props: (route) => ({ user: store.state.auth.currentUser || {} }),
   },
   {
     path: '/admin',
@@ -91,17 +96,17 @@ export default [
   {
     path: '/logout',
     name: 'logout',
-    meta: {
-      authRequired: true,
-      beforeResolve(routeTo, routeFrom, next) {
-        store.dispatch('auth/logOut')
-        const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.meta.authRequired
-        )
-        // Navigate back to previous page, or home as a fallback
-        next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
-      },
-    },
+    // meta: {
+    //   authRequired: true,
+    //   beforeResolve(routeTo, routeFrom, next) {
+    //     store.dispatch('auth/logOut')
+    //     const authRequiredOnPreviousRoute = routeFrom.matched.some(
+    //       (route) => route.meta.authRequired
+    //     )
+    //     // Navigate back to previous page, or home as a fallback
+    //     next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
+    //   },
+    // },
   },
   {
     path: '/404',
@@ -118,6 +123,11 @@ export default [
     path: '*',
     redirect: '404',
   },
+  {
+    path: '/user/charge-card',
+    name: 'charge-card',
+    component: () => lazyLoadView(import('@views/card/ChargeCard.vue')),
+  }
 ]
 
 // Lazy-loads view components, but with better UX. A loading view
