@@ -1,7 +1,7 @@
 <script>
 import Layout from '@layouts/main.vue'
 import LeftAdmin from '@layouts/left-admin.vue'
-import AdminRole from '@views/admin/admin-role.vue'
+import AdminThongKe from '@/src/router/views/admin/admin-thongke.vue'
 import AdminCategory from '@views/admin/admin-cateogry.vue'
 import adminUser from '@/src/router/views/admin/admin-user.vue'
 import adminSourse from '@/src/router/views/admin/admin-sourse.vue'
@@ -14,7 +14,7 @@ export default {
   components: {
     Layout,
     LeftAdmin,
-    AdminRole,
+    AdminThongKe,
     AdminCategory,
     adminUser,
     adminSourse
@@ -86,7 +86,7 @@ body {
 
 <template>
   <Layout>
-    <div class="row justify-content-md-center mt-3">
+    <div class="container-fluid justify-content-md-center mt-3">
       <div class="col-12">
         <b-col class="col-12 col-lg-3 col-xl-2 float-left">
           <LeftAdmin :active="activeTab" />
@@ -95,7 +95,7 @@ body {
           <div class="card">
             <div class="card-header">
               <h3 v-if="activeTab === 'admin-role'" class="card-title"
-                >Quản lý role</h3
+                >Thống kê</h3
               >
               <h3  v-if="activeTab === 'admin-category'" class="card-title"
                 >Quản lý danh mục</h3
@@ -108,13 +108,13 @@ body {
               >
 
             </div>
-            <div class="card-body">
-             <KeepAlive>
-                <AdminRole v-if="activeTab === 'admin-role'" />
+            <div class="" style="  ">
+             <!-- <KeepAlive> -->
+                <AdminThongKe v-if="activeTab === 'admin-role'" />
                 <AdminCategory v-if="activeTab === 'admin-category'" />
                 <adminUser v-if="activeTab === 'admin-users'" />
                 <adminSourse v-if="activeTab === 'admin-course'"/>
-             </KeepAlive>
+             <!-- </KeepAlive> -->
             </div>
           </div>
         </b-col>

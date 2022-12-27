@@ -1,6 +1,6 @@
 <script>
 import axios from '@/node_modules/axios'
-const url="http://localhost:8080/api/"
+const url="/api/"
 
 export default {
 
@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-    imageUP:{},
+    imageUP:null,
     imageSelected :"",
     fileRender:{},
       users: {
@@ -87,19 +87,9 @@ export default {
       ],
       usersBackup: [],
       txtSearch: '',
+      overlayTB:null,
+      debounceSearch:null
     }
-  },
-
-  watch: {
-    txtSearch() {
-      if (this.txtSearch !== '' && this.txtSearch !== null) {
-        this.users.data = this.usersBackup.filter((e) =>
-          e.role_name.toLowerCase().includes(this.txtSearch.toLowerCase())
-        )
-      } else {
-        this.users.data = this.usersBackup
-      }
-    },
   },
 
 
@@ -123,10 +113,12 @@ export default {
       }
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formAddUser))
-      dataForm.append("file",this.imageUP)
+      if(this.imageUP !== null) dataForm.append("file",this.imageUP)
+      console.log(this.imageUP);
       axios.post(`${url}user/add`, dataForm,{
           headers:{
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'Accept':'application/json'
           },
           // transformRequest:""
         }
@@ -138,20 +130,25 @@ export default {
     },
 
     onEditUser() {
-      for (const obj of this.users.data) {
-        if (obj.id === this.formEditUser.id) {
-          obj.username = this.formEditUser.username
-          obj.status = this.formEditUser.status
-          break
-        }
-      }
+
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formEditUser))
-      dataForm.append("file",this.imageUP)
+      if(this.imageUP !== null) dataForm.append("file",this.imageUP)
       axios.put(`${url}user/update`,dataForm,{
         headers:{
             'Content-Type':'multipart/form-data',
             'Accept':'application/json'}
+      }).then(_=>{
+        for (const obj of this.users.data) {
+          if (obj.id === this.formEditUser.id) {
+            obj.username = this.formEditUser.username
+            obj.email = this.formEditUser.email
+            obj.phone = this.formEditUser.phone
+            obj.address = this.formEditUser.address
+            obj.image = _.data.image
+            break
+          }
+        }
       })
       this.$bvModal.hide('modal-edit-user')
     },
@@ -177,9 +174,40 @@ export default {
     },
     getImg(name){
       console.log(name);
-      return `${url}image/get/${name}`
+      return `${axios.defaults.baseURL}/api/image/get/${name}`
     }
   },
+  filters:{
+    formatNumber:function(value){
+      return new Intl.NumberFormat().format(value)+"đ"
+    },
+    formatDate: function(str) {
+      var date = new Date(str)
+      return `${date.getHours()} giờ ${date.getMinutes()} phút ${date.getSeconds()} giây, ngày ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+
+    }
+  },
+  watch:{
+    txtSearch(){
+      this.overlayTB = true
+      clearTimeout(this.debounceSearch)
+      this.debounceSearch = setTimeout(
+        ()=>{
+          this.users.data = []
+          axios.get(`/api/user/search/${this.txtSearch}`)
+          .then((res)=>{
+            console.log(res.data);
+            this.users.data = res.data
+            this.overlayTB= false
+          })
+          .catch( er => {
+            console.log(er);
+            this.overlayTB= false})
+
+        },1000
+      )
+    }
+  }
 }
 </script>
 
@@ -198,50 +226,61 @@ export default {
         >
       </b-col>
     </b-row>
-    <b-table
-      striped
-      hover
-      responsive
-      :items="users.data"
-      :fields="users.fields"
-      :busy="users.isBusy"
+    <b-overlay
+      :show="overlayTB"
+      rounded="sm"
     >
-      <template  v-slot:cell(image)="role">
-        <span >
-          <img :src="getImg(role.item.image)" style="width: 50px;" alt="">
-        </span>
-      </template>
-      <template v-slot:table-busy>
-        <div class="text-center text-secondary my-2">
-          <b-spinner class="align-middle me-2"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </template>
-      <template v-slot:cell(status)="role">
-        <span v-if="role.item.status === 0" class="text-danger text-bold">
-          Inactive
-        </span>
-        <span v-if="role.item.status === 1" class="text-success text-bold">
-          Active
-        </span>
-      </template>
+      <b-table
+        striped
+        hover
+        responsive
+        :items="users.data"
+        :fields="users.fields"
+        :busy="users.isBusy"
+      >
+        <template  v-slot:cell(image)="role">
+          <span >
+            <img :src="getImg(role.item.image)" style="width: 50px;" alt="">
+          </span>
+        </template>
+        <template v-slot:table-busy>
+          <div class="text-center text-secondary my-2">
+            <b-spinner class="align-middle me-2"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+        </template>
+        <template v-slot:cell(created)="role">
+          <span>
+            {{ role.item.created | formatDate}}
+          </span>
+        </template>
+        <template v-slot:cell(status)="role">
+          <span v-if="role.item.status === 0" class="text-danger text-bold">
+            Inactive
+          </span>
+          <span v-if="role.item.status === 1" class="text-success text-bold">
+            Active
+          </span>
+        </template>
 
-      <template v-slot:cell(admin_id)="role">
-        <span v-if="role.item.admin_id === 1" class="text-bold"> Admin </span>
-        <span v-if="role.item.admin_id === 2" class="text-bold"> Manager </span>
-      </template>
-      <template v-slot:cell(action)="role">
-        <b-button
-          class="mr-5"
-          variant="outline-danger"
-          @click="onRemoveUser(role.item)"
-          ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
-        >
-        <b-button variant="outline-info" @click="mdEditUser(role.item)"
-          ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
-        >
-      </template>
-    </b-table>
+        <template v-slot:cell(admin_id)="role">
+          <span v-if="role.item.admin_id === 1" class="text-bold"> Admin </span>
+          <span v-if="role.item.admin_id === 2" class="text-bold"> Manager </span>
+        </template>
+        <template v-slot:cell(action)="role">
+          <b-button
+            class="mr-5"
+            variant="outline-danger"
+            @click="onRemoveUser(role.item)"
+            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
+          >
+          <b-button variant="outline-info" @click="mdEditUser(role.item)"
+            ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
+          >
+        </template>
+      </b-table>
+    </b-overlay>
+
     <nav
       id="nav-pag"
       aria-label="Page navigation"
@@ -250,7 +289,7 @@ export default {
     >
       <b-pagination
         v-model="currentPage"
-        :total-rows="users.meta.pagination.total"
+        :total-rows="1"
         :per-page="usersPerPage"
         limit="1"
       >

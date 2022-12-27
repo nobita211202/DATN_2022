@@ -17,6 +17,10 @@ export default {
   },
   methods:{
     changePassword(){
+      if(this.newPassword === this.oldPassword) {
+        this.errMsg = "Mật khẩu mới trùng mật khẩu cũ"
+        return
+      }
       if(this.newPassword === this.confirmPassword){
         var user = JSON.parse(localStorage.getItem("user"))
         console.log(user );
@@ -72,15 +76,15 @@ export default {
           </form>
           <ul class="navbar-nav d-flex flex-lg-row flex-column ms-auto mb-2 mb-lg-0">
             <li class="nav-item w-100 ">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Home</a>
+                <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">Home</a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Abount</a>
+                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
             </li>
 
             <div class="d-flex ps-lg-3 w-100">
               <!-- SEARCH -->
-              <li class="nav-item">
+              <li class="nav-item ms-auto">
                 <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">
                   <i class="text-dark fs-3 bi bi-cart2"></i>
                 </a>
@@ -120,7 +124,7 @@ export default {
                         <!--                    <a href="javascript:void(0)" class="dropdown-item" @click="$bvModal.show('bv-employee-management')">-->
                         <!--                      <i class="dropdown-icon fe fe-users"></i> Quản lý nhân viên-->
                         <!--                    </a>-->
-                        <a href="/my-profile" class="dropdown-item">
+                        <a href="/profile" class="dropdown-item">
                           <i class="dropdown-icon fe fe-user"></i> Quản lý tài khoản
                         </a>
                         <a  class="dropdown-item btn " @click="$bvModal.show('modal-dmk')">
