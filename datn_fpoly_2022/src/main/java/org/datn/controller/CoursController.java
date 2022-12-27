@@ -3,24 +3,20 @@ package org.datn.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.datn.entity.Course;
-
 import org.datn.service.CoursService;
 import org.datn.service.ImageService;
 import org.datn.service.LikeService;
 import org.datn.utils.Base.EntityAndImage;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Optional;
-import java.util.Vector;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/course")
+@SuppressWarnings("all")
 public class CoursController {
 
     @Autowired
@@ -78,7 +74,13 @@ public class CoursController {
     ){
         return ResponseEntity.ok(coursService.getByName(name));
     }
-
+    @GetMapping("/get-by-purchase")
+    public ResponseEntity findTop5CoursePurchase(){
+        return ResponseEntity.ok(coursService.findTop5CoursePurchase().stream().map(course -> new Object[]{
+                        course,null
+                }
+        ));
+    }
 }
 
 
