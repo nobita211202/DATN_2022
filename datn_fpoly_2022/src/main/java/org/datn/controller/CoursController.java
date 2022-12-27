@@ -78,6 +78,10 @@ public class CoursController {
     ){
         return ResponseEntity.ok(coursService.getByName(name));
     }
+    @GetMapping("/search/")
+    public ResponseEntity searchAll() {
+        return ResponseEntity.ok(coursService.findAll());
+    }
 
 }
 

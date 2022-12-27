@@ -14,6 +14,7 @@ public interface CategoryService {
     void delete(long id);
     Category put(Category category);
     boolean exists(long id);
+    List<Category> search(String name);
     Page<Category> pageCategories(int pageNumber ,int pageSize);
     List<Category> findCategoryByParentId(Long id);
     List<Category> getAllByParentIsNull();

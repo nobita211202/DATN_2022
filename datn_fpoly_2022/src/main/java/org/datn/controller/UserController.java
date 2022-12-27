@@ -44,6 +44,16 @@ public class UserController {
         return ResponseEntity.ok(optional.get());
     }
 
+    @GetMapping("/search/{txtSearch}")
+    public ResponseEntity search(@PathVariable("txtSearch") String txtSearch) {
+        if(txtSearch.isEmpty()) return ResponseEntity.ok(userService.getAll());
+        return ResponseEntity.ok(userService.search(txtSearch));
+    }
+    @GetMapping("/search/")
+    public ResponseEntity searchAll() {
+        return ResponseEntity.ok(userService.getAll());
+    }
+
     @PostMapping("/add")
     public ResponseEntity<User> add(
         @ModelAttribute EntityAndImage data
@@ -75,4 +85,6 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.ok().build();
     }
+
+
 }

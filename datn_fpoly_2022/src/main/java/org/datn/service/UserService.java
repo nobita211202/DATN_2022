@@ -12,5 +12,6 @@ public interface UserService {
     User save(User user);
     void delete(long id);
     User put(User user);
+    List<User> search(String txtSearch);
     boolean exists(long id);
 }
