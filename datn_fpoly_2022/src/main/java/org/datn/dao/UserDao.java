@@ -36,6 +36,8 @@ public interface UserDao extends JpaRepository<User, Long> {
     @Query("SELECT e FROM User e WHERE e.email LIKE :email AND e.password LIKE :password")
     User findOneByEmailIgnoreCaseAndPassword(String email, String password);
 
+    @Query("select u from User u where u.username = :username or  u.name like concat('%',:name,'%') ")
+    List<User> findAllByNameOrUsername(@Param("name") String name,@Param("username") String username);
 
-    User findByUsernameOrEmail(String username,String email);
+    User findByUsernameOrEmail(String username, String email);
 }

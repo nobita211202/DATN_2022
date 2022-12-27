@@ -26,6 +26,9 @@ public class User {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
+    @Column(name = "name_")
+    private String name;
+
     @Size(max = 255)
     @Column(name = "username", nullable = false)
     private String username;

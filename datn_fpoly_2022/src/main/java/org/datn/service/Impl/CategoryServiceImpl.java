@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category save(Category category) {
-        return categoryDao.save(category);
+        return categoryDao.save(bases.getBase(category,Bases.CREATE));
     }
 
     @Override
@@ -52,6 +52,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean exists(long id) {
         return categoryDao.existsById(id);
+    }
+
+    @Override
+    public List<Category> search(String name) {
+        return categoryDao.findAllByName(name);
     }
 
     @Override

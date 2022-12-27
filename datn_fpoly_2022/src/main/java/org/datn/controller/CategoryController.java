@@ -93,6 +93,18 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(categoryService.findCategoryByParentId(id));
     }
+
+    @GetMapping("/search/{txtSearch}")
+    public ResponseEntity search(
+            @PathVariable("txtSearch") String txtSearch
+    ) {
+        return ResponseEntity.ok(categoryService.search(txtSearch));
+    }
+    @GetMapping("/search/")
+    public ResponseEntity searchAll() {
+          return ResponseEntity.ok(categoryService.getAll());
+    }
+
     @GetMapping("/get/parent")
     public ResponseEntity findParent(){
         return ResponseEntity.ok(categoryService.getAllByParentIsNull());

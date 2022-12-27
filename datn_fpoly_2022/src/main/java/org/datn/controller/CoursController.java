@@ -74,6 +74,10 @@ public class CoursController {
     ){
         return ResponseEntity.ok(coursService.getByName(name));
     }
+    @GetMapping("/search/")
+    public ResponseEntity searchAll() {
+        return ResponseEntity.ok(coursService.findAll());
+    }
     @GetMapping("/get-by-purchase")
     public ResponseEntity findTop5CoursePurchase(){
         return ResponseEntity.ok(coursService.findTop5CoursePurchase().stream().map(course -> new Object[]{

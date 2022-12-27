@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
 //        return userDao.findUserByToken(token);
 //    }
 
+    public List<User> search(String txtSearch){
+        return userDao.findAllByNameOrUsername(txtSearch,txtSearch);
+    };
+
     @Override
     public User put(User user) {
         return userDao.save(bases.getBase(user,Bases.UPDATE));
