@@ -13,26 +13,13 @@ export default {
       newPassword:"",
       confirmPassword:"",
       errMsg:"",
-      isLogin : false
     }
   },
-  created(){
-    this.initComponent()
-  },
   methods:{
-    initComponent(){
-      if(localStorage.getItem("user") !=null){
-        this.isLogin = true
-        this.currentUser = JSON.parse(localStorage.getItem("user"))
-      }else {
-        this.isLogin = false
-      }
-      console.log(this.isLogin);
-    },
     changePassword(){
       if(this.newPassword === this.confirmPassword){
         var user = JSON.parse(localStorage.getItem("user"))
-        console.log(user);
+        console.log(user );
         if(user.password !== this.oldPassword){
           this.errMsg = "Mật khẩu cũ không đúng"
           return
@@ -88,11 +75,11 @@ export default {
                 <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Home</a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">About</a>
+                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Abount</a>
             </li>
 
-            <div class="d-flex ps-lg-3 w-100" v-if="isLogin">
-
+            <div class="d-flex ps-lg-3 w-100">
+              <!-- SEARCH -->
               <li class="nav-item">
                 <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">
                   <i class="text-dark fs-3 bi bi-cart2"></i>
@@ -219,30 +206,7 @@ export default {
                     </div>
                   </div>
             </div>
-            <div class="d-flex ps-lg-3 w-100" v-hide="isLogin">
 
-            <li class="nav-item">
-              <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">
-                <i class="text-dark fs-3 bi bi-cart2"></i>
-              </a>
-            </li>
-                <div class=" d-flex order-lg-2">
-
-                  <div class="dropdown d-flex profile-1">
-                    <a
-
-                      href="/login"
-                      class="nav-link leading-none d-flex icon"
-                      title="Đăng nhập"
-                    >
-                  <!-- icon login vue 2-->
-
-
-                      <i class="fe fe-arrow-right"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
           </ul>
 
         </div>
