@@ -16,13 +16,17 @@ export default {
       listCouses: {
         data: [
 
-        ]
+        ],
+        data_top: [
+
+        ],
       },categoryParent : [],
     }
   },
   created() {
     this.getCategoryParent();
     this.getCourse();
+    this.getCourseByPurchase();
   }
   ,methods: {
     getCategoryParent(){
@@ -41,6 +45,13 @@ export default {
     },getCourse(){
       axios.get(`/api/course/getCourseAndLike/${15}`).then((response) => {
         this.listCouses.data = response.data
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error)
+      })
+    },getCourseByPurchase(){
+      axios.get(`/api/course/get-by-purchase`).then((response) => {
+        this.listCouses.data_top = response.data
         console.log(response.data);
       }).catch((error) => {
         console.log(error)
@@ -128,9 +139,9 @@ export default {
     </div>
     <div class="container-xxl mt-5">
       <div>
-        <span class="fs-1 fw-blod">Khóa học được học nhiều nhất</span>
+        <span class="fs-1 fw-blod">Khóa học được mua nhiều nhất</span>
       </div>
-      <!-- <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data" /> -->
+       <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data_top" />
 
     </div>
   </Layout>
