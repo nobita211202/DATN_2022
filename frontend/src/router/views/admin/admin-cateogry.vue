@@ -2,7 +2,7 @@
 import modalIcon from "@components/modal_choose_icon.vue"
 import axios from "@/node_modules/axios"
 import { bus } from "@/src/main"
-const url="http://localhost:8080/api/"
+const url="/api/"
 
 export default {
   components:{
@@ -11,7 +11,8 @@ export default {
 
   data() {
     return {
-
+      overlayTB:null,
+      debounceSearch:null,
       categories: {
         isBusy: false,
         data: [
@@ -66,16 +67,26 @@ export default {
     }
   },
 
-  watch: {
-    txtSearch() {
-      if (this.txtSearch !== '' && this.txtSearch !== null) {
-        this.categories.data = this.categoriesBackup.filter((e) =>
-          e.name_.toLowerCase().includes(this.txtSearch.toLowerCase())
-        )
-      } else {
-        this.categories.data = this.categoriesBackup
-      }
-    },
+  watch:{
+    txtSearch(){
+      this.overlayTB = true
+      clearTimeout(this.debounceSearch)
+      this.debounceSearch = setTimeout(
+        ()=>{
+          this.categories.data = []
+          axios.get(`/api/category/search/${this.txtSearch}`)
+          .then((res)=>{
+            console.log(res.data);
+            this.categories.data = res.data
+            this.overlayTB= false
+          })
+          .catch( er => {
+            console.log(er);
+            this.overlayTB= false})
+
+        },1000
+      )
+    }
   },
 
   created() {
@@ -162,7 +173,17 @@ export default {
       this.$bvModal.show('modal-edit-category')
     },
 
-  }
+  },
+  filters:{
+    formatNumber:function(value){
+      return new Intl.NumberFormat().format(value)+"đ"
+    },
+    formatDate: function(str) {
+      var date = new Date(str)
+      return `${date.getHours()} giờ ${date.getMinutes()} phút ${date.getSeconds()} giây, ngày ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+
+    }
+  },
 }
 </script>
 
@@ -184,51 +205,60 @@ export default {
         >
       </b-col>
     </b-row>
-    <b-table
-      striped
-      hover
-      responsive
-      :items="categories.data"
-      :fields="categories.fields"
-      :busy="categories.isBusy"
+    <b-overlay
+      :show="overlayTB"
+      rounded="sm"
     >
-      <template v-slot:table-busy>
-        <div class="text-center text-secondary my-2">
-          <b-spinner class="align-middle me-2"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </template>
-      <template v-slot:cell(parent)="cate">
-        <span> {{ nameOfParentCategory(cate.item) }} </span>
-      </template>
-      <template v-slot:cell(status)="cate">
-        <span v-if="cate.item.status === 0" class="text-danger text-bold">
-          Inactive
-        </span>
-        <span v-if="cate.item.status === 1" class="text-success text-bold">
-          Active
-        </span>
-      </template>
+      <b-table
+        striped
+        hover
+        responsive
+        :items="categories.data"
+        :fields="categories.fields"
+        :busy="categories.isBusy"
+      >
+        <template v-slot:table-busy>
+          <div class="text-center text-secondary my-2">
+            <b-spinner class="align-middle me-2"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+        </template>
+        <template v-slot:cell(parent)="cate">
+          <span> {{ nameOfParentCategory(cate.item) }} </span>
+        </template>
+        <template v-slot:cell(status)="cate">
+          <span v-if="cate.item.status === 0" class="text-danger text-bold">
+            Inactive
+          </span>
+          <span v-if="cate.item.status === 1" class="text-success text-bold">
+            Active
+          </span>
+        </template>
 
-      <template v-slot:cell(image)="cate">
-        <span class="fs-1" :class="cate.item.image"></span>
-      </template>
-      <template v-slot:cell(admin_id)="cate">
-        <span v-if="cate.item.admin_id === 1" class="text-bold"> Admin </span>
-        <span v-if="cate.item.admin_id === 2" class="text-bold"> Manager </span>
-      </template>
-      <template v-slot:cell(action)="cate">
-        <b-button
-          class="mr-5"
-          variant="outline-danger"
-          @click="onRemoveCategory(cate.item)"
-          ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
-        >
-        <b-button variant="outline-info" @click="mdEditCategory(cate.item)"
-          ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
-        >
-      </template>
-    </b-table>
+        <template v-slot:cell(image)="cate">
+          <span class="fs-1" :class="cate.item.image"></span>
+        </template>
+        <template v-slot:cell(admin_id)="cate">
+          <span v-if="cate.item.admin_id === 1" class="text-bold"> Admin </span>
+          <span v-if="cate.item.admin_id === 2" class="text-bold"> Manager </span>
+        </template>
+        <template v-slot:cell(created)="cate">
+          <span> {{ cate.item.created | formatDate }} </span>
+        </template>
+        <template v-slot:cell(action)="cate">
+          <b-button
+            class="mr-5"
+            variant="outline-danger"
+            @click="onRemoveCategory(cate.item)"
+            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
+          >
+          <b-button variant="outline-info" @click="mdEditCategory(cate.item)"
+            ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
+          >
+        </template>
+      </b-table>
+    </b-overlay>
+
     <b-modal
       id="modal-add-category"
       size="lg"

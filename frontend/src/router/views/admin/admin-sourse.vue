@@ -28,7 +28,9 @@ export default {
   },
   data() {
     return {
-      imageUP:"",
+      debounceSearch:null,
+      overlayTB:null,
+      imageUP:null,
       editor: "ClassicEditor",
         editorData: '<p>Content of the editor.</p>',
         editorConfig: {
@@ -104,18 +106,6 @@ export default {
     }
   },
 
-  watch: {
-    txtSearch() {
-      if (this.txtSearch !== '' && this.txtSearch !== null) {
-        this.courses.data = this.rolesBackup.filter((e) =>
-          e.role_name.toLowerCase().includes(this.txtSearch.toLowerCase())
-        )
-      } else {
-        this.courses.data = this.rolesBackup
-      }
-    },
-  },
-
 
   methods: {
     chooseImg(even) {
@@ -131,7 +121,7 @@ export default {
     onAddCourse() {
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formAddCourse))
-      dataForm.append("file",this.imageUP)
+      if(this.imageUP !== null) dataForm.append("file",this.imageUP)
       axios.post(`${url}course/add`,dataForm,{
         headers:{
             'Content-Type':'multipart/form-data',
@@ -148,7 +138,7 @@ export default {
 
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formEditCourse))
-      dataForm.append("file",this.imageUP)
+      if(this.imageUP !== null) dataForm.append("file",this.imageUP)
       axios.put(`${url}course/update`,dataForm,{
         headers:{
             'Content-Type':'multipart/form-data',
@@ -198,9 +188,31 @@ export default {
     },
     formatDate: function(str) {
       var date = new Date(str)
-      return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+      return `${date.getHours()} giờ ${date.getMinutes()} phút ${date.getSeconds()} giây, ngày ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+
     }
   },
+  watch:{
+    txtSearch(){
+      this.overlayTB = true
+      clearTimeout(this.debounceSearch)
+      this.debounceSearch = setTimeout(
+        ()=>{
+          this.courses.data = []
+          axios.get(`/api/course/search/${this.txtSearch}`)
+          .then((res)=>{
+            console.log(res.data);
+            this.courses.data = res.data
+            this.overlayTB= false
+          })
+          .catch( er => {
+            console.log(er);
+            this.overlayTB= false})
+
+        },1000
+      )
+    }
+  }
 }
 </script>
 
@@ -219,49 +231,55 @@ export default {
         >
       </b-col>
     </b-row>
-    <b-table
-      striped
-      hover
-      responsive
-      :items="courses.data"
-      :fields="courses.fields"
-      :busy="courses.isBusy"
+    <b-overlay
+      :show="overlayTB"
+      rounded="sm"
     >
-      <template v-slot:cell(image)="course">
-        <span class="">
-          <img :src="getImg(course.item.image)" style="width: 150px;" alt="">
-        </span>
-      </template>
-      <template v-slot:table-busy>
-        <div class="text-center text-secondary my-2">
-          <b-spinner class="align-middle me-2"></b-spinner>
-          <strong>Loading...</strong>
-        </div>
-      </template>
+      <b-table
+        striped
+        hover
+        responsive
+        :items="courses.data"
+        :fields="courses.fields"
+        :busy="courses.isBusy"
+      >
+        <template v-slot:cell(image)="course">
+          <span class="">
+            <img :src="getImg(course.item.image)" style="width: 150px;" alt="">
+          </span>
+        </template>
+        <template v-slot:table-busy>
+          <div class="text-center text-secondary my-2">
+            <b-spinner class="align-middle me-2"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+        </template>
 
 
-      <template v-slot:cell(admin_id)="course">
-        <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
-        <span v-if="course.item.admin_id === 2" class="text-bold"> Manager </span>
-      </template>
-      <template v-slot:cell(created)="course">
-        <span>{{ course.item.created | formatDate}}</span>
-      </template>
-      <template v-slot:cell(price)="course">
-        <span class="fw-bold">{{course.item.price | formatNumber}}</span>
-      </template>
-      <template v-slot:cell(action)="course">
-        <b-button
-          class="mr-5"
-          variant="outline-danger"
-          @click="onRemoveCourse(course.item)"
-          ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
-        >
-        <b-button variant="outline-info" @click="mdEditCourse(course.item)"
-          ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
-        >
-      </template>
-    </b-table>
+        <template v-slot:cell(admin_id)="course">
+          <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
+          <span v-if="course.item.admin_id === 2" class="text-bold"> Manager </span>
+        </template>
+        <template v-slot:cell(created)="course">
+          <span>{{ course.item.created | formatDate}}</span>
+        </template>
+        <template v-slot:cell(price)="course">
+          <span class="fw-bold">{{course.item.price | formatNumber}}</span>
+        </template>
+        <template v-slot:cell(action)="course">
+          <b-button
+            class="mr-5"
+            variant="outline-danger"
+            @click="onRemoveCourse(course.item)"
+            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
+          >
+          <b-button variant="outline-info" @click="mdEditCourse(course.item)"
+            ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
+          >
+        </template>
+      </b-table>
+    </b-overlay>
+
     <nav
       id="nav-pag"
       aria-label="Page navigation"

@@ -15,7 +15,6 @@
               <span class="text-dark">
                 <span class="fs-3 text-dark">{{course.price | formatNumber}}</span>
               </span>
-              <b-button variant="danger" class="my-2 w-100">Đăng kí ngay</b-button>
               <b-button variant="success"  class=" my-2 w-100"  @click.prevent="timer(cartCourse)"><i class="fa fa-cart-plus"></i> Thêm vào giỏ</b-button>
               <span class="">
                 <ul class="pt-5 pb-2  text-dark d-flex flex-column">
