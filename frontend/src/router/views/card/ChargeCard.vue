@@ -128,6 +128,7 @@ export default {
     },pushCard(){
       this.show=true;
       axios.post('/api/auto-card/push?userId='+this.card.userId+"&cardPriceId="+this.card.cardPriceId+"&seri="+this.card.seri+"&code="+this.card.code).then((response) => {
+        console.log(response.data)
         this.getHistory();
         if(response.data.trans_id === null || response.data.trans_id === undefined){
           axios.put("/api/auto-card/update-status/" + response.data.request_id).then(res => {

@@ -83,12 +83,12 @@ public class CardPushDataService{
     public ResponseEntity<?> pushCard(CardRequest card) {
         String url = "https://thecaosieure.com/chargingws/v2" ;
         CardPrice cardPrice = cardPriceService.findById(card.getCardPriceId());
-        String partnerId = "73485247815";
+        String partnerId = "35866267683";
         String type = cardPrice.getTelecom().getCode();
         String code = card.getCode();
         String serial = card.getSeri();
         String amount = cardPrice.getPrice() + "";
-        String partnerKey = "b80e9083425d4be6d7496d38dc80932b" ;
+        String partnerKey = "e30165aad3bd58591317812901224ddd" ;
         String requestId = String.valueOf(new Random().nextInt(100000000)+ new Random().nextInt(1000000));
         String signature = HashAlgorithm.MD5(partnerKey + code + serial);
         log.info("signature {} encoded md5  : " + signature);

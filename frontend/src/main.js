@@ -9,7 +9,7 @@ import Cookie from "vue-cookie"
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'vue2-toast/lib/toast.css';
 import Toast from 'vue2-toast';
-
+import moment from 'moment'
 import App from './app.vue'
 
 // eslint-disable-next-line import/no-relative-parent-imports
@@ -30,6 +30,12 @@ Vue.use(Toast, {
   width: '250px'
 });
 Vue.config.productionTip = false
+// format date time vue 2
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm:ss')
+  }
+});
 
 Vue.use( CKEditor );
 // Install BootstrapVue
