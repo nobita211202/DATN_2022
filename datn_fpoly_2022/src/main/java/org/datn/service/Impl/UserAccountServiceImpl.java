@@ -34,8 +34,14 @@ public class UserAccountServiceImpl implements UserAccountService {
     BlockUserDao bldao;
 
     int x = 0;
+
     @Override
-    public User findById(String email) {
+    public User findById(long id) {
+        return udao.findById(id).get();
+    }
+
+    @Override
+    public User findByEmail(String email) {
         return udao.findByEmail(email);
     }
 

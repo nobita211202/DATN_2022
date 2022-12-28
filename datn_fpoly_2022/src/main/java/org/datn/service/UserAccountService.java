@@ -18,7 +18,9 @@ import java.util.List;
 public interface UserAccountService  {
 
 
-    User findById(String email);
+    User findById(long id);
+    User findByEmail(String email);
+
 
     BlockUser findByEmailInBlockUser(User u);
 

@@ -55,8 +55,11 @@ public class CoursController {
     @PutMapping("/update")
     public Course updateCours (@ModelAttribute EntityAndImage data) throws JsonProcessingException {   //Update khóa học
         Course course = (Course) new ObjectMapper().readValue(data.getJson(), Course.class);
-        course.setImage(service.saveImage(data.getFile()));
-        coursService.createCours(course);
+        course.setImage(data.getFile() == null ? null : service.saveImage(data.getFile()));
+        if(course.getImage() == null) {
+            Course course1= coursService.findByIDCours(course.getId());
+            course.setImage(course1.getImage());
+        }
         return coursService.updateCours(course);
     }
     @GetMapping("/get/{id}")

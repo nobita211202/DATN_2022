@@ -23,9 +23,8 @@ public class UsersRole {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private long user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

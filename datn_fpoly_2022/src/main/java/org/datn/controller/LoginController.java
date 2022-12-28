@@ -39,6 +39,15 @@ public class LoginController {
         return userAccountService.findAll();
     }
 
+    @GetMapping("/logined/{id}")
+    public ResponseEntity checkLogin(
+            @PathVariable("id") long id
+    ){
+        User user= userAccountService.findById(id);
+        user.setPassword("");
+        return ResponseEntity.ok(user);
+    }
+
     @PostMapping("/login")
     public ResponseData checkLogin(@RequestBody User user) throws Exception {
         String ip = InetAddress.getLocalHost().getHostAddress();            //lấy ip
@@ -59,7 +68,7 @@ public class LoginController {
             response.setHeader("Authorization", token.getTokenCode());           //set token vào header
            return new ResponseData("Successfully","Login success",u2, HttpStatus.OK.value(), token.getTokenCode()); //trả về token
         }
-        if (!(responseData.getStatus()==200)&& x == 5 && userAccountService.findById(user.getEmail())!=null && !(responseData.getStatus()==10)){
+        if (!(responseData.getStatus()==200)&& x == 5 && userAccountService.findByEmail(user.getEmail())!=null && !(responseData.getStatus()==10)){
             x=0;
             responseData.setStatus(5000);
             BlockUser bl = new BlockUser();
@@ -67,10 +76,10 @@ public class LoginController {
             bl.setCreated(Instant.now());
             bl.setEffectFrom(Instant.now());                                        //time hiện tại
             bl.setEffectUntil(Instant.now().plusSeconds(60*15));        //time kết thúc
-            bl.setUser(userAccountService.findById(user.getEmail()));
+            bl.setUser(userAccountService.findByEmail(user.getEmail()));
             userAccountService.createIpInBlockUser(bl);
             return new ResponseData("Error","Login failed",user,HttpStatus.FORBIDDEN.value(), tokenService.findByUserId(user.getId()).getTokenCode());
-        }else if (!(responseData.getStatus()==200) && userAccountService.findById(user.getEmail())!=null && !(responseData.getStatus()==10)){
+        }else if (!(responseData.getStatus()==200) && userAccountService.findByEmail(user.getEmail())!=null && !(responseData.getStatus()==10)){
             x++;
         }
         throw new RuntimeException("Login failed");
