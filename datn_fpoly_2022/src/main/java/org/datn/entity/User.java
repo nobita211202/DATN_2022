@@ -26,6 +26,10 @@ public class User {
     @JoinColumn(name = "admin_id")
     private Admin admin;
 
+    @OneToMany(mappedBy = "user")
+    private List<UsersRole> usersRoles;
+
+
     @Column(name = "name_")
     private String name;
 
@@ -34,7 +38,6 @@ public class User {
     private String username;
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 

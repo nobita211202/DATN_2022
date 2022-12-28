@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -40,4 +41,37 @@ public interface UserDao extends JpaRepository<User, Long> {
     List<User> findAllByNameOrUsername(@Param("name") String name,@Param("username") String username);
 
     User findByUsernameOrEmail(String username, String email);
+
+    @Query("update User u " +
+            "set u.name =:name ," +
+            " u.email =:email ," +
+            " u.phone =:phone , " +
+            "u.address=:address, " +
+            "u.modifier =:modifier," +
+            "u.modified=:modified")
+    void updateUserNotImage(
+            @Param("name") String name,
+            @Param("email") String email,
+            @Param("phone") String phone,
+            @Param("address") String address,
+            @Param("modifier") String modifier,
+            @Param("modified") Date modified
+    );
+    @Query("update User u " +
+            "set u.name =:name ," +
+            " u.image =:image ," +
+            " u.email =:email ," +
+            " u.phone =:phone , " +
+            "u.address=:address, " +
+            "u.modifier =:modifier," +
+            "u.modified=:modified")
+    void updateUserAndImage(
+            @Param("name") String name,
+            @Param("email") String email,
+            @Param("image") String image,
+            @Param("phone") String phone,
+            @Param("address") String address,
+            @Param("modifier") String modifier,
+            @Param("modified") Date modified
+    );
 }
