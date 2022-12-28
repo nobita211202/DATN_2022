@@ -42,17 +42,27 @@ router.beforeEach((routeTo, routeFrom, next) => {
   // Check if auth is required on this route
   // (including nested routes).
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
-
+  const authAdmin = routeTo.matched.some((route) => route.meta.authAdmin)
+  const authStaff = routeTo.matched.some((route) => route.meta.authStaff)
   // If auth isn't required for the route, just continue.
   if (!authRequired) return next()
-
+  const userLogined = store.getters['auth/loggedIn']
   // If auth is required and the user is logged in...
-  if (store.getters['auth/loggedIn']) {
+
+  if (userLogined) {
     // Validate the local user token...
     return store.dispatch('auth/validate').then((validUser) => {
       // Then continue if the token still represents a valid user,
       // otherwise redirect to login.
-      validUser ? next() : redirectToLogin()
+      if(authAdmin){
+        const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
+        return userRole.includes(2) ? next() : next({name:"home"})
+      }
+      if(authStaff){
+        const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
+        return userRole.includes(3) ? next() : next({name:"home"})
+      }
+      return validUser ? next() : redirectToLogin()
     })
   }
 

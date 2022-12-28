@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import axios from "axios"
+import { authMethods } from '@state/helpers'
   export default{
       name:"loginForm",
       data(){
@@ -71,17 +71,24 @@
           }
       },
       methods:{
-          login(){
+          ...authMethods,
+          async login(){
               if(this.validate(this.acc)) return
               this.acc.email= Object.assign(this.acc.username)
-              axios.post("/api/login",this.acc)
-              .then(_=>{
-                this.$cookie.set("acc",_.data.token)
-                this.loginFalseMsg=false
-              })
-              .catch(_=>{
-                this.loginFalseMsg=true
-              })
+              const respon = await this.logIn(this.acc)
+            //   this.loginFalseMsg = !respon.status
+              console.log(respon);
+              this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
+            //   if(respon.status) return
+
+            //   axios.post("/api/login",this.acc)
+            //   .then(_=>{
+            //     this.$cookie.set("acc",_.data.token)
+            //     this.loginFalseMsg=false
+            //   })
+            //   .catch(_=>{
+            //     this.loginFalseMsg=true
+            //   })
           },
           validate(acc){
               if(!acc.username){
