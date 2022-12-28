@@ -82,7 +82,7 @@
                     <span class="fs-4 d-flex ">
                       Tổng: <span class="fw-bold ms-auto">{{sumMoney() | formatNumber}}</span>
                     </span><hr>
-                    <b-button class="ms-auto">Thanh toán</b-button>
+                    <a href="/user/charge-card" class="ms-auto btn btn-success">Thanh toán</a >
                   </div>
                 </div>
               </div>

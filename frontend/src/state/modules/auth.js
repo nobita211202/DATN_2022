@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/node_modules/axios';
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -28,15 +28,28 @@ export const actions = {
   },
 
   // Logs in the current user.
-  logIn({ commit, dispatch, getters }, { username, password } = {}) {
-    if (getters.loggedIn) return dispatch('validate')
+  logIn({ commit, dispatch, getters }, acc = {}) {
+    console.log(commit);
+    console.log(dispatch);
+    // if (getters.loggedIn) return dispatch('validate')
 
     return axios
-      .post('/api/session', { username, password })
+      .post('/api/login', acc)
       .then((response) => {
-        const user = response.data
+        console.log(true);
+        const user = response.data.value
         commit('SET_CURRENT_USER', user)
-        return user
+
+        return {
+          status:true,
+          data:user
+        }
+      })
+      .catch(_=>{
+        return {
+          status:false,
+          data:_.data
+        }
       })
   },
 
@@ -49,9 +62,11 @@ export const actions = {
   // with new data from the API.
   validate({ commit, state }) {
     if (!state.currentUser) return Promise.resolve(null)
-
+    console.log(state.currentUser);
+    console.log(axios.defaults.baseURL);
+    // const url = `${Object.assign(axios.defaults.baseURL)}/api/logined/${state.currentUser.id}`
     return axios
-      .get('/api/session')
+      .get(`http://localhost:8888/api/logined/${state.currentUser.id}`)
       .then((response) => {
         const user = response.data
         commit('SET_CURRENT_USER', user)
@@ -81,7 +96,7 @@ function saveState(key, state) {
 }
 
 function setDefaultAuthHeaders(state) {
-  axios.defaults.headers.common.Authorization = state.currentUser
+  axios.defaults.headers.Authorization = state.currentUser
     ? state.currentUser.token
     : ''
 }
