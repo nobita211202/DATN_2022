@@ -1,9 +1,11 @@
 <script>
 import axios from '@/node_modules/axios'
-
+import store from '@/src/state/store'
+console.log(store.state);
 export default {
   data() {
     return {
+      user: store.state.auth.currentUser,
       currentUser: {
         name: 'admin',
         is_admin: true,
@@ -13,6 +15,15 @@ export default {
       newPassword:"",
       confirmPassword:"",
       errMsg:"",
+    }
+  },filters:{
+    formatNumber:function(value){
+      return new Intl.NumberFormat().format(value)+"đ"
+    },
+    formatDate: function(str) {
+      var date = new Date(str)
+      return `${date.getHours()} giờ ${date.getMinutes()} phút ${date.getSeconds()} giây, ngày ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+
     }
   },
   methods:{
@@ -47,7 +58,7 @@ export default {
 </script>
 
 <style scoped>
-  input{
+  .input{
     outline: none;
     border-radius: 0;
     border: none !important;
@@ -72,7 +83,7 @@ export default {
             <span class="px-2">
               <i class="fs-4 bi bi-search"></i>
             </span>
-            <input class="w-75" type="search" placeholder="Search" aria-label="Search">
+            <input class="w-75 input" type="search" placeholder="Search" aria-label="Search">
           </form>
           <ul class="navbar-nav d-flex flex-lg-row flex-column ms-auto mb-2 mb-lg-0">
             <li class="nav-item w-100 ">
@@ -90,7 +101,7 @@ export default {
                 </a>
               </li>
                   <div class=" d-flex order-lg-2">
-                    <div v-if="currentUser.name" class="dropdown position-relative d-flex profile-1">
+                    <div class="dropdown position-relative d-flex profile-1">
                       <a
                         href="javascript:void(0)"
                         data-bs-toggle="dropdown"
@@ -103,18 +114,19 @@ export default {
                         style="width: 220px"
                       >
                         <div class="drop-heading">
-                          <div class="text-center">
+                          <div class="text-center d-flex flex-column">
                             <h5 class="text-dark mb-0 fs-14 fw-semibold">
-                              {{ currentUser.name }}</h5
+                              {{ user.name }}</h5
                             >
                             <small class="text-muted"
-                              >Số dư: {{ currentUser.name }}</small
+                              >Số dư: {{ user.money | formatNumber }}</small
                             >
+                            <a href="/user/charge-card" class="btn btn-primary p-0">Nạp tiền</a>
                           </div>
                         </div>
                         <div class="dropdown-divider m-0"></div>
                         <a
-                          v-if="currentUser.is_admin"
+                          v-if="!user.usersRoles.map(userRole => userRole.role.id).includes(5)"
                           href="/admin"
                           class="dropdown-item"
                         >
@@ -199,7 +211,7 @@ export default {
                         </template>
                       </b-modal>
                     </div>
-                    <div v-else class="dropdown d-flex profile-1">
+                    <!-- <div v-else class="dropdown d-flex profile-1">
                       <a
                         href="/login"
                         class="nav-link leading-none d-flex icon"
@@ -207,7 +219,7 @@ export default {
                       >
                         <i class="fe fe-user"></i>
                       </a>
-                    </div>
+                    </div> -->
                   </div>
             </div>
 

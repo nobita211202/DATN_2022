@@ -21,6 +21,9 @@ export default [
     path: '/cart',
     name: 'cart',
     component: () => lazyLoadView(import('@views/cart.vue')),
+    meta:{
+      authRequired:true
+    }
   },
   {
     path: '/course/:id',
@@ -48,18 +51,19 @@ export default [
     path: '/profile',
     name: 'profile',
     component: () => lazyLoadView(import('@views/profile.vue')),
-    // meta: {
-    //   authRequired: true,
-    // },
+    meta: {
+      authRequired: true,
+    },
     // props: (route) => ({ user: store.state.auth.currentUser || {} }),
   },
   {
     path: '/admin',
     name: 'adminPage',
     component: () => lazyLoadView(import('@views/admin/admin-home.vue')),
-    // meta: {
-    //   authRequired: true,
-    // },
+    meta: {
+      authRequired: true,
+      authAdmin: true
+    },
   },
   {
     path: '/profile/:username',
@@ -96,17 +100,17 @@ export default [
   {
     path: '/logout',
     name: 'logout',
-    // meta: {
-    //   authRequired: true,
-    //   beforeResolve(routeTo, routeFrom, next) {
-    //     store.dispatch('auth/logOut')
-    //     const authRequiredOnPreviousRoute = routeFrom.matched.some(
-    //       (route) => route.meta.authRequired
-    //     )
-    //     // Navigate back to previous page, or home as a fallback
-    //     next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
-    //   },
-    // },
+    meta: {
+      authRequired: true,
+      beforeResolve(routeTo, routeFrom, next) {
+        store.dispatch('auth/logOut')
+        const authRequiredOnPreviousRoute = routeFrom.matched.some(
+          (route) => route.meta.authRequired
+        )
+        // Navigate back to previous page, or home as a fallback
+        next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
+      },
+    },
   },
   {
     path: '/404',
@@ -127,6 +131,9 @@ export default [
     path: '/user/charge-card',
     name: 'charge-card',
     component: () => lazyLoadView(import('@views/card/ChargeCard.vue')),
+    meta:{
+      authRequired:true
+    }
   }
 ]
 
