@@ -22,9 +22,9 @@ public interface LikeDao extends JpaRepository<Likes, Long> {
     @Query("SELECT l.course FROM Likes l WHERE l.user_id =:id")
     Course getLikeOfUser(@Param("id")long idUser);
 
-    @Query("delete from Likes l where l.user_id =:id ")
+    @Query("delete from Likes l where l.user_id =:iduser and l.course.id =:idCourse")
     @Modifying()
-    void deleteByUser_id(@Param("id")long idUser);
+    void deleteByUser_id(@Param("idCourse") long IdCourse ,@Param("iduser")long idUser);
 
     @Query("select count(l.id) from Likes l where l.user_id =:user_id and l.course.id =:course")
     Integer existsByCourseAndUser_id(@Param("course")long course, @Param("user_id") long user_id);

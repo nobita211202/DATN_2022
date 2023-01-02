@@ -25,8 +25,8 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void delete(long idUser) {
-        likeDao.deleteByUser_id(idUser);
+    public void delete(long idCourse,long idUser) {
+        likeDao.deleteByUser_id(idCourse,idUser);
     }
 
     @Override
