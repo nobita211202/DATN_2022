@@ -64,7 +64,7 @@ export const actions = {
     console.log(axios.defaults.baseURL);
     // const url = `${Object.assign(axios.defaults.baseURL)}/api/logined/${state.currentUser.id}`
     return axios
-      .get(`http://localhost:8888/api/logined/${state.currentUser.id}`)
+      .get(`http://fpolycourse.xyz:8888/api/logined/${state.currentUser.id}`)
       .then((response) => {
         const user = response.data
         commit('SET_CURRENT_USER', user)
