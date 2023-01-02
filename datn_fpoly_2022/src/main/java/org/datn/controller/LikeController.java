@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/like")
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 public class LikeController {
     @Autowired
     LikeService service;
@@ -19,7 +19,6 @@ public class LikeController {
     public ResponseEntity getLike(
             @PathVariable("idCourse") Long id
     ){
-
         return ResponseEntity.ok(service.getAllOfCourseId(id));
     }
 
@@ -30,11 +29,12 @@ public class LikeController {
         return ResponseEntity.ok(service.save(like));
     }
 
-    @DeleteMapping("/delete/{idUser}")
+    @DeleteMapping("/delete/{idUser}/{idCourse}")
     public void deleteLike(
-            @PathVariable("idUser") long id
+            @PathVariable("idUser") long idUser,
+            @PathVariable("idCourse") long idCourse
     ){
-        service.delete(id);
+        service.delete(idCourse,idUser);
     }
 
     @GetMapping("/exists/{idCourse}/{idUser}")
