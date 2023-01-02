@@ -4,14 +4,14 @@
       <div v-for="cr,index in listCourse" :key="cr.id"  class="  col-lg-3 col-md-4 col-sm-6 col-12 my-3">
         <div class=" p-0 d-flex flex-column position-relative block-hover h-100">
           <div class="w-100" >
-            <img class="w-100 img" :src="getImg(cr[0].image)" alt="">
+            <img class="w-100 img" :src="getImg(cr.image)" alt="">
           </div>
           <div class="m-1 d-flex flex-column ">
-            <span class="fw-bold"><a :class="classtext" :href="`/course/${cr[0].id}`">{{ cr[0].name }}</a></span>
-            <span class="opacity-75">{{ cr[0].user.username }}</span>
+            <span class="fw-bold"><a :class="classtext" :href="`/course/${cr.id}`">{{ cr.name }}</a></span>
+            <span class="opacity-75">{{ cr.user.username }}</span>
             <span class="opacity-75">12.5h<span class="px-2">/</span>16 video</span>
             <span class="text-bold">
-              {{cr[0].price | formatNumber}}
+              {{cr.price | formatNumber}}
             </span>
           </div>
           <div class="mx-1 mb-3 mt-auto d-flex">
@@ -24,11 +24,19 @@
               <i class="fa fa-star text-warning"></i>
               <span>(12.000)</span>
             </span>
-            <span class="contro" @click="debounceLikeClick(cr[0].id,index)">
-              <i  class="bi"  :class=" cr[1] ? 'text-danger bi-heart-fill' : 'bi-heart'"></i>
+            <span class="contro" @click="debounceLikeClick(cr.id,index)">
+              <span class="px-1" >{{  likeCount[index] ? likeCount[index].data : 0  }}</span>
+              <a href="/login" v-if="!user.name" class="text-white"><i  class="bi"  :class=" 'bi-heart'"></i></a>
+              <i  class="bi" v-else :class=" (likeCount[index] && likeCount[index].liked)  ? 'text-danger bi-heart-fill' : 'bi-heart'"></i>
             </span>
           </div>
-          <b-button class="btn-danger" @click.prevent="timerCartCourse(cr[0].id)"> Thêm vào giỏ</b-button>
+          <b-overlay
+            ref="overlay"
+            :show="false"
+            rounded="sm"
+          >
+            <b-button class="btn-danger w-100" @click.prevent="timerCartCourse(cr.id,index)"> Thêm vào giỏ</b-button>
+          </b-overlay>
         </div>
       </div>
     </div>
@@ -50,27 +58,46 @@
 
 <script>
 import axios from '@/node_modules/axios'
+import store from '@state/store'
   export default {
     data() {
       return {
         like:{},
+        likeCount:[],
         debounceAddCart: null,
         debounceLike:null,
+        user: Object.assign({},store.state.auth.currentUser)
       }
     },
     props:{
       listCourse:Array,
       classtext:String,
     },
-    created(){
-
+    mounted (){
+      console.log(this.user);
     },
     watch:{
+      async listCourse(){
 
+         await this.listCourse.forEach(
+          async (course,i) =>{
+            const lk= await axios.get(`/api/like/get/${course.id}`);
+            if(this.user.name) {
+              const lkUser= await axios.get(`/api/like/exists/${course.id}/15`);
+              this.likeCount.push({index: i,data: lk.data, liked: lkUser.data})
+            }
+            else this.likeCount.push({index: i,data: lk.data, liked: false})
+            this.likeCount.sort( (item1,item2) =>{return item1.index - item2.index})
+            console.log(this.likeCount.length);
+          }
+        )
+
+
+      },
     },
     methods: {
-      debounceLikeClick(idCourse, index){
 
+      debounceLikeClick(idCourse, index){
         console.log(this.listCourse);
         clearTimeout(this.debounceLike)
         this.debounceLike = setTimeout(()=>{this.likeClick(idCourse,index);},1000)
@@ -80,30 +107,30 @@ import axios from '@/node_modules/axios'
           course:{id : idCourse},
           user_id: 15
         }
-        const changer= this.listCourse[index]
+        const changer= this.likeCount[index]
 
-        if(!changer[1]){
+        if(!changer.liked){
           axios.post("/api/like/add",this.like)
           .then(()=>{
-            changer.pop();
-            changer.push(true)
-            console.log(1);
+            changer.liked = true
+            changer.data +=1;
           })
         }else{
-          axios.delete(`/api/like/delete/${this.like.user_id}`,this.like)
+          axios.delete(`/api/like/delete/${this.like.user_id}/${this.listCourse[index].id}`,this.like)
           .then(()=>{
-            changer.pop();
-            changer.push(false)
-            console.log(2);
+            changer.liked = false
+            changer.data -=1;
           })
         }
       },
       getImg(name){
         return `${axios.defaults.baseURL}/api/image/get/${name}`
       },
-      timerCartCourse(id){
+      timerCartCourse(id,index){
+        if(!this.user) this.$router.push("/login")
+        console.log(this.$refs.overlay[2].show());
         clearTimeout(this.debounceAddCart)
-        this.debounceAddCart = setTimeout(()=>{this.cartCourse(id);},1000)
+        // this.debounceAddCart = setTimeout(()=>{this.cartCourse(id);},1000)
       },
       cartCourse(id){
         var cart = {
@@ -112,11 +139,11 @@ import axios from '@/node_modules/axios'
         }
         console.log(cart);
         axios.post("/api/cart/add",cart)
-        .then( _ =>
-        this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã thêm</p> </div>')
-        ).catch(_ =>
+        .then( _ =>{
+          this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã thêm</p> </div>')
+        }).catch(_ =>{
           this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã có khóa học này trong giỏ hàng rồi. </p> </div>')
-        )
+        })
       },
     },
     filters:{

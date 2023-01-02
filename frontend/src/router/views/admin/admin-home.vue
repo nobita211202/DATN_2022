@@ -82,11 +82,14 @@ body {
     margin-left: 0 !important;
   }
 }
+.h1000px{
+  height: 1000px;
+}
 </style>
 
 <template>
   <Layout>
-    <div class="container-fluid justify-content-md-center mt-3">
+    <div class="container-fluid h1000px justify-content-md-center mt-3">
       <div class="col-12">
         <b-col class="col-12 col-lg-3 col-xl-2 float-left">
           <LeftAdmin :active="activeTab" />
