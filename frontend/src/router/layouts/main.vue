@@ -6,21 +6,21 @@ export default {
 </script>
 
 <template>
-  <div class="position-relative bg-white">
+  <div class=" bg-white">
     <div class="page">
-      <div class="page-main">
+      <div class="page-main d-flex flex-column">
         <Header />
-        <div class="bg-white ">
+        <div class="bg-white h-600px">
           <slot />
         </div>
         <div class="py-5"></div>
-        <div class="footer border-top-0 bg-dark  bottom-0 w-100 footer-1" style="background: #fff">
-          <div class="container">
-            <div class="row align-items-center flex-row-reverse">
+        <div class="footer border-top-0 bg-dark  bottom-0 w-100 ">
+          <div class="container ">
+            <div class="row">
               <div
                 class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-white text-center text-bold"
               >
-                <p class="fs-4">Đồ án tốt nghiệp 2022 - FPT Polytechnic</p>
+                <p class="fs-4 bg-dark">Đồ án tốt nghiệp 2022 - FPT Polytechnic</p>
               </div>
             </div>
             <div class="row mb-5 text-white">
@@ -77,5 +77,7 @@ export default {
 .bg-dark{
   background-color: #212529 !important;
 }
-
+.h600px{
+  height: 600px;
+}
 </style>
