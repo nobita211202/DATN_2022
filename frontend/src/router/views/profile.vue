@@ -2,14 +2,15 @@
 import Layout from '@layouts/main.vue'
 import axios from '@/node_modules/axios';
 // import CropImg from "@components/CropImg.vue"
-import store from "@src/state/store";
 export default {
   components: {Layout
     // , CropImg
   },
+  props:{
+    user:Object
+  },
   data(){
     return{
-      user:Object.assign({},store.state.auth.currentUser),
       imageSelected:null,
       imageUP:null,
       fileRender:null

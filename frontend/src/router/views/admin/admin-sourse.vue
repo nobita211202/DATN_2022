@@ -186,11 +186,7 @@ export default {
     formatNumber:function(value){
       return new Intl.NumberFormat().format(value)+"đ"
     },
-    formatDate: function(str) {
-      var date = new Date(str)
-      return `${date.getHours()} giờ ${date.getMinutes()} phút ${date.getSeconds()} giây, ngày ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
 
-    }
   },
   watch:{
     txtSearch(){

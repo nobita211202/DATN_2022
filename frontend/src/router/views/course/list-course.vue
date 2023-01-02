@@ -43,7 +43,7 @@ export default {
         console.log(error)
       })
     },getCourse(){
-      axios.get(`/api/course/getCourseAndLike/${15}`).then((response) => {
+      axios.get(`/api/course/get`).then((response) => {
         this.listCouses.data = response.data
         console.log(response.data);
       }).catch((error) => {

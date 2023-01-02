@@ -20,11 +20,7 @@ export default {
     formatNumber:function(value){
       return new Intl.NumberFormat().format(value)+"đ"
     },
-    formatDate: function(str) {
-      var date = new Date(str)
-      return `${date.getHours()} giờ ${date.getMinutes()} phút ${date.getSeconds()} giây, ngày ${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
 
-    }
   },
   methods:{
     changePassword(){
@@ -71,7 +67,7 @@ export default {
 <template>
   <div class="h-60px">
     <nav class="navbar  navbar-expand-lg navbar-white">
-      <div class="container-fluid  bg-white fixed-top">
+      <div class="container-fluid py-2 bg-white fixed-top">
         <a class="navbar-brand" href="#">
           <img class="h-100" src="/assets/images/brand/logo-2.png" alt="">
         </a>
@@ -90,18 +86,18 @@ export default {
                 <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">Home</a>
             </li>
             <li class="nav-item w-100">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
+                <a class="nav-link" href="/contact" tabindex="-1" aria-disabled="true">Contact</a>
             </li>
 
             <div class="d-flex ps-lg-3 w-100">
               <!-- SEARCH -->
               <li class="nav-item ms-auto">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">
+                <a class="nav-link" href="/cart" tabindex="-1" aria-disabled="true">
                   <i class="text-dark fs-3 bi bi-cart2"></i>
                 </a>
               </li>
                   <div class=" d-flex order-lg-2">
-                    <div class="dropdown position-relative d-flex profile-1">
+                    <div v-if="user" class="dropdown position-relative d-flex profile-1">
                       <a
                         href="javascript:void(0)"
                         data-bs-toggle="dropdown"
@@ -142,7 +138,7 @@ export default {
                         <a  class="dropdown-item btn " @click="$bvModal.show('modal-dmk')">
                           <i class="dropdown-icon fe fe-x"></i> Đổi mật khẩu
                         </a>
-                        <a  @click="$bvModal.show('modal-logout')"  class="dropdown-item" >
+                        <a   @click="$bvModal.show('modal-logout')"  class=" btn dropdown-item" >
                           <i class="dropdown-icon fe fe-log-out"></i> Đăng xuất
                         </a>
                       </div>
@@ -195,31 +191,31 @@ export default {
                         hide-backdrop
                         hide-header-close
                       >
-                        <template v-slot:modal-title> Đổi mật khẩu </template>
+                        <template v-slot:modal-title>Đăng xuất </template>
                         <b-form >
                             <div class="mb-5">
                               <p>Xác nhận đăng xuất</p>
                             </div>
                         </b-form>
                         <template v-slot:modal-footer class="d-flex mb-5">
-                          <b-button class="mx-auto" type="button" @click="changePassword" variant="primary" >
+                          <b-button class="mx-auto" type="button" @click="$bvModal.hide('modal-logout')" variant="primary" >
                           Đóng</b-button
                           >
-                          <b-button class="mx-auto" type="button" @click="changePassword" variant="danger" >
-                            Xác nhận</b-button
+                          <a href="/logout" class="mx-auto btn btn-danger" variant="danger" >
+                            Xác nhận</a
                           >
                         </template>
                       </b-modal>
                     </div>
-                    <!-- <div v-else class="dropdown d-flex profile-1">
+                    <div v-else class="dropdown d-flex profile-1">
                       <a
                         href="/login"
                         class="nav-link leading-none d-flex icon"
                         title="Đăng nhập"
                       >
-                        <i class="fe fe-user"></i>
+                        <b-button variant="">Đăng nhập</b-button>
                       </a>
-                    </div> -->
+                    </div>
                   </div>
             </div>
 

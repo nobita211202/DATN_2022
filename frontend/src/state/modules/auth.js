@@ -29,9 +29,7 @@ export const actions = {
 
   // Logs in the current user.
   logIn({ commit, dispatch, getters }, acc = {}) {
-    console.log(commit);
-    console.log(dispatch);
-    // if (getters.loggedIn) return dispatch('validate')
+    if (getters.loggedIn) return dispatch('validate')
 
     return axios
       .post('/api/login', acc)
@@ -39,7 +37,7 @@ export const actions = {
         console.log(true);
         const user = response.data.value
         commit('SET_CURRENT_USER', user)
-
+        console.log(response.data);
         return {
           status:true,
           data:user

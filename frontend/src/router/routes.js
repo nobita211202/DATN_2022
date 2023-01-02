@@ -8,6 +8,11 @@ export default [
     component: () => lazyLoadView(import('@views/course/list-course.vue')),
   },
   {
+    path: '/contact',
+    name: 'contact',
+    component: () => lazyLoadView(import('@views/contact.vue')),
+  },
+  {
     path: '/signin',
     name: 'signin',
     component: () => lazyLoadView(import('@views/signin.vue')),
@@ -54,7 +59,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    // props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    props: (route) => ({ user: Object.assign(store.state.auth.currentUser) || {} }),
   },
   {
     path: '/admin',
