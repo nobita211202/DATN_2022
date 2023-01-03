@@ -107,11 +107,11 @@ export default {
       history: [],
       getClass(item) {
         if (item.status === 0) {
-          return 'badge bg-success text-dark'
+          return 'badge bg-success text-dark badge-module'
         } else if (item.status === 1) {
-          return 'badge bg-warning text-dark'
+          return 'badge bg-warning text-dark badge-module'
         } else {
-          return 'badge bg-danger text-dark'
+          return 'badge bg-danger text-dark badge-module'
         }
       },card : {
         userId : 15,
