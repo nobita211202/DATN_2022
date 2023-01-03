@@ -40,7 +40,6 @@ class RequestData{
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(rollbackOn = RuntimeException.class)
-
 public class CardPushDataService{
     private final CardServiceImpl cardService;
     private final Services<CardPrice> cardPriceService;

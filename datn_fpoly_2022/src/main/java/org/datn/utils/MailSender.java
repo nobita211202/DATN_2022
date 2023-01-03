@@ -1,17 +1,15 @@
 package org.datn.utils;
 
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class MailSender {
-    public static void sendCode(String email,String text,String content) throws MessagingException, UnsupportedEncodingException {
+    public static void sendCode(String email,String text,String content) throws MessagingException {
         Properties mailServerProperties;
         Session getMailSession;
         MimeMessage mailMessage;

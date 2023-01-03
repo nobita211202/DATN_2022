@@ -132,6 +132,7 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\A
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\CourseAttrService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Token.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\PaymentMethodService.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\bean\LoginBean.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\CategoriesAttr.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Order.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\UserService.java

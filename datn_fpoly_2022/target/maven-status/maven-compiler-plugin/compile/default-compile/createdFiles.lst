@@ -125,6 +125,7 @@ org\datn\service\Impl\TokenServiceImpl.class
 org\datn\dao\CategoryDao.class
 org\datn\dao\VoucherDao.class
 org\datn\entity\ReportQuantityMonthly.class
+org\datn\bean\LoginBean.class
 org\datn\entity\OrderDetail.class
 org\datn\entity\Telecom.class
 org\datn\utils\Base\EntityAndImage.class
