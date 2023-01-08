@@ -24,25 +24,10 @@ export default {
     }
   },
   created() {
-    this.getCategoryParent();
     this.getCourse();
-    this.getCourseByPurchase();
   }
   ,methods: {
-    getCategoryParent(){
-      axios.get('/api/category/get/parent').then((response) => {
-        this.categoryParent = response.data
-      }).catch((error) => {
-        console.log(error)
-      })
-
-    },getCategoryChildByParentId(id){
-      axios.get('/api/category-attribute/find-by-category-id/'+id).then((response) => {
-        return response.data;
-      }).catch((error) => {
-        console.log(error)
-      })
-    },getCourse(){
+    getCourse(){
       axios.get(`/api/course/get`).then((response) => {
         this.listCouses.data = response.data
         console.log(response.data);

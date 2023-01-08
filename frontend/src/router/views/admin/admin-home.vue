@@ -5,6 +5,7 @@ import AdminThongKe from '@/src/router/views/admin/admin-thongke.vue'
 import AdminCategory from '@views/admin/admin-cateogry.vue'
 import adminUser from '@/src/router/views/admin/admin-user.vue'
 import adminSourse from '@/src/router/views/admin/admin-sourse.vue'
+import adminContactVue from '@views/admin/admin-contact.vue'
 import { bus } from '@src/main'
 export default {
   page: {
@@ -17,7 +18,8 @@ export default {
     AdminThongKe,
     AdminCategory,
     adminUser,
-    adminSourse
+    adminSourse,
+    adminContactVue
   },
 
   data() {
@@ -82,14 +84,14 @@ body {
     margin-left: 0 !important;
   }
 }
-.h1000px{
-  height: 1000px;
+.h600px{
+  height: 670px;
 }
 </style>
 
 <template>
   <Layout>
-    <div class="container-fluid h1000px justify-content-md-center mt-3">
+    <div class="container-fluid  justify-content-md-center mt-3">
       <div class="col-12">
         <b-col class="col-12 col-lg-3 col-xl-2 float-left">
           <LeftAdmin :active="activeTab" />
@@ -109,14 +111,18 @@ body {
               <h3 v-if="activeTab === 'admin-course'" class="card-title"
                 >Quản lý Khóa học</h3
               >
+              <h3 v-if="activeTab === 'admin-contact'" class="card-title"
+                >Quản lý liên hệ</h3
+              >
 
             </div>
-            <div class="" style="  ">
+            <div class="h600px p-3" style=" overflow-y: scroll ; overflow-x: hidden;">
              <!-- <KeepAlive> -->
                 <AdminThongKe v-if="activeTab === 'admin-role'" />
                 <AdminCategory v-if="activeTab === 'admin-category'" />
                 <adminUser v-if="activeTab === 'admin-users'" />
                 <adminSourse v-if="activeTab === 'admin-course'"/>
+                <adminContactVue v-if="activeTab === 'admin-contact'"/>
              <!-- </KeepAlive> -->
             </div>
           </div>

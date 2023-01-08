@@ -12,10 +12,11 @@ export default {
     return {
       leftContentAdminHeight: 700,
       menuList: [
-        { key: 'admin-role', title: 'Thống kê', icon: 'fa-users' },
+        { key: 'admin-role', title: 'Thống kê', icon: 'bi bi-pie-chart-fill' },
         { key: 'admin-category', title: 'Quản lý danh mục', icon: 'fa-folder' },
         { key: 'admin-users', title: 'Quản lý tài khoản', icon: 'fa-user' },
-        { key: 'admin-course', title: 'Quản lý Khóa học', icon: 'fa-user' },
+        { key: 'admin-course', title: 'Quản lý Khóa học', icon: 'bi bi-table' },
+        { key: 'admin-contact', title: 'Quản lý liên hệ', icon: 'bi bi-telephone-fill' },
         // { key: 'admin-tools', title: 'Quản lý tool', icon: 'fa-windows' },
       ],
     }
