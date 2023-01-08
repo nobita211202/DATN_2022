@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.datn.entity.User;
 import org.datn.service.ImageService;
 import org.datn.service.UserService;
+import org.datn.service.UsersRoleService;
 import org.datn.utils.Base.EntityAndImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class UserController {
     @Autowired
     UserService userService;
     @Autowired
+    UsersRoleService usersRoleService;
+    @Autowired
     ImageService service;
     @GetMapping("/get")
     public ResponseEntity<List<User>> getAll(Model model) {
@@ -30,6 +33,11 @@ public class UserController {
     @GetMapping("/get/{id}")
     public ResponseEntity<User> getId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.findById(id).orElse(null));
+    }
+
+    @GetMapping("/getByRole/{roleId}")
+    public ResponseEntity getByRole(@PathVariable("roleId") Long id) {
+        return ResponseEntity.ok(usersRoleService.getUserByRole(id));
     }
 
     @GetMapping("/search/{txtSearch}")

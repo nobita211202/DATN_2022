@@ -1,7 +1,11 @@
 package org.datn.service.Impl;
 
+import org.datn.dao.RoleDao;
 import org.datn.dao.UserDao;
+import org.datn.dao.UsersRoleDao;
+import org.datn.entity.Role;
 import org.datn.entity.User;
+import org.datn.entity.UsersRole;
 import org.datn.service.UserService;
 import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ public class UserServiceImpl implements UserService {
     UserDao userDao;
     @Autowired
     Bases<User> bases;
+    @Autowired
+    UsersRoleDao usersRoleDao;
     @Override
     public List<User> getAll() {
         return userDao.findAll();
@@ -28,7 +34,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(User user) {
         user.setImage("default-user.jpg");
-        return userDao.save(bases.getBase(user,Bases.CREATE));
+        userDao.save(bases.getBase(user,Bases.CREATE));
+        UsersRole usersRole = new UsersRole();
+        Role role = new Role();
+        role.setId((long)5);
+        usersRole.setUser(usersRole.getId());
+        usersRole.setRole(role);
+        usersRoleDao.save(usersRole);
+        return user;
     }
 
     @Override

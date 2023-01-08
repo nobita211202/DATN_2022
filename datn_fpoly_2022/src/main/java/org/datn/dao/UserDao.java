@@ -2,6 +2,7 @@ package org.datn.dao;
 
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
+import org.datn.entity.UsersRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
