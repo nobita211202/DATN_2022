@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "contacts")
@@ -40,6 +41,6 @@ public class Contact {
     private String describe;
 
     @Column(name = "created")
-    private Instant created;
+    private Date created;
 
 }
