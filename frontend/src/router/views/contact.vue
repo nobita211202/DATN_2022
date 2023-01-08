@@ -33,6 +33,12 @@
                         </div>
                         <div class="row my-4">
                             <div class="col-12">
+                                <label for="">Subject*</label>
+                                <input class="px-2 input-focus input-hover py-3 w-100 px-2 me-2 border-bottom border-0 bg-white" type="email" >
+                            </div>
+                        </div>
+                        <div class="row my-4">
+                            <div class="col-12">
                                 <label for="">Messenger</label>
                                 <textarea class="px-2 input-focus input-hover py-3 w-100 px-2 me-2 border-bottom border-0 bg-white">
                                 </textarea>

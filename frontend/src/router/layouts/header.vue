@@ -11,6 +11,8 @@ export default {
         is_admin: true,
 
       },
+      categories: [],
+      cateModel:{},
       oldPassword:"",
       newPassword:"",
       confirmPassword:"",
@@ -21,6 +23,20 @@ export default {
       return new Intl.NumberFormat().format(value)+"đ"
     },
 
+  },
+  async created(){
+    axios.get('/api/category/get/parent').then(_ => {
+      this.cateModel.parent = _.data
+      _.data.forEach( _=>{
+        axios.get('/api/category-attribute/find-by-category-id/' +_.id)
+        .then(_=>{
+          this.cateModel.child = _.data
+          console.log("model");
+          this.categories.push(this.cateModel)
+          console.log(this.categories);
+        })
+      })
+    })
   },
   methods:{
     changePassword(){
@@ -60,14 +76,26 @@ export default {
     border: none !important;
   }
   .h-60px{
-    height: 40px;
+    height: 70px;
+  }
+  .hover:hover{
+    background-color: rgba(128, 128, 128, 0.144);
+  }
+  .show-child:hover >span> ul{
+    opacity: 1 !important;
+  }
+  .top-0{
+    top: 0 !important;
+  }
+  .end-100{
+    left: 100% !important;
   }
 </style>
 
 <template>
   <div class="h-60px">
     <nav class="navbar  navbar-expand-lg navbar-white">
-      <div class="container-fluid py-2 bg-white fixed-top">
+      <div class="container-fluid border-bottom py-2 bg-white fixed-top">
         <a class="navbar-brand" href="#">
           <img class="h-100" src="/assets/images/brand/logo-2.png" alt="">
         </a>
@@ -75,21 +103,40 @@ export default {
           <span class="text-dark navbar-toggler-icon"><i class="fs-3 fw-bold bi bi-list"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <ul class="navbar-nav d-flex flex-lg-row flex-column ms-auto mb-2 mb-lg-0">
+            <li class="nav-item w-100 ">
+                <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">Home</a>
+            </li>
+            <li class="nav-item pr w-100 dropdown pe-5 hover">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+              </a>
+              <ul  class=" show-child dropdown-menu  bg-white top-100" >
+                <span v-for="ct,index in categories" :key="index">
+                  <li  class="pr dropdown-item" ><a >{{ ct.parent[index].name }} </a></li>
+                  <ul v-if="ct.parent"  class="position-absolute top-0 opacity-0 dropdown-menu show-child  end-100 ">
+                      <li v-for="tc,index in ct.child[index]" :key="index + 'h'" class="bg-white dropdown-item d-block"  >
+                        <a v-if="tc">{{tc.name}}</a>
+                      </li>
+                  </ul>
+                </span>
+              </ul>
+            </li>
+            <li class="nav-item w-100">
+                <a class="nav-link" href="/contact" tabindex="-1" aria-disabled="true">Contact</a>
+            </li>
+
+
+
+          </ul>
           <form class="d-flex w-100 py-1 border mx-lg-auto">
             <span class="px-2">
               <i class="fs-4 bi bi-search"></i>
             </span>
             <input class="w-75 input" type="search" placeholder="Search" aria-label="Search">
           </form>
-          <ul class="navbar-nav d-flex flex-lg-row flex-column ms-auto mb-2 mb-lg-0">
-            <li class="nav-item w-100 ">
-                <a class="nav-link" href="/" tabindex="-1" aria-disabled="true">Home</a>
-            </li>
-            <li class="nav-item w-100">
-                <a class="nav-link" href="/contact" tabindex="-1" aria-disabled="true">Contact</a>
-            </li>
-
-            <div class="d-flex ps-lg-3 w-100">
+          <div class="d-flex ps-lg-3 w-100">
               <!-- SEARCH -->
               <li class="nav-item ms-auto">
                 <a class="nav-link" href="/cart" tabindex="-1" aria-disabled="true">
@@ -97,7 +144,7 @@ export default {
                 </a>
               </li>
                   <div class=" d-flex order-lg-2">
-                    <div v-if="user" class="dropdown position-relative d-flex profile-1">
+                    <div v-if="user" class="position-relative d-flex profile-1">
                       <a
                         href="javascript:void(0)"
                         data-bs-toggle="dropdown"
@@ -218,8 +265,6 @@ export default {
                     </div>
                   </div>
             </div>
-
-          </ul>
 
         </div>
       </div>

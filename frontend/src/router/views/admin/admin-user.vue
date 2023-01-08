@@ -9,13 +9,8 @@ export default {
     this.fileRender.onload = (Even) => {
         this.imageSelected = Even.target.result
     }
-    var getUser=()=>{
-      axios.get(`${url}user/get`)
-      .then((res)=>{
-        this.users.data = res.data
-      })
-    }
-    getUser()
+
+    this.getUser(2)
   },
   data() {
     return {
@@ -94,6 +89,12 @@ export default {
 
 
   methods: {
+    getUser(idRole){
+      axios.get(`${url}user/getByRole/${idRole}`)
+      .then((res)=>{
+        this.users.data = res.data
+      })
+    },
     chooseImg(even) {
       this.imageSelected = even.target.files[0]
       this.imageUP= this.imageSelected
@@ -184,25 +185,7 @@ export default {
 
   },
   watch:{
-    txtSearch(){
-      this.overlayTB = true
-      clearTimeout(this.debounceSearch)
-      this.debounceSearch = setTimeout(
-        ()=>{
-          this.users.data = []
-          axios.get(`/api/user/search/${this.txtSearch}`)
-          .then((res)=>{
-            console.log(res.data);
-            this.users.data = res.data
-            this.overlayTB= false
-          })
-          .catch( er => {
-            console.log(er);
-            this.overlayTB= false})
 
-        },1000
-      )
-    }
   }
 }
 </script>
@@ -211,7 +194,20 @@ export default {
   <div>
     <b-row class="mb-10">
       <b-col>
-        <b-form-input v-model="txtSearch" placeholder="Tìm kiếm"></b-form-input>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" @click="getUser(2)" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Quản lý</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" @click="getUser(3)" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Nhân viên</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" @click="getUser(4)" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Giảng viên</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" @click="getUser(5)" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Học viên</button>
+          </li>
+        </ul>
       </b-col>
       <b-col>
         <button

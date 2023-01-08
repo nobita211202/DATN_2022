@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <div class="bg">
+    <div class="bg bg-dark">
       <b-container >
       <b-row class="">
         <b-col sm="8" >
@@ -9,9 +9,9 @@
 
           </div>
         </b-col>
-        <b-col sm="4" class="">
-          <div class="position-absolute w-100 ">
-            <div class="p-5 mt-3 bg-white">
+        <b-col sm="4" class="position-relative">
+          <div class="position-absolute top-50 w-100 ">
+            <div class="p-5 bg-white">
               <span class="text-dark">
                 <span class="fs-3 text-dark">{{course.price | formatNumber}}</span>
               </span>
@@ -70,7 +70,6 @@
                 </div>
             </div>
           </div>
-
         </b-col>
       </b-row>
 
@@ -337,7 +336,6 @@ export default {
 
 <style  >
 .bg{
-  background-color: #0B3955;
   color: white;
 }
 .hover:hover{
