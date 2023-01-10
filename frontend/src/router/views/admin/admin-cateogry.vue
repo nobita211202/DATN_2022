@@ -1,18 +1,20 @@
 <script>
 import modalIcon from "@components/modal_choose_icon.vue"
 import axios from "@/node_modules/axios"
-import { bus } from "@/src/main"
+import diagram from "@/src/components/diagramCate.vue"
 const url="/api/"
 
 export default {
   components:{
-    modalIcon
+    modalIcon,
+    diagram
   },
 
   data() {
     return {
       overlayTB:null,
       debounceSearch:null,
+      parentCategory:[],
       categories: {
         isBusy: false,
         data: [
@@ -31,10 +33,7 @@ export default {
           { key: 'id', label: 'ID', sortable: true },
           { key: 'name', label: 'Tên danh mục', sortable: true },
           { key: 'parent', label: 'Danh mục cha', sortable: true },
-          { key: 'like', label: 'Số like', sortable: true },
-          { key: 'image', label: 'Icon', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
-          { key: 'status', label: 'Trạng thái', sortable: true },
           { key: 'action', label: 'Hành động' },
         ],
         meta: {
@@ -50,20 +49,8 @@ export default {
       categoryDelete: {},
       currentPage: 1,
       categoriesPerPage: 5,
-      currentUser: {
-        id: 1,
-        name: 'admin',
-      },
-      optionsStatus: [
-        { value: 0, text: 'Inactive' },
-        { value: 1, text: 'Active' },
-      ],
-      optionsAdminId: [
-        { value: 1, text: 'Admin' },
-        { value: 2, text: 'Manager' },
-      ],
-      categoriesBackup: [],
       txtSearch: '',
+      diagramCate:[],
     }
   },
 
@@ -94,12 +81,13 @@ export default {
     axios.get(`${url}category/get`)
     .then((res)=>{
       this.categories.data = res.data
+      this.parentCategory = res.data.filter(_=> _.parent === null )
     })
-    bus.$on('setIcon',(icon)=>{
-      console.log(icon);
-      this.formAddCategory.image=icon;
-      this.formEditCategory.image=icon
+    axios.get('/api/category/get/parent').then(resParent => {
+      this.diagramCate = resParent.data
+      console.log(this.categories);
     })
+
   },
 
   methods: {
@@ -149,7 +137,6 @@ export default {
         this.$bvModal.hide('modal-add-category')
         })
       }
-
     },
     tryRemoveCategory() {
       this.categories.data = this.categories.data.filter(
@@ -193,12 +180,14 @@ export default {
         ></b-form-input>
       </b-col>
       <b-col>
+        <diagram :diagramCate="diagramCate"></diagram>
         <button
           class="btn btn-success mb-2 float-right"
           @click="$bvModal.show('modal-add-category')"
           ><b-icon icon="patch-plus" aria-hidden="true"></b-icon> Thêm danh
           mục</button
         >
+
       </b-col>
     </b-row>
     <b-overlay
@@ -220,23 +209,8 @@ export default {
           </div>
         </template>
         <template v-slot:cell(parent)="cate">
-          <span> {{ nameOfParentCategory(cate.item) }} </span>
-        </template>
-        <template v-slot:cell(status)="cate">
-          <span v-if="cate.item.status === 0" class="text-danger text-bold">
-            Inactive
-          </span>
-          <span v-if="cate.item.status === 1" class="text-success text-bold">
-            Active
-          </span>
-        </template>
-
-        <template v-slot:cell(image)="cate">
-          <span class="fs-1" :class="cate.item.image"></span>
-        </template>
-        <template v-slot:cell(admin_id)="cate">
-          <span v-if="cate.item.admin_id === 1" class="text-bold"> Admin </span>
-          <span v-if="cate.item.admin_id === 2" class="text-bold"> Manager </span>
+          <span v-if="cate.item.parent"> {{cate.item.parent.name }} </span>
+          <span v-else class="text-muted">Không có</span>
         </template>
         <template v-slot:cell(created)="cate">
           <span> {{ cate.item.created | formatDate }} </span>
@@ -272,9 +246,7 @@ export default {
             type="text"
           ></b-form-input>
         </b-form-group>
-        <div>
-          <modalIcon />
-        </div>
+
         <b-row>
           <b-col>
             <b-form-group label="Danh mục cha">
@@ -286,20 +258,10 @@ export default {
             </b-form-group>
           </b-col>
           <b-col>
-            <b-form-group label="Người quản lý">
-              <b-form-select
-                v-model="formAddCategory.admin_id"
-                :options="optionsAdminId"
-              ></b-form-select>
-            </b-form-group>
+
           </b-col>
           <b-col>
-            <b-form-group label="Trạng thái">
-              <b-form-select
-                v-model="formAddCategory.status"
-                :options="optionsStatus"
-              ></b-form-select>
-            </b-form-group>
+
           </b-col>
         </b-row>
       </b-form>
@@ -341,20 +303,10 @@ export default {
             </b-form-group>
           </b-col>
           <b-col>
-            <b-form-group label="Người quản lý">
-              <b-form-select
-                v-model="formEditCategory.admin_id"
-                :options="optionsAdminId"
-              ></b-form-select>
-            </b-form-group>
+
           </b-col>
           <b-col>
-            <b-form-group label="Trạng thái">
-              <b-form-select
-                v-model="formEditCategory.status"
-                :options="optionsStatus"
-              ></b-form-select>
-            </b-form-group>
+
           </b-col>
         </b-row>
       </b-form>
