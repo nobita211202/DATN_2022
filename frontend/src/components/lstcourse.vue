@@ -24,14 +24,9 @@
               <i class="fa fa-star text-warning"></i>
               <span>(12.000)</span>
             </span>
-            <span class="contro" @click="debounceLikeClick(cr.id,index)">
-              <span class="px-1" >{{  likeCount[index] ? likeCount[index].data : 0  }}</span>
-              <a href="/login" v-if="!user.name" class="text-white"><i  class="bi"  :class=" 'bi-heart'"></i></a>
-              <i  class="bi" v-else :class=" (likeCount[index] && likeCount[index].liked)  ? 'text-danger bi-heart-fill' : 'bi-heart'"></i>
-            </span>
+
           </div>
           <b-overlay
-            ref="overlay"
             :show="false"
             rounded="sm"
           >
@@ -79,58 +74,18 @@ import store from '@state/store'
     watch:{
       async listCourse(){
 
-         await this.listCourse.forEach(
-          async (course,i) =>{
-            const lk= await axios.get(`/api/like/get/${course.id}`);
-            if(this.user.name) {
-              const lkUser= await axios.get(`/api/like/exists/${course.id}/15`);
-              this.likeCount.push({index: i,data: lk.data, liked: lkUser.data})
-            }
-            else this.likeCount.push({index: i,data: lk.data, liked: false})
-            this.likeCount.sort( (item1,item2) =>{return item1.index - item2.index})
-            console.log(this.likeCount.length);
-          }
-        )
-
 
       },
     },
     methods: {
 
-      debounceLikeClick(idCourse, index){
-        console.log(this.listCourse);
-        clearTimeout(this.debounceLike)
-        this.debounceLike = setTimeout(()=>{this.likeClick(idCourse,index);},1000)
-      },
-      likeClick(idCourse,index){
-        this.like = {
-          course:{id : idCourse},
-          user_id: 15
-        }
-        const changer= this.likeCount[index]
-
-        if(!changer.liked){
-          axios.post("/api/like/add",this.like)
-          .then(()=>{
-            changer.liked = true
-            changer.data +=1;
-          })
-        }else{
-          axios.delete(`/api/like/delete/${this.like.user_id}/${this.listCourse[index].id}`,this.like)
-          .then(()=>{
-            changer.liked = false
-            changer.data -=1;
-          })
-        }
-      },
       getImg(name){
         return `${axios.defaults.baseURL}/api/image/get/${name}`
       },
       timerCartCourse(id,index){
         if(!this.user) this.$router.push("/login")
-        console.log(this.$refs.overlay[2].show());
         clearTimeout(this.debounceAddCart)
-        // this.debounceAddCart = setTimeout(()=>{this.cartCourse(id);},1000)
+        this.debounceAddCart = setTimeout(()=>{this.cartCourse(id);},1000)
       },
       cartCourse(id){
         var cart = {

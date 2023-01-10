@@ -21,12 +21,7 @@
               ></b-form-input>
             <div
             class="mt-2 p-0">
-              <b-row>
-                <b-col href="" class="text-center pt-2 rounded-1 focus" @click="mdFalse(font)" v-for="font in fontIcons"  :key="font.name" ms="1">
-                  <span  class="fs-1 " :class="font.icon"></span>
-                  <i style="font-size: 10px ;">{{font.name}}</i>
-                </b-col>
-              </b-row>
+
            </div>
           </b-col>
 
@@ -39,7 +34,6 @@
 
 <script>
 import { bus } from '@src/main'
-
 export default {
   data(){
     const fontIcons=require("@assets/fontIcon.json")
@@ -48,7 +42,8 @@ export default {
       fontIcons:fontIcons,
       showDemoIcon:"",
       typeIcon:"",
-      txtSearch:""
+      txtSearch:"",
+
     }
   },
 

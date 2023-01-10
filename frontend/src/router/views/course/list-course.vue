@@ -25,6 +25,7 @@ export default {
   },
   created() {
     this.getCourse();
+    this.getCourseByPurchase()
   }
   ,methods: {
     getCourse(){
