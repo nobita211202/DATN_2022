@@ -1,7 +1,9 @@
 package org.datn.service.Impl;
 
 import org.datn.dao.CategoryDao;
+import org.datn.dao.CategoryParentChildrenDao;
 import org.datn.entity.Category;
+import org.datn.entity.CategoryParentChildren;
 import org.datn.service.CategoryService;
 import org.datn.utils.Base.Bases;
 import org.modelmapper.ModelMapper;
@@ -18,6 +20,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryDao categoryDao;
+    @Autowired
+    CategoryParentChildrenDao categoryParentChildrenDao;
     @Autowired
     ModelMapper modelMapper;
 
@@ -70,8 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAllByParentIsNull() {
-
-        return categoryDao.getAllByParentIsNull();
+    public List<CategoryParentChildren> getAllByParentIsNull() {
+        return categoryParentChildrenDao.getParent();
     }
 }

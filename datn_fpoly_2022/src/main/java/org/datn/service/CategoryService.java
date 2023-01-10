@@ -2,6 +2,7 @@ package org.datn.service;
 
 
 import org.datn.entity.Category;
+import org.datn.entity.CategoryParentChildren;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -17,5 +18,5 @@ public interface CategoryService {
     List<Category> search(String name);
     Page<Category> pageCategories(int pageNumber ,int pageSize);
     List<Category> findCategoryByParentId(Long id);
-    List<Category> getAllByParentIsNull();
+    List<CategoryParentChildren> getAllByParentIsNull();
 }
