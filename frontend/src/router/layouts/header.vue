@@ -25,17 +25,9 @@ export default {
 
   },
   async created(){
-    axios.get('/api/category/get/parent').then(_ => {
-      this.cateModel.parent = _.data
-      _.data.forEach( _=>{
-        axios.get('/api/category-attribute/find-by-category-id/' +_.id)
-        .then(_=>{
-          this.cateModel.child = _.data
-          console.log("model");
-          this.categories.push(this.cateModel)
-          console.log(this.categories);
-        })
-      })
+    axios.get('/api/category/get/parent').then(resParent => {
+      this.categories = resParent.data
+      console.log(this.categories);
     })
   },
   methods:{
@@ -81,7 +73,7 @@ export default {
   .hover:hover{
     background-color: rgba(128, 128, 128, 0.144);
   }
-  .show-child:hover >span> ul{
+  .show-child:hover > ul{
     opacity: 1 !important;
   }
   .top-0{
@@ -112,12 +104,12 @@ export default {
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Category
               </a>
-              <ul  class=" show-child dropdown-menu  bg-white top-100" >
-                <span v-for="ct,index in categories" :key="index">
-                  <li  class="pr dropdown-item" ><a >{{ ct.parent[index].name }} </a></li>
-                  <ul v-if="ct.parent"  class="position-absolute top-0 opacity-0 dropdown-menu show-child  end-100 ">
-                      <li v-for="tc,index in ct.child[index]" :key="index + 'h'" class="bg-white dropdown-item d-block"  >
-                        <a v-if="tc">{{tc.name}}</a>
+              <ul  class=" dropdown-menu py-0 bg-white " >
+                <span class="show-child position-relative" v-for="ct,index in categories" :key="index">
+                  <li  class="pr  dropdown-item" ><a >{{ ct.name }} </a></li>
+                  <ul v-if=" ct.children.length > 0 " class="position-absolute top-0 opacity-0 w-100 h-100 dropdown-menu bg-white py-0 show-child  end-100 ">
+                      <li v-for="tc,index in ct.children" :key="index + 'h'" class="d-block"  >
+                        <a >{{tc.name}}</a>
                       </li>
                   </ul>
                 </span>
