@@ -11,6 +11,9 @@ import 'vue2-toast/lib/toast.css';
 import Toast from 'vue2-toast';
 import moment from 'moment'
 import App from './app.vue'
+import 'vue-orgchart/dist/style.min.css'
+// import "@/node_modules/chart.js"
+// import "@/node_modules/hchs-vue-charts"
 
 // eslint-disable-next-line import/no-relative-parent-imports
 
@@ -18,6 +21,7 @@ import App from './app.vue'
 // Globally register all `_base`-prefixed components
 import '@components/_globals'
 
+// Vue.use(window.VueCharts)
 Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
 axios.defaults.baseURL = 'http://fpolycourse.xyz:8888'
