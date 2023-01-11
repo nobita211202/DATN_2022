@@ -46,9 +46,11 @@ org\datn\utils\DoubleUtils$1.class
 org\datn\utils\DoubleUtils.class
 org\datn\dto\Repass.class
 org\datn\controller\TokenController.class
+org\datn\entity\CategoryParentChildren.class
 org\datn\entity\VoucherType.class
 org\datn\service\UsersRoleService.class
 org\datn\utils\Base\Mail.class
+org\datn\dao\CategoryParentChildrenDao.class
 org\datn\dao\ReportQuantityMonthlyDao.class
 org\datn\dao\VoucherAttrDao.class
 org\datn\entity\CardPrice.class

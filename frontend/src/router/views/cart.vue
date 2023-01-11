@@ -54,6 +54,7 @@
                 <div class="col-lg-7 col-12">
                   <div v-for="cs,index in lstCart" :key="index" class="d-flex py-2 border-bottom">
                     <div class="d-flex w-100px">
+                      <input type="checkbox" name="" class="select" :value="cs">
                       <img :src="getImg(cs.course.image)" class="w-100 my-auto" alt="">
                     </div>
                     <span class="mx-2">
@@ -166,6 +167,9 @@ export default {
     getImg(name){
       return `${axios.defaults.baseURL}/api/image/get/${name}`
     }
+  },
+  coursePayment(){
+
   },
   filters:{
     formatNumber:function(value){

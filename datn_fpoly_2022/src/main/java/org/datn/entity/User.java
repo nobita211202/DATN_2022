@@ -60,7 +60,7 @@ public class User {
     private String token;
 
     @Column(name = "money")
-    private Float money;
+    private Float money = 0f;
 
     @Column(name = "created")
     private Date created;

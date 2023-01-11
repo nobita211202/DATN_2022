@@ -4,8 +4,6 @@ import org.datn.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -35,5 +33,9 @@ public class OrderDetailController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteOrderDetail(Long id){
         return orderDetailService.deleteOrderDetail(id);
+    }
+    @PostMapping("/course-payment/{userId}")
+    public Map coursePayment(@PathVariable Long userId, @RequestBody Long[] multiCourse) throws ClassNotFoundException, SQLException {
+        return orderDetailService.coursePayment(userId,multiCourse);
     }
 }

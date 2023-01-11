@@ -2,12 +2,12 @@
 CREATE OR REPLACE PROCEDURE user_order(
 	user_id_param BIGINT,
 	course_id BIGINT[]
-)LANGUAGE plpgsql 
+)LANGUAGE plpgsql
 AS $$
 	BEGIN
-		DECLARE 
+		DECLARE
 			code 		 TEXT 	   := md5(random()::text) || '_' || to_char(CURRENT_DATE,'ddMMyyyy');
-			created 	 TIMESTAMP := CURRENT_TIMESTAMP ; 
+			created 	 TIMESTAMP := CURRENT_TIMESTAMP ;
 			effect_from  TIMESTAMP := CURRENT_TIMESTAMP ;
 			effect_until TIMESTAMP := CURRENT_TIMESTAMP + INTERVAL '7 day' ;
 			status 		 BIGINT    := 0;
@@ -31,10 +31,10 @@ AS $$
 					   status
 				);
 				COMMIT;
-			BEGIN 
+			BEGIN
 				FOREACH arow IN ARRAY course_id
 				LOOP
-					DECLARE 
+					DECLARE
 						price_temp REAL :=  (SELECT s.price FROM COURSES s WHERE s.course_id =arow);
 						order_id_temp BIGINT := (SELECT MAX(o.order_id) FROM ORDERS o WHERE o.user_id =user_id_param);
 					BEGIN
@@ -65,14 +65,14 @@ AS $$
 
 
 -----------
-VIEW ORDERR BY ID 
+VIEW ORDERR BY ID
 ----------
 
 
 
 
 CREATE OR REPLACE FUNCTION view_order_detail_by_userId(
-	user_id_param BIGINT 
+	user_id_param BIGINT
 )
 RETURNS TABLE(
 	code varchar,
@@ -80,16 +80,16 @@ RETURNS TABLE(
 	name_	text,
 	price real
 )
-AS $$ 
-		DECLARE 
+AS $$
+		DECLARE
 			user_id_ BIGINT := user_id_param;
 			BEGIN
 			RETURN QUERY
-				SELECT o.code,to_char(od.created,'dd/MM/yyyy hh:mm:ss') AS created,c_.name_,od.price 
+				SELECT o.code,to_char(od.created,'dd/MM/yyyy hh:mm:ss') AS created,c_.name_,od.price
 					FROM ORDERS o LEFT OUTER JOIN ORDERS_DETAIL od
 						ON o.order_id = od.order_id
 					INNER JOIN COURSES c_
-						ON c_.course_id = od.course_id 
+						ON c_.course_id = od.course_id
 					JOIN categories_attr ca
 						ON ca.category_attr_id = c_.category_attr_id
 					WHERE o.user_id = user_id_ ;
@@ -106,9 +106,9 @@ BEGIN
 	IF order_detail_id_ IS NULL THEN
 		RAISE EXCEPTION 'Order detail id is not null';
 	END IF;
-	DECLARE 
-		is_exist_order_detail_id BIGINT := ( SELECT od_.order_detail_id 
-									 FROM 
+	DECLARE
+		is_exist_order_detail_id BIGINT := ( SELECT od_.order_detail_id
+									 FROM
 									 orders_detail od_
 									 WHERE od_.order_detail_id =order_detail_id_
 									);
@@ -126,7 +126,7 @@ CREATE OR REPLACE PROCEDURE update_status_pay_success(
 )LANGUAGE plpgsql
 AS $$
 BEGIN
-	DECLARE 
+	DECLARE
 		is_exist_code VARCHAR(100) := (SELECT code FROM orders WHERE code = order_code_);
 		ele record;
 	BEGIN
@@ -136,7 +136,7 @@ BEGIN
 		FOR ele IN (
 			SELECT * FROM orders WHERE code = order_code_
 		)LOOP
-			IF ele.status = 1 THEN 
+			IF ele.status = 1 THEN
 				RAISE EXCEPTION 'Order % has been paid',order_code_;
 			END IF;
 			IF ele.effect_until < CURRENT_TIMESTAMP THEN
@@ -151,12 +151,11 @@ BEGIN
 					IF NOT FOUND THEN
 						ROLLBACK;
 						RAISE EXCEPTION 'Error when update price';
-					ELSE 
+					ELSE
 						COMMIT;
 					END IF;
 			END IF;
-			UPDATE orders SET status = 1 WHERE code = ele.code; 
+			UPDATE orders SET status = 1 WHERE code = ele.code;
 		END LOOP;
 	END;
 END $$;
-
