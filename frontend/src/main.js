@@ -24,7 +24,7 @@ import '@components/_globals'
 // Vue.use(window.VueCharts)
 Vue.use(Cookie)
 Vue.use(FontAwesomeIcon)
-axios.defaults.baseURL = 'http://fpolycourse.xyz:8888'
+axios.defaults.baseURL = 'http://localhost:8888'
 Vue.use(axios)
 // Vue.use(Toast);
 Vue.use(Toast, {

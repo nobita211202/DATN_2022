@@ -1,8 +1,6 @@
 package org.datn.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
