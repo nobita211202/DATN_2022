@@ -54,7 +54,7 @@
                 <div class="col-lg-7 col-12">
                   <div v-for="cs,index in lstCart" :key="index" class="d-flex py-2 border-bottom">
                     <div class="d-flex w-100px">
-                      <input type="checkbox" name="" class="select" :value="cs">
+                      <input type="checkbox" class="select" :value="cs.course.id">
                       <img :src="getImg(cs.course.image)" class="w-100 my-auto" alt="">
                     </div>
                     <span class="mx-2">
@@ -84,7 +84,7 @@
                     <span class="fs-4 d-flex ">
                       Tổng: <span class="fw-bold ms-auto">{{sumMoney() | formatNumber}}</span>
                     </span><hr>
-                    <a href="/user/charge-card" class="ms-auto btn btn-success">Thanh toán</a >
+                    <a class="ms-auto btn btn-success" @click="coursePayment">Thanh toán</a >
                   </div>
                 </div>
               </div>
@@ -166,10 +166,25 @@ export default {
     },
     getImg(name){
       return `${axios.defaults.baseURL}/api/image/get/${name}`
+    }, coursePayment(){
+    var checkboxs = document.getElementsByClassName("select");
+    console.log(this.lstCart);
+    var lstIdCourse = []
+    if(checkboxs.length > 0){
+      for (let i = 0; i < checkboxs.length; i++) {
+        if(checkboxs[i].checked){
+         lstIdCourse.push(Number.parseInt(checkboxs[i].value))
+        }
+      }
+      axios.post("/api/order-detail/course-payment/" + JSON.parse(localStorage.getItem('auth.currentUser')).id,lstIdCourse).then(res => {
+        if(res.data.status === 200) {
+          this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Thanh toán thành công</p> </div>')
+        }else {
+          console.log(res.data)
+        }
+      });
     }
   },
-  coursePayment(){
-
   },
   filters:{
     formatNumber:function(value){
