@@ -41,6 +41,7 @@ public class CoursController {
         System.out.println(data.getJson());
         Course course = (Course) new ObjectMapper().readValue(data.getJson(), Course.class);
         course.setImage(service.saveImage(data.getFile()));
+        course.setStatus((short)1);
         coursService.createCours(course);
         return ResponseEntity.ok(course);
     }
@@ -82,6 +83,35 @@ public class CoursController {
     public ResponseEntity findTop5CoursePurchase(){
         return ResponseEntity.ok(coursService.findTop5CoursePurchase());
     }
+
+    @GetMapping("/accept/{idCourse}")
+    public void accept(
+            @PathVariable("idCourse")  long idCourse
+    ){
+        coursService.setStatus(idCourse, (short)3);
+    }
+
+    @GetMapping("/not_accept/{idCourse}")
+    public void notAccept(
+            @PathVariable("idCourse")  long idCourse
+    ){
+        coursService.setStatus(idCourse, (short)2);
+    }
+
+    @GetMapping("/get/accept")
+    public ResponseEntity getAccept(){
+        return ResponseEntity.ok(coursService.getByStatus((short)3));
+    }
+    @GetMapping("/get/accept/{userId}")
+    public void getAcceptByUserId(){
+        coursService.getByStatus((short)3);
+    }
+
+    @GetMapping("/get/not_accept")
+    public ResponseEntity getNotAccept(){
+        return ResponseEntity.ok(coursService.getByStatus((short)2));
+    }
+
 }
 
 
