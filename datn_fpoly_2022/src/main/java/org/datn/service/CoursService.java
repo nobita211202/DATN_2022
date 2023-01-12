@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public interface CoursService {
     List<Course> findAll();
-
+    List<Course> getCourseByUserId(long userId);
     List<Course> pagination();
     void setStatus(long icCourse,Short status);
     Course createCours(Course co);
