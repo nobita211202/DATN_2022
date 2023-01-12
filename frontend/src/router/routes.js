@@ -139,6 +139,14 @@ export default [
     meta:{
       authRequired:true
     }
+  },
+  {
+    path: '/user/course-add-video',
+    name : 'CourseAddVideo',
+    component : () => lazyLoadView(import('@views/course-attribute/course-attr.vue')),
+    meta:{
+      authRequired:true
+    }
   }
 ]
 
