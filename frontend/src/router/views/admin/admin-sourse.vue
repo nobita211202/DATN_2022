@@ -5,64 +5,23 @@ export default {
   components:{
   },
   created(){
-    this.fileRender = new FileReader()
-    this.fileRender.onload = (Even) => {
-        this.imageSelected = Even.target.result
-    }
-    console.log(this.courses);
-    var getCourse=()=>{
-      axios.get(`${url}course/get`)
-      .then((res)=>{
-        this.courses.data= res.data
-        console.log(res.data);
-      })
-    }
-    // var getCourseAttr=()=>{
-    //   axios.get(`${url}course/get`)
-    //   .then((res)=>{
-    //     this.courses= res.data
-    //   })
-    // }
-    getCourse()
-    console.log(this.course);
+    this.getCourseToAccept()
   },
   data() {
+    var mail = require("@assets/mailMau.json")
     return {
+      mail:mail,
       debounceSearch:null,
       overlayTB:null,
-      imageUP:null,
-      editor: "ClassicEditor",
-        editorData: '<p>Content of the editor.</p>',
-        editorConfig: {
-            // The configuration of the editor.
-        },
-      content:"",
-    imageSelected :"",
-    fileRender:{},
     courseAtt:[],
-    courses: {
+    table: {
         isBusy: false,
-        data: [
-          {
-            image: 1,
-            name: 'Manager',
-            studyTime: 1,
-            price:423,
-            address:"Hà nội",
-            like:"22",
-            creator: 'admin',
-            created: '1970-01-01',
-            status: 1,
-            describe:"hehe",
-
-          },
-        ],
+        data: [],
         fields: [
           { key: 'image', label: 'img', sortable: true },
           { key: 'name', label: 'Tên khóa học' },
-          { key: 'studyTime', label: 'Thời gian học', sortable: true },
-          { key: 'price', label: 'Giá ban', sortable: true },
-          { key: 'like', label: 'Lượt thích', sortable: true },
+          { key: 'studyTime', label: 'Học trong', sortable: true },
+          { key: 'price', label: 'Giá bán', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
           { key: 'creator', label: 'Người tạo' },
           { key: 'action', label: 'Hành động' },
@@ -76,32 +35,10 @@ export default {
         },
       },
       busy: false,
-      formAddCourse: {
-        categoryAttr:{
-          id:1
-        },
-        user:{
-          id:15
-        }
-
-      },
       courseDelete: {},
-      formEditCourse: {},
+      showCourse: {},
       currentPage: 1,
       rolesPerPage: 5,
-      currentUser: {
-        id: 1,
-        name: 'admin',
-      },
-      optionsStatus: [
-        { value: 0, text: 'Inactive' },
-        { value: 1, text: 'Active' },
-      ],
-      optionsAdminId: [
-        { value: 1, text: 'Admin' },
-        { value: 2, text: 'Manager' },
-      ],
-      rolesBackup: [],
       txtSearch: '',
     }
   },
@@ -109,84 +46,91 @@ export default {
 
   methods: {
     chooseImg(even) {
-
       this.imageSelected = even.target.files[0]
       this.imageUP=this.imageSelected
       this.fileRender.readAsDataURL(this.imageSelected)
     },
-    mdEditCourse(item) {
-      this.formEditCourse = Object.assign({}, item)
-      this.$bvModal.show('modal-edit-course')
+    sendMai(){
+      this.mail.content.replace("*name",this.courseDelete.user.name)
+      this.mail.content.replace("*nameCourse",this.courseDelete.name)
     },
-    onAddCourse() {
-      const dataForm= new FormData()
-      dataForm.append("json", JSON.stringify(this.formAddCourse))
-      if(this.imageUP !== null) dataForm.append("file",this.imageUP)
-      axios.post(`${url}course/add`,dataForm,{
-        headers:{
-            'Content-Type':'multipart/form-data',
-            'Accept':'application/json'}
-      }).then((res)=>{
-        this.courses.data.push(res.data)
+    mdShowCourse(item) {
+      this.showCourse = Object.assign({}, item)
+      this.$bvModal.show('modal-show-course')
+    },
+    accept() {
+
+      axios.get(`${url}course/accept/${this.showCourse.id}`)
+      .then(()=>{
+        this.table.data = this.table.data.filter(
+          (e) => e.id !== this.courseDelete.id
+        )
       })
-
-      this.rolesBackup = this.courses.data
-      this.$bvModal.hide('modal-add-course')
+      this.busy = false
+      this.showCourse = {}
+      this.$bvModal.hide('modal-show-course')
     },
 
-    onEditCourse() {
-
-      const dataForm= new FormData()
-      dataForm.append("json", JSON.stringify(this.formEditCourse))
-      if(this.imageUP !== null) dataForm.append("file",this.imageUP)
-      axios.put(`${url}course/update`,dataForm,{
-        headers:{
-            'Content-Type':'multipart/form-data',
-            'Accept':'application/json'}
-      }).then((res)=>{
-        this.formEditCourse.image = res.data.image
-        for (const obj of this.courses.data) {
-          if (obj.id === this.formEditCourse.id) {
-            obj.name = this.formEditCourse.name
-            obj.status = this.formEditCourse.status
-            obj.admin_id = this.formEditCourse.admin_id
-            obj.image = res.data.image
-            break
-          }
-        }
-      })
-      this.$bvModal.hide('modal-edit-course')
-    },
 
     onRemoveCourse(item) {
 
       this.courseDelete = item
       this.busy = true
-      // this.courses.data = this.roles.data.filter((e) => e.id !== id)
+      this.sendMai()
+      // this.table.data = this.roles.data.filter((e) => e.id !== id)
     },
     onCancel() {
       this.busy = false
       this.courseDelete = {}
     },
 
-    tryRemoveCourse() {
+    notAccept() {
 
-      this.courses.data = this.courses.data.filter(
-        (e) => e.id !== this.courseDelete.id
-      )
-      axios.delete(`${url}course/delete/${this.courseDelete.id}`)
+      axios.get(`${url}course/not_accept/${this.courseDelete.id}`)
+      .then(()=>{
+        var formData = new FormData();
+        formData.append("mail",this.mail.content)
+        formData.append("email",this.courseDelete.user.email)
+        axios.post(`${url}mail/sendMail`,formData)
+        .then(_=> {
+          this.table.data = this.table.data.filter(
+            (e) => e.id !== this.courseDelete.id
+          )
+        })
+      })
+
       this.busy = false
       this.courseDelete = {}
     },
     getImg(name){
       return `${axios.defaults.baseURL}${url}image/get/${name}`
+    },
+    async getCourseAccept(){
+      axios.get(`${url}course/get/accept`)
+      .then((res)=>{
+        this.table.data = res.data
+        console.log(res.data);
+      })
+    },
+    async getCourseNotAccept(){
+      axios.get(`${url}course/get/not_accept`)
+      .then((res)=>{
+        this.table.data = res.data
+        console.log(res.data);
+      })
+    },
+    async getCourseToAccept(){
+      axios.get(`${url}course/get/toAccept`)
+      .then((res)=>{
+        this.table.data = res.data
+        console.log(res.data);
+      })
     }
   },
   filters:{
     formatNumber:function(value){
       return new Intl.NumberFormat().format(value)+"đ"
     },
-
   },
   watch:{
     txtSearch(){
@@ -194,11 +138,11 @@ export default {
       clearTimeout(this.debounceSearch)
       this.debounceSearch = setTimeout(
         ()=>{
-          this.courses.data = []
+          this.table.data = []
           axios.get(`/api/course/search/${this.txtSearch}`)
           .then((res)=>{
             console.log(res.data);
-            this.courses.data = res.data
+            this.table.data = res.data
             this.overlayTB= false
           })
           .catch( er => {
@@ -215,29 +159,35 @@ export default {
 <template>
   <div>
     <b-row class="mb-10">
+
       <b-col>
-        <b-form-input v-model="txtSearch" placeholder="Tìm kiếm"></b-form-input>
+        <b-form-input class="mx-0 my-2" v-model="txtSearch" placeholder="Tìm kiếm"></b-form-input>
       </b-col>
       <b-col>
-        <button
-          class="btn btn-success mb-2 float-right"
-          @click="$bvModal.show('modal-add-course')"
-          ><b-icon icon="patch-plus" aria-hidden="true"></b-icon> Thêm
-          Khóa học</button
-        >
+      </b-col>
+      <b-col sm="12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" @click="getCourseToAccept" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Chưa duyệt</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" @click="getCourseAccept" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Dã duyệt</button>
+          </li>
+        </ul>
       </b-col>
     </b-row>
     <b-overlay
       :show="overlayTB"
       rounded="sm"
     >
-      <b-table
+      <b-table v-show="table.data.length > 0"
         striped
         hover
         responsive
-        :items="courses.data"
-        :fields="courses.fields"
-        :busy="courses.isBusy"
+        :items="table.data"
+        :fields="table.fields"
+        :busy="table.isBusy"
       >
         <template v-slot:cell(image)="course">
           <span class="">
@@ -252,31 +202,44 @@ export default {
         </template>
 
 
-        <template v-slot:cell(admin_id)="course">
-          <span v-if="course.item.admin_id === 1" class="text-bold"> Admin </span>
-          <span v-if="course.item.admin_id === 2" class="text-bold"> Manager </span>
-        </template>
+
         <template v-slot:cell(created)="course">
           <span>{{ course.item.created | formatDate}}</span>
         </template>
+        <template v-slot:cell(creator)="course">
+          <span class="d-flex flex-column">
+            <span>{{ course.item.user.name }} </span>
+            <span class="text-muted">({{ course.item.user.email }})</span>
+            <span class="text-max"><a :href="course.item.link">{{ course.item.link }} </a></span>
+          </span>
+        </template>
         <template v-slot:cell(price)="course">
           <span class="fw-bold">{{course.item.price | formatNumber}}</span>
+        </template>
+        <template v-slot:cell(studyTime)="course">
+          <span class="fw-bold">{{course.item.studyTime }} Giờ</span>
         </template>
         <template v-slot:cell(action)="course">
           <b-button
             class="mr-5"
             variant="outline-danger"
             @click="onRemoveCourse(course.item)"
-            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
+            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon>Hủy</b-button
           >
-          <b-button variant="outline-info" @click="mdEditCourse(course.item)"
-            ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
+          <b-button variant="outline-info" @click="mdShowCourse(course.item)"
+            ><b-icon icon="check-lg" aria-hidden="true"></b-icon>Chấp nhận</b-button
           >
         </template>
       </b-table>
+      <div class="h-100" v-show="!table.data.length > 0">
+        <div class="d-flex h-100">
+          <span class="m-auto text-muted fs-3 fw-blod">Không có gì</span>
+        </div>
+      </div>
     </b-overlay>
 
     <nav
+      v-show="table.data.length > 0"
       id="nav-pag"
       aria-label="Page navigation"
       size="sm"
@@ -290,154 +253,8 @@ export default {
       >
       </b-pagination>
     </nav>
-    <b-modal
-      id="modal-add-course"
-      size="xl"
-      centered
-      scrollable
-      hide-backdrop
-      hide-header-close
-    >
-      <template v-slot:modal-title> Thêm khóa hoc </template>
-      <b-form>
-        <b-row>
-          <b-col sm="9">
-            <b-row>
-              <b-col>
-                <b-form-group label="Tên khóa học" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formAddCourse.name "
-                    required
-                    type="text"
-                  ></b-form-input>
-                </b-form-group>
-              </b-col>
-              <b-col>
-                <b-form-group label="Thời gian học" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formAddCourse.studyTime"
-                    required
-                    type="number"
-                  ></b-form-input>
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group label="Giá bán" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formAddCourse.price"
-                    required
-                    type="text"
-                  ></b-form-input>
-                </b-form-group>
-
-              </b-col>
-
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group label="Thông tin" label-for="role-name">
-                  <ckeditor v-model="formAddCourse.describe"></ckeditor>
-                </b-form-group>
-              </b-col>
-            </b-row>
-          </b-col>
-          <b-col class="d-flex flex-column">
-            <b-form-group label="Img" label-for="role-name">
-              <input type="file" @change="chooseImg" class="form-control">
-            </b-form-group>
-            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
-
-          </b-col>
-        </b-row>
-
-      </b-form>
-      <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="onAddCourse">
-          Thêm</b-button
-        >
-      </template>
-    </b-modal>
-
-    <b-modal
-      id="modal-edit-course"
-      size="xl"
-      centered
-      scrollable
-      hide-backdrop
-      hide-header-close
-    >
-      <template v-slot:modal-title> Sửa khóa hoc </template>
-      <b-form>
-        <b-row>
-          <b-col sm="9">
-            <b-row>
-              <b-col>
-                <b-form-group label="Tên khóa học" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formEditCourse.name "
-                    required
-                    type="text"
-                  ></b-form-input>
-                </b-form-group>
-              </b-col>
-              <b-col>
-                <b-form-group label="Thời gian học" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formEditCourse.studyTime"
-                    required
-                    type="number"
-                  ></b-form-input>
-                </b-form-group>
-              </b-col>
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group label="Giá bán" label-for="role-name">
-                  <b-form-input
-                    id="role-name"
-                    v-model="formEditCourse.price"
-                    required
-                    type="text"
-                  ></b-form-input>
-                </b-form-group>
-
-              </b-col>
-
-            </b-row>
-            <b-row>
-              <b-col>
-                <b-form-group label="Thông tin" label-for="role-name">
-                  <ckeditor v-model="formEditCourse.describe"></ckeditor>
-
-                </b-form-group>
-              </b-col>
-            </b-row>
-          </b-col>
-          <b-col class="d-flex flex-column">
-            <b-form-group label="Img" label-for="role-name">
-              <input type="file" @change="chooseImg" class="form-control">
-            </b-form-group>
-            <img v-if="imageSelected" :src="imageSelected" class="m-auto w-100 shadow border " alt="">
-
-          </b-col>
-        </b-row>
-
-      </b-form>
-      <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="onEditCourse">
-          Sửa</b-button
-        >
-      </template>
-    </b-modal>
-    <b-overlay :show="busy" no-wrap>
-      <template v-slot:overlay>
+    <b-overlay class="w-100" :show="busy" no-wrap>
+      <template class="" v-slot:overlay>
         <div
           ref="dialog"
           tabindex="-1"
@@ -447,23 +264,64 @@ export default {
         >
           <p
             ><strong id="form-confirm-label"
-              >Bạn có chắc muốn <span class="text-danger">xoá</span>
+              >Lý do <span class="text-danger">hủy</span> yêu cầu khóa học
               <span class="text-bold"> {{ courseDelete.name }}</span></strong
-            ></p
+            >?</p
           >
+          <div class="mb-3">
+            <ckeditor v-model="mail.content" ></ckeditor>
+          </div>
           <div style="justify-content: center">
             <b-button variant="outline-default" class="mr-3" @click="onCancel"
-              >Huỷ</b-button
+              >Đóng</b-button
             >
             <b-button
               variant="outline-danger"
               class="mr-3"
-              @click="tryRemoveCourse"
-              >Xoá</b-button
+              @click="notAccept"
+              >Gửi mail</b-button
             >
           </div>
         </div>
       </template>
     </b-overlay>
+
+    <b-modal
+      id="modal-show-course"
+      size="sm"
+      centered
+      scrollable
+      hide-backdrop
+      hide-header-close
+    >
+      <template v-slot:modal-title>Xác nhận  </template>
+      <b-form>
+        Bạn muốn chấp nhận khóa học <b class="text-bold">{{ showCourse.name }}</b>?
+      </b-form>
+      <template v-slot:modal-footer>
+        <b-button type="button" variant="danger" @click="$bvModal.hide('modal-show-course')">
+          Đóng</b-button
+        >
+        <b-button type="button" variant="success" @click="accept">
+          Xác nhận</b-button
+        >
+      </template>
+    </b-modal>
+
   </div>
 </template>
+
+<style>
+  .w-100 > div  {
+    width: 100%;
+  }
+
+.text-max{
+  display: block;
+  	display: -webkit-box;
+  	-webkit-line-clamp: 1;  /* số dòng hiển thị */
+  	-webkit-box-orient: vertical;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+</style>
