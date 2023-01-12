@@ -1,14 +1,13 @@
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\utils\Base\ModifyBase.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\CartServiceImpl.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\AdminDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\MailOutQueue.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\CourseAttrImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\ReportQuantityDaily.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\ForgotPassword.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CommentDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\BlockUserDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\ImageController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\CartService.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Video.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\OrderDetailService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\ForgotPasswordDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\utils\DoubleUtils.java
@@ -25,12 +24,12 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Repo
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\ContactDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\RoleServiceImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\ConfigurationSpringSecurity.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\VideoDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\OrderDetailController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\utils\Base\Mail.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\CourseAttr.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\CategoryAttrController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\LoginFail.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\CategoryParentChildren.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\VoucherTypeService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\UserServiceImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\VoucherAttrDao.java
@@ -71,7 +70,6 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Forgo
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\CoursesServiceImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\UserAccountService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CategoryDao.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Admin.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\OrderDetailServiceImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\ContactServiceImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\CoursController.java
@@ -79,7 +77,6 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CategoriesAttrDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\PaymentMethod.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CoursDao.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\AdminService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\MailOutQueueService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Telecom.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Contact.java
@@ -90,7 +87,6 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Paym
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CardDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\TokenService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\VoucherTypeDao.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\VideoService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Category.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\CardPushDataService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\LikeController.java
@@ -123,17 +119,16 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\TokenDAO
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\ForgotPasswordService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\LikeDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\IpAddressUser.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\AdminServiceImpl.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\CategoryController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\OrderDetailDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\utils\Base\EntityAndImage.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\OrderController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Likes.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Impl\TelecomServiceImpl.java
-D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\AdminController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\CourseAttrService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Token.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\PaymentMethodService.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CategoryParentChildrenDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\bean\LoginBean.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\CategoriesAttr.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Order.java
@@ -148,3 +143,4 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Cours
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\Services.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\UsersRoleService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\bean\ResponseData.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\CourseAttrController.java

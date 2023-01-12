@@ -12,6 +12,7 @@ org\datn\service\Impl\CardPushDataService.class
 org\datn\service\ContactSubjectService.class
 org\datn\service\BlockUserService.class
 org\datn\service\Impl\CartServiceImpl.class
+org\datn\controller\CourseAttrController.class
 org\datn\controller\CardPriceController.class
 org\datn\dao\OrderDetailDao.class
 org\datn\entity\Cart.class
@@ -30,6 +31,7 @@ org\datn\dao\UserDao.class
 org\datn\service\MailOutQueueService.class
 org\datn\service\VoucherAttrService.class
 org\datn\dao\LoginFailDao.class
+org\datn\service\Impl\CourseAttrImpl.class
 org\datn\service\ReportQuantityDailyService.class
 org\datn\service\Impl\CategoryAttrServiceImpl.class
 org\datn\dao\ContactDao.class

@@ -41,10 +41,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-    @Bean
-    public BCryptPasswordEncoder getPassword() {
-        return new BCryptPasswordEncoder();
-    }
     @Override
     public void configure( WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS,"/**");
