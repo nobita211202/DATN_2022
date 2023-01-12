@@ -22,12 +22,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
-    @JoinColumn(name = "admin_id", nullable = false)
-    private Admin admin;
-
     @Column(name = "name_")
     @Type(type = "org.hibernate.type.TextType")
     private String name;

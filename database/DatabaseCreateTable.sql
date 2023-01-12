@@ -1,4 +1,4 @@
-CREATE TABLE ADMINS 
+CREATE TABLE ADMINS
 (
     admin_id bigserial not null primary key,
     username varchar(255) not null unique,
@@ -47,7 +47,7 @@ CREATE TABLE USERS_ROLE
     modified date,
     modifier text,
     FOREIGN KEY(user_id) REFERENCES users(user_id),
-    FOREIGN KEY(role_id) REFERENCES ROLES(role_id) 
+    FOREIGN KEY(role_id) REFERENCES ROLES(role_id)
 );
 CREATE TABLE CATEGORIES
 (
@@ -103,18 +103,6 @@ CREATE TABLE COURSES
     Foreign key(user_id)references users(user_id),
     foreign key(category_attr_id) references categories_attr(category_attr_id)
 );
-CREATE TABLE VIDEOS
-(
-    video_id bigserial not null primary key,
-    title text ,
-    url varchar(255)not null unique,
-    describe text ,
-    created timestamp default current_timestamp,
-    creator text,
-    modified timestamp,
-    modifier text,
-    status smallint default 0
-);
 CREATE TABLE COURSE_ATTR
 (
     course_attr_id bigserial not null primary key,
@@ -140,7 +128,7 @@ CREATE TABLE PAYMENT_METHOD
     created timestamp default current_timestamp,
     creator text,
     modified timestamp,
-    modifier text  
+    modifier text
 );
 create table voucher_type
 (
@@ -149,7 +137,7 @@ create table voucher_type
     created timestamp default current_timestamp,
     creator text,
     modified timestamp,
-    modifier text 
+    modifier text
 );
 CREATE TABLE VOUCHERS
 (
@@ -223,7 +211,7 @@ CREATE TABLE block_user
     created timestamp default current_timestamp,
     effect_from timestamp,
     effect_until timestamp,
-    status smallint default 0   
+    status smallint default 0
 );
 
 CREATE TABLE REPORT_QUANTITY_DAILY

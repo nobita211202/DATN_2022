@@ -1,10 +1,7 @@
 package org.datn.controller;
 
-import org.datn.entity.Admin;
-import org.datn.entity.Category;
 import org.datn.entity.Role;
 import org.datn.service.RoleService;
-import org.datn.utils.Base.Bases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -37,9 +34,6 @@ public class RoleController {
     @PostMapping("/add")
     public ResponseEntity<Role> add(@RequestBody Role role) {
 
-        Admin admin= new Admin();
-        admin.setId(1L);
-        role.setAdmin(admin);
         roleService.save(role);
         return ResponseEntity.ok(role);
     }
@@ -50,9 +44,6 @@ public class RoleController {
         if (!roleService.exists(role.getId())) {
             return ResponseEntity.notFound().build();
         }
-        Admin admin= new Admin();
-        admin.setId(1L);
-        role.setAdmin(admin);
         roleService.put(role);
         return ResponseEntity.ok(role);
     }

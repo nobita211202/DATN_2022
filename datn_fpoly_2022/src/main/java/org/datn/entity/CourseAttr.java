@@ -25,10 +25,7 @@ public class CourseAttr {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "video_id", nullable = false)
-    private Video video;
+    private String url;
 
     @NotNull
     @Column(name = "title", nullable = false)

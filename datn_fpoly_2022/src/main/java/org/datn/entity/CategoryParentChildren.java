@@ -28,11 +28,6 @@ public class CategoryParentChildren {
     @Column(name = "parent_id")
     private Long parent;
 
-    @ManyToOne()
-    @JsonIgnore
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
-
     @Column(name = "name_")
     @Type(type = "org.hibernate.type.TextType")
     private String name;

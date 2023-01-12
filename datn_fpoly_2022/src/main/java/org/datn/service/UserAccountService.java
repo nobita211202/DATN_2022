@@ -2,13 +2,9 @@ package org.datn.service;
 
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.datn.bean.ResponseData;
-import org.datn.entity.Admin;
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
-import org.springframework.data.repository.CrudRepository;
 
 import java.net.UnknownHostException;
 import java.time.Instant;
@@ -30,9 +26,7 @@ public interface UserAccountService  {
 
     Instant findEffectUntilInBlockUser(String ip);
     List<User> findAll();
-    Admin findByIdAdmin(String username);
 
-    List<Admin> findAllAdmin();
     List<User> getAdministrators();
 
     String existsByUsernameOrEmail(String usernameOrPassword);

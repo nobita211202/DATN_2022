@@ -22,11 +22,6 @@ public class CategoriesAttr {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @NotNull
-    @ManyToOne( )
-    @JoinColumn(name = "admin_id", nullable = false)
-    private Admin admin;
-
     @Size(max = 255)
     @NotNull
     @Column(name = "image", nullable = false)

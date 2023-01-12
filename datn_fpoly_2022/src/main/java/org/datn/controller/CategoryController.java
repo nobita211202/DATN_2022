@@ -1,21 +1,14 @@
 package org.datn.controller;
 
-import antlr.collections.impl.Vector;
-import org.datn.dao.CategoryDao;
-import org.datn.entity.Admin;
 import org.datn.entity.Category;
-import org.datn.entity.User;
 import org.datn.service.CategoryService;
-import org.datn.service.TokenService;
 import org.datn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -49,9 +42,6 @@ public class CategoryController {
 //        User user= userService.findUserByToken(uuid);
 //        if (user==null) return ResponseEntity.badRequest().build();
 //        category.
-        Admin admin= new Admin();// chưa có login ADMIN, set tạm thời
-        admin.setId(1L);
-        category.setAdmin(admin);
         categoryService.save(category);
         return ResponseEntity.ok(category);
     }
@@ -62,9 +52,7 @@ public class CategoryController {
         if (!categoryService.exists(category.getId())) {
             return ResponseEntity.notFound().build();
         }
-        Admin admin= new Admin();// chưa có login ADMIN, set tạm thời
-        admin.setId(1L);
-        category.setAdmin(admin);
+
         categoryService.put(category);
         return ResponseEntity.ok(category);
     }

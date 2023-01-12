@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <Main>
@@ -180,7 +179,7 @@ export default {
         if(res.data.status === 200) {
           this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Thanh toán thành công</p> </div>')
         }else {
-          console.log(res.data)
+          alert("Thanh toán thất bại");
         }
       });
     }

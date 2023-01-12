@@ -1,17 +1,13 @@
 package org.datn.dao;
 
-import org.datn.entity.Admin;
 import org.datn.entity.Course;
 import org.datn.entity.Likes;
-import org.datn.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Repository
 @Transactional

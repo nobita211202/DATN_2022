@@ -25,11 +25,6 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @ManyToOne()
-    @JsonIgnore
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
-
     @Column(name = "name_")
     @Type(type = "org.hibernate.type.TextType")
     private String name;

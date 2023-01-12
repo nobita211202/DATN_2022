@@ -1,12 +1,9 @@
 package org.datn.service.Impl;
 
 
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import org.datn.dao.AdminDao;
 import org.datn.dao.BlockUserDao;
 import org.datn.dao.UserDao;
 import org.datn.bean.ResponseData;
-import org.datn.entity.Admin;
 import org.datn.entity.BlockUser;
 import org.datn.entity.User;
 import org.datn.service.UserAccountService;
@@ -16,20 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Instant;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
     @Autowired
     UserDao udao;
-    @Autowired
-    AdminDao adao;
+
     @Autowired
     BlockUserDao bldao;
 
@@ -70,15 +63,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         return udao.findAll();
     }
 
-    @Override
-    public Admin findByIdAdmin(String username) {
-        return adao.findByUsernameAdmin(username).getAdmin();
-    }
-
-    @Override
-    public List<Admin> findAllAdmin() {
-        return adao.findAll();
-    }
 
     @Override
     public List<User> getAdministrators() {
