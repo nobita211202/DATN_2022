@@ -103,7 +103,7 @@
                 <b-overlay :show="overlayGY" rounded="sm" >
                   <div class="mt-2 border-top">
                     <div class="mt-5 row">
-                      <LstcourseVue :listCourse="lstCourseGY" />
+                      <LstcourseVue :classtext="'text-dark'" :listCourse="lstCourseGY" />
                     </div>
                   </div>
                 </b-overlay>
@@ -150,7 +150,7 @@ export default {
 
 
 
-    axios.get(`/api/course/getCourseAndLike/${15}`).then( res => {this.lstCourseGY = res.data})
+    axios.get(`/api/course/get`).then( res => {this.lstCourseGY = res.data})
   },
   methods:{
     rmCourse(id){

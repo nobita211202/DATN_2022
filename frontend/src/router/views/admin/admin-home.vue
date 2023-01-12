@@ -6,6 +6,7 @@ import AdminCategory from '@views/admin/admin-cateogry.vue'
 import adminUser from '@/src/router/views/admin/admin-user.vue'
 import adminSourse from '@/src/router/views/admin/admin-sourse.vue'
 import adminContactVue from '@views/admin/admin-contact.vue'
+import courseUser from '@/src/router/views/admin/course-user.vue'
 import { bus } from '@src/main'
 export default {
   page: {
@@ -19,7 +20,8 @@ export default {
     AdminCategory,
     adminUser,
     adminSourse,
-    adminContactVue
+    adminContactVue,
+    courseUser,
   },
 
   data() {
@@ -114,6 +116,9 @@ body {
               <h3 v-if="activeTab === 'admin-contact'" class="card-title"
                 >Quản lý liên hệ</h3
               >
+              <h3 v-if="activeTab === 'course-user'" class="card-title"
+                >Gửi duyệt khóa học</h3
+              >
 
             </div>
             <div class="h600px p-3" style=" overflow-y: scroll ; overflow-x: hidden;">
@@ -123,6 +128,7 @@ body {
                 <adminUser v-if="activeTab === 'admin-users'" />
                 <adminSourse v-if="activeTab === 'admin-course'"/>
                 <adminContactVue v-if="activeTab === 'admin-contact'"/>
+                <courseUser v-if="activeTab === 'course-user'"/>
              <!-- </KeepAlive> -->
             </div>
           </div>
