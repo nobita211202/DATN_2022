@@ -32,9 +32,19 @@ public class CoursesServiceImpl implements CoursService {
     }
 
     @Override
+    public void setStatus(long idCourse,Short status) {
+        cdao.setStatus(idCourse,status);
+    }
+
+    @Override
     public Course createCours(Course co) {
         co.setStatus((short)0);
         return cdao.save(bases.getBase(co,Bases.CREATE));
+    }
+
+    @Override
+    public List<Course> getByStatus(Short status) {
+        return cdao.getByStatus(status);
     }
 
     @Override

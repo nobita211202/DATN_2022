@@ -12,9 +12,9 @@ public interface CoursService {
     List<Course> findAll();
 
     List<Course> pagination();
-
+    void setStatus(long icCourse,Short status);
     Course createCours(Course co);
-
+    List<Course> getByStatus(Short status);
     void deleteCours(Long id);
     Course updateCours(Course co);
 

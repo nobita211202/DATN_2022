@@ -15,12 +15,19 @@ import java.util.List;
 public interface CoursDao extends JpaRepository<Course,Long> {
     @Override
     @Modifying
-    @Query("update Course c set c.status = 1 where c.id =:id ")
+    @Query("update Course c set c.status = 0 where c.id =:id ")
     void deleteById(@Param("id") Long id);
 
     @Override
-    @Query("select c from Course c where c.status = 0")
+    @Query("select c from Course c where c.status = 1")
     List<Course> findAll();
+
+    @Query("select c from Course c where c.status =:status")
+    List<Course> getByStatus(@Param("status") Short status);
+
+    @Modifying
+    @Query("update Course c set c.status =:status where c.id =:id ")
+    void setStatus(@Param("id") Long id,@Param("status")Short status );
 
     @Query("select c from Course c where c.status = 0 and  c.name like :name")
     List<Course> findAllByNamel(@Param("name") String name);
