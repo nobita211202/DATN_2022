@@ -23,7 +23,12 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public List<Course> findAll() {
-        return cdao.findAll();
+        return cdao.getByStatus((short)3);
+    }
+
+    @Override
+    public List<Course> getCourseByUserId(long idUser) {
+        return cdao.getCourseByUserId(idUser);
     }
 
     @Override

@@ -30,12 +30,14 @@ public class CoursController {
     public ResponseEntity getAll() {                 //Lấy danh sách khóa học
         return ResponseEntity.ok(coursService.findAll());
     }
-//    @GetMapping("/getCourseAndLike/{user_id}")
-//    public ResponseEntity getCourseAnhLike(
-//            @PathVariable("user_id") long idUser
-//    ) {                 //Lấy danh sách khóa học
-//        return ResponseEntity.ok(coursService.findAll());
-//    }
+
+    @GetMapping("/getCourseByUserId/{id}")
+    public ResponseEntity getCourseByUserId(
+            @PathVariable("id") Long id
+    ){
+        return ResponseEntity.ok(coursService.getCourseByUserId(id));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Course> addCours(@ModelAttribute EntityAndImage data) throws JsonProcessingException {    //Thêm khóa học
         System.out.println(data.getJson());
@@ -110,6 +112,10 @@ public class CoursController {
     @GetMapping("/get/not_accept")
     public ResponseEntity getNotAccept(){
         return ResponseEntity.ok(coursService.getByStatus((short)2));
+    }
+    @GetMapping("/get/toAccept")
+    public ResponseEntity getToAccept(){
+        return ResponseEntity.ok(coursService.getByStatus((short)1));
     }
 
 }

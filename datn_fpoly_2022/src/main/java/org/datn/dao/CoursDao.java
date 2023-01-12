@@ -18,9 +18,10 @@ public interface CoursDao extends JpaRepository<Course,Long> {
     @Query("update Course c set c.status = 0 where c.id =:id ")
     void deleteById(@Param("id") Long id);
 
-    @Override
-    @Query("select c from Course c where c.status = 1")
-    List<Course> findAll();
+    @Query("select c from Course c where c.user.id =:userId and c.status > 0")
+    List<Course> getCourseByUserId(@Param("userId")long id );
+
+
 
     @Query("select c from Course c where c.status =:status")
     List<Course> getByStatus(@Param("status") Short status);
