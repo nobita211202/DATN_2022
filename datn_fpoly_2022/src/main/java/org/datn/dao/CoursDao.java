@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -51,5 +52,30 @@ public interface CoursDao extends JpaRepository<Course,Long> {
             ") SELECT c.* FROM courses c INNER JOIN course_purchase cp \n" +
             "ON c.course_id = cp.course_id\n",nativeQuery = true)
     List<Course> findTop5CoursePurchase();
+    @Query(value = "WITH RECURSIVE temp_ \n" +
+            "AS\n" +
+            "(\n" +
+            "\tSELECT c.category_id,c.parent_id \n" +
+            "\tFROM categories c WHERE c.category_id = ?1\n" +
+            "\tUNION ALL \n" +
+            "\tSELECT c.category_id,c.parent_id\n" +
+            "\tFROM categories c INNER JOIN temp_ t \n" +
+            "\tON t.category_id  = c.parent_id\n" +
+            "), category_attr AS\n" +
+            "(\n" +
+            "\tSELECT * FROM categories_attr ca \n" +
+            "\tWHERE ca.category_id IN (\n" +
+            "\t\tSELECT category_id FROM temp_\n" +
+            "\t)\n" +
+            "\t\n" +
+            "),\n" +
+            "result_final AS\n" +
+            "(\n" +
+            "\tSELECT * FROM courses c \n" +
+            "\tINNER JOIN categories_attr ca\n" +
+            "\tON ca.category_attr_id = c.category_attr_id\n" +
+            ")\n" +
+            "SELECT * FROM result_final rf \n")
+    Collection<Course> getCourseByCategoryId(Long categoryId);
 
 }

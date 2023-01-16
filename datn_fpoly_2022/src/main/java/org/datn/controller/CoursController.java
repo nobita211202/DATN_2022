@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 import java.util.Optional;
 
 @RestController
@@ -117,7 +119,10 @@ public class CoursController {
     public ResponseEntity getToAccept(){
         return ResponseEntity.ok(coursService.getByStatus((short)1));
     }
-
+    @GetMapping("/get-by-category/{id}")
+    public Collection<Course> getByCategory(@PathVariable Long id){
+        return coursService.getCourseByCategoryId(id);
+    }
 }
 
 

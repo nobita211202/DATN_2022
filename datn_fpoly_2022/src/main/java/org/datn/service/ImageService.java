@@ -1,10 +1,7 @@
 package org.datn.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.ServletContext;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
