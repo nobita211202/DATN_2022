@@ -52,7 +52,8 @@ public interface CoursDao extends JpaRepository<Course,Long> {
             ") SELECT c.* FROM courses c INNER JOIN course_purchase cp \n" +
             "ON c.course_id = cp.course_id\n",nativeQuery = true)
     List<Course> findTop5CoursePurchase();
-    @Query(value = "WITH RECURSIVE temp_ \n" +
+    @Query(value = "\n" +
+            "WITH RECURSIVE temp_ \n" +
             "AS\n" +
             "(\n" +
             "\tSELECT c.category_id,c.parent_id \n" +
@@ -75,7 +76,7 @@ public interface CoursDao extends JpaRepository<Course,Long> {
             "\tINNER JOIN categories_attr ca\n" +
             "\tON ca.category_attr_id = c.category_attr_id\n" +
             ")\n" +
-            "SELECT * FROM result_final rf \n")
+            "SELECT * FROM result_final rf \n",nativeQuery = true)
     Collection<Course> getCourseByCategoryId(Long categoryId);
 
 }
