@@ -133,8 +133,8 @@ public class UserAccountServiceImpl implements UserAccountService {
             String title="Đổi mật khẩu";
             String content= Mail.docChangePassword(email,pass);
             System.out.println(content);
-            MailSender.sendCode("hoangndph13827@fpt.edu.vn",content,title);
-            //udao.repass(email,pass);
+            MailSender.sendCode(email,content,title);
+            udao.repass(email,pass);
         }catch (Exception m){
             m.printStackTrace();
         }

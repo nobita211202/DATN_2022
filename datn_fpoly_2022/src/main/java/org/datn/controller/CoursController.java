@@ -119,6 +119,12 @@ public class CoursController {
     public ResponseEntity getToAccept(){
         return ResponseEntity.ok(coursService.getByStatus((short)1));
     }
+    @GetMapping("/get/myCourse/{idUser}")
+    public ResponseEntity getMyCourse(@PathVariable("idUser") Long idUser ){
+        return ResponseEntity.ok(coursService.getMyCourse(idUser));
+    }
+
+
     @GetMapping("/get-by-category/{id}")
     public Collection<Course> getByCategory(@PathVariable Long id){
         return coursService.getCourseByCategoryId(id);

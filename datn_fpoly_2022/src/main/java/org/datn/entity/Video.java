@@ -1,4 +1,3 @@
-package org.datn.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

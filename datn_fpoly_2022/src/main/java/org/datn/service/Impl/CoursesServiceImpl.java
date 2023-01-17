@@ -64,6 +64,11 @@ public class CoursesServiceImpl implements CoursService {
     }
 
     @Override
+    public List<Course> getMyCourse(long userId) {
+        return cdao.getMyCourse(userId);
+    }
+
+    @Override
     public List<Course> getByName(String name) {
         String search= "%"+name+"%";
         System.out.println(search);
