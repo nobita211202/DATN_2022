@@ -44,8 +44,9 @@ public class Course {
     @Column(name = "study_time")
     private Integer studyTime;
 
-    @Column(name = "like_")
-    private Long like;
+
+    @Column(name = "link")
+    public String link;
 
     @Column(name = "price")
     private Float price;

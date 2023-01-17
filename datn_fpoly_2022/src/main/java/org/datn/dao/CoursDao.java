@@ -21,7 +21,11 @@ public interface CoursDao extends JpaRepository<Course,Long> {
     @Query("select c from Course c where c.user.id =:userId and c.status > 0")
     List<Course> getCourseByUserId(@Param("userId")long id );
 
-
+    @Query("select c from Course c" +
+            " join OrderDetail od on od.course.id = c.id" +
+            " join Order o on o.id = od.order.id" +
+            " where o.user.id =:userId and c.status = 3")
+    List<Course> getMyCourse(@Param("userId")long idUser );
 
     @Query("select c from Course c where c.status =:status")
     List<Course> getByStatus(@Param("status") Short status);

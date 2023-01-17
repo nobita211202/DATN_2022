@@ -17,7 +17,7 @@ public interface CoursService {
     List<Course> getByStatus(Short status);
     void deleteCours(Long id);
     Course updateCours(Course co);
-
+    List<Course> getMyCourse(long userId);
     List<Course> getByName(String name);
     Course findByIDCours(Long id);
 
