@@ -22,7 +22,6 @@ export default {
             id: 1,
             name: 'Danh mục test',
             category:{ },
-            admin_id: 1,
             like: 0,
             image: '/assets/images/brand/logo-3.png',
             created: '1970-01-01',
@@ -108,7 +107,6 @@ export default {
           obj.name = this.formEditCategory.name
           obj.image = this.formEditCategory.image
           obj.category = this.formEditCategory.category
-          obj.admin_id = this.formEditCategory.admin_id
           obj.status = this.formEditCategory.status
           break
         }

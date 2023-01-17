@@ -1,14 +1,14 @@
 <template>
   <Main>
     <div class="body bg-white  ">
-            <div class="bg-success">
+            <div class="bg-dark py-5">
                 <div class="container-xxl">
-                    <h1 class="text-center text-white py-10">Phản hồi với chúng tôi</h1>
+                    <span class="text-center fs-1 text-white">Liên hệ với chúng tôi</span>
                 </div>
             </div>
             <div class="container-xxl my-5">
-               <div class="row ">
-                <div class="col-lg-6 col-12 px-5 my-2">
+               <div class="row">
+                <div class="col-lg-6 col-12 my-2">
                     <img src="https://www.qs.com/wp-content/uploads/2020/06/university-online-learning.jpg" class="w-100" alt="">
                 </div>
                 <div class="col-lg-6 col-12">

@@ -10,10 +10,17 @@ export default {
   data() {
     var mail = require("@assets/mailMau.json")
     return {
+      videos:{
+        data:[],
+        fields:[
+          { key: 'title', label: 'Bài giảng'},
+        ]
+      },
       mail:mail,
       debounceSearch:null,
       overlayTB:null,
     courseAtt:[],
+    btHide:true,
     table: {
         isBusy: false,
         data: [],
@@ -40,6 +47,17 @@ export default {
       currentPage: 1,
       rolesPerPage: 5,
       txtSearch: '',
+      video:{
+        title:"",
+        link:"",
+      },
+      formAddVideo:{},
+      btEditVideo:true,
+      thongBao:{
+        isAddShow:false,
+        isUpdateShow:false,
+        isDeleteShow:false,
+      }
     }
   },
 
@@ -108,6 +126,7 @@ export default {
     async getCourseAccept(){
       axios.get(`${url}course/get/accept`)
       .then((res)=>{
+        this.btHide= false
         this.table.data = res.data
         console.log(res.data);
       })
@@ -122,9 +141,58 @@ export default {
     async getCourseToAccept(){
       axios.get(`${url}course/get/toAccept`)
       .then((res)=>{
+        this.btHide = true
         this.table.data = res.data
         console.log(res.data);
       })
+    },
+    mdAddVideo(course){
+      this.showCourse = Object.assign({},course)
+      axios.get(`${url}video/getByCourseId/${course.id}`)
+      .then((res)=>{
+        this.videos.data = res.data
+        console.log(res.data);
+        this.video.courseId = course.id
+      })
+      this.$bvModal.show("modal-add-video")
+    },
+    addVideo(){
+      var video = Object.assign(this.video)
+      console.log(video);
+      axios.post(`${url}video/add`,video)
+      .then((res)=>{
+        this.videos.data.push(res.data)
+        console.log(res.data);
+        this.thongBao.isAddShow = false
+        this.video = {}
+      })
+    },
+    deleteVideo(idVideo){
+      axios.delete(`${url}video/delete/${idVideo}`)
+      .then((res)=>{
+        this.videos.data.filter(video => video.id !== idVideo)
+        this.thongBao.isDeleteShow = false
+      })
+    },
+    putVideo(){
+      var video = Object.assign(this.video)
+      axios.put(`${url}video/update`,video)
+      .then((res)=>{
+        for (const obj of this.videos.data){
+          if (obj === video.id ) {
+            obj.title = video.title
+            obj.link = video.link
+          }
+        }
+        this.thongBao.isAddShow = false
+        this.video = {}
+        this.thongBao.isUpdateShow = false
+        this.btEditVideo = true
+      })
+    },
+    showEditVideo(video){
+      this.video = Object.assign({},video)
+      this.btEditVideo = false
     }
   },
   filters:{
@@ -226,8 +294,11 @@ export default {
             @click="onRemoveCourse(course.item)"
             ><b-icon icon="trash-fill" aria-hidden="true"></b-icon>Hủy</b-button
           >
-          <b-button variant="outline-info" @click="mdShowCourse(course.item)"
+          <b-button v-show="btHide" variant="outline-info" @click="mdShowCourse(course.item)"
             ><b-icon icon="check-lg" aria-hidden="true"></b-icon>Chấp nhận</b-button
+          >
+          <b-button v-show="!btHide" variant="outline-info" @click="mdAddVideo(course.item)"
+            ><b-icon icon="add" aria-hidden="true"></b-icon>Thêm bài giảng</b-button
           >
         </template>
       </b-table>
@@ -305,6 +376,83 @@ export default {
         <b-button type="button" variant="success" @click="accept">
           Xác nhận</b-button
         >
+      </template>
+    </b-modal>
+    <b-modal
+      id="modal-add-video"
+      size="xl"
+      centered
+      scrollable
+      hide-backdrop
+      hide-header-close
+    >
+      <template v-slot:modal-title>Thêm bài giảng </template>
+      <div class="row">
+        <div class="col-12 col-lg-8 col-xl-8">
+          <b-table
+            striped
+            hover
+            responsive
+            :items="videos.data"
+            :fields="videos.fields"
+          >
+            <template v-slot:cell(title)="video">
+              <div class="d-flex">
+                <div class="flex-column d-flex">
+                  <span class="text-max">{{ video.item.title }}</span>
+                  <span > <a class="text-max" :href="video.item.link">{{ video.item.link }}</a> </span>
+                </div>
+                <div class="ms-auto my-auto">
+                  <b-button
+                      class="mr-5"
+                      variant="outline-danger"
+                      @click="deleteVideo(video.item)"
+                      ><b-icon icon="trash-fill" aria-hidden="true"></b-icon>xóa</b-button
+                    >
+                    <b-button  variant="outline-warning" @click="showEditVideo(video.item)"
+                      ><b-icon icon="pen" aria-hidden="true"></b-icon>Sửa</b-button
+                    >
+                </div>
+              </div>
+            </template>
+          </b-table>
+        </div>
+        <div class="col-12 col-lg-4 col-xl-4" >
+          <div v-if="thongBao.isAddShow" class="bg-success py-2 px-1 d-flex" :class="'text-white'">
+            <span class="my-auto me-auto" >Xác nhận thêm bài giảng {{ videos.data.length + 1 }} cho khóa học {{ showCourse.name }}</span>
+            <b-button class="my-auto p-0 me-1" @click="addVideo" >Ok</b-button>
+            <i class="bi bi-x my-auto" @click="thongBao.isAddShow = false"></i>
+          </div>
+          <div v-if="thongBao.isUpdateShow" class="bg-warning py-2 px-1 d-flex" :class="'text-white'">
+            <span class="my-auto me-auto" >Xác nhận sửa bài giảng khóa học {{showCourse.name}}</span>
+            <b-button class="my-auto p-0 me-1" @click="putVideo">Ok</b-button>
+            <i class="bi bi-x my-auto" @click="thongBao.isUpdateShow = false"></i>
+          </div>
+          <div v-if="thongBao.isDeleteShow" class="bg-danger py-2 px-1 d-flex" :class="'text-white'">
+            <span class="my-auto me-auto" >Xác nhận xóa bài giảng  cho khóa học {{showCourse.name}}</span>
+            <b-button class="my-auto p-0 me-1">Ok</b-button>
+            <i class="bi bi-x my-auto" @click="thongBao.isDeleteShow = false"></i>
+          </div>
+          <b-form>
+            <b-form-group>
+              <label for="">Tiêu đề bài giảng</label>
+              <b-input v-model="video.title" type="text" placeholder="Tiêu đề bài giảng" />
+            </b-form-group>
+            <b-form-group>
+              <label for="">Link</label>
+              <b-input v-model="video.link" type="text" placeholder="Link" />
+            </b-form-group>
+          </b-form>
+          <b-button v-if="btEditVideo" type="button" variant="success" @click="thongBao.isAddShow = true">
+            Thêm video</b-button
+          >
+          <b-button v-else type="button" variant="warning" @click="thongBao.isUpdateShow = true">
+            Sửa video</b-button
+          >
+        </div>
+      </div>
+      <template v-slot:modal-footer>
+        <div></div>
       </template>
     </b-modal>
 
