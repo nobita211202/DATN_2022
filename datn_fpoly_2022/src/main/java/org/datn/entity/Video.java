@@ -25,7 +25,7 @@ public class Video  {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "url")
+    @Column(name = "link")
     private String link;
     @Column(name = "course_id")
     private long courseId;
