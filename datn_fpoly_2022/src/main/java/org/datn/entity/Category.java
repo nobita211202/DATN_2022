@@ -1,13 +1,9 @@
 package org.datn.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 import java.util.Date;
 
 @Entity
@@ -55,6 +51,4 @@ public class Category {
 
     @Column(name = "status")
     private Short status;
-
-
 }

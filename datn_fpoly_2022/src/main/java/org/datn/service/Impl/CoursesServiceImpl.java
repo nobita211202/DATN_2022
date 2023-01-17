@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,5 +91,10 @@ public class CoursesServiceImpl implements CoursService {
     @Override
     public List<Course> findTop5CoursePurchase() {
         return cdao.findTop5CoursePurchase();
+    }
+
+    @Override
+    public Collection<Course> getCourseByCategoryId(Long id) {
+        return cdao.getCourseByCategoryId(id);
     }
 }

@@ -30,6 +30,7 @@ org\datn\controller\LoginController.class
 org\datn\dao\UserDao.class
 org\datn\service\MailOutQueueService.class
 org\datn\service\VoucherAttrService.class
+org\datn\controller\MailController.class
 org\datn\dao\LoginFailDao.class
 org\datn\service\Impl\CourseAttrImpl.class
 org\datn\service\ReportQuantityDailyService.class

@@ -8,6 +8,7 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\CommentD
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\BlockUserDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\ImageController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\CartService.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Video.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\OrderDetailService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\ForgotPasswordDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\utils\DoubleUtils.java
@@ -93,6 +94,7 @@ D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\L
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\service\CoursService.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\RoleDao.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\ReportQuantityDailyDao.java
+D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\controller\MailController.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\entity\Comment.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\utils\HashAlgorithm.java
 D:\Template\Oauth0\DATN_2022\datn_fpoly_2022\src\main\java\org\datn\dao\ReportQuantityMonthlyDao.java
