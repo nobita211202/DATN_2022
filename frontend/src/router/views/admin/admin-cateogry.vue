@@ -1,12 +1,10 @@
 <script>
-import modalIcon from "@components/modal_choose_icon.vue"
 import axios from "@/node_modules/axios"
 import diagram from "@/src/components/diagramCate.vue"
 const url="/api/"
 
 export default {
   components:{
-    modalIcon,
     diagram
   },
 
@@ -17,19 +15,8 @@ export default {
       parentCategory:[],
       categories: {
         isBusy: false,
-        data: [
-          {
-            id: 1,
-            name: 'Danh mục test',
-            category:{ },
-            like: 0,
-            image: '/assets/images/brand/logo-3.png',
-            created: '1970-01-01',
-            status: 1,
-          },
-        ],
+        data: [],
         fields: [
-          { key: 'id', label: 'ID', sortable: true },
           { key: 'name', label: 'Tên danh mục', sortable: true },
           { key: 'parent', label: 'Danh mục cha', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
@@ -43,7 +30,7 @@ export default {
         },
       },
       busy: false,
-      formAddCategory: { },
+      formAddCategory: {},
       formEditCategory: {},
       categoryDelete: {},
       currentPage: 1,
@@ -76,22 +63,20 @@ export default {
   },
 
   created() {
-    this.categoriesBackup = this.categories.data
     axios.get(`${url}category/get`)
     .then((res)=>{
       this.categories.data = res.data
+      console.log(res.data);
       this.parentCategory = res.data.filter(_=> _.parent === null )
     })
     axios.get('/api/category/get/parent').then(resParent => {
       this.diagramCate = resParent.data
-      console.log(this.categories);
     })
 
   },
 
   methods: {
     nameOfParentCategory(id) {
-      console.log(id);
       const isExist = this.categories.data.find((e) => e.id === id)
       if (isExist !== undefined) {
         return isExist.name
@@ -106,47 +91,41 @@ export default {
         if (obj.id === this.formEditCategory.id) {
           obj.name = this.formEditCategory.name
           obj.image = this.formEditCategory.image
-          obj.category = this.formEditCategory.category
+          obj.parent = this.formEditCategory.parent
           obj.status = this.formEditCategory.status
           break
         }
       }
       })
 
-
-      this.categoriesBackup = this.categories.data
       this.$bvModal.hide('modal-edit-category')
     },
 
     tryAddCategory() {
       const obj = Object.assign({}, this.formAddCategory)
+      console.log(obj);
       const isExist = this.categories.data.find((e) => e.name === obj.name)
       if (isExist !== undefined) {
         alert('Tên danh mục đã tồn tại')
       } else {
-        axios.post(`${url}category/add`,this.formAddCategory).then((res)=>{
-          const id = this.categories.data.length + 1
-          obj.id = id
-          obj.like = 0
-          obj.created = '1970-01-01'
-          obj.creator = this.currentUser.name
-          this.categories.data.push(obj)
-          this.categoriesBackup = this.categories.data
-        this.$bvModal.hide('modal-add-category')
+        axios.post(`${url}category/add`,obj).then((res)=>{
+          this.categories.data.push(res.data)
+          this.$bvModal.hide('modal-add-category')
         })
       }
     },
     tryRemoveCategory() {
+      console.log(this.categoryDelete);
       this.categories.data = this.categories.data.filter(
         (e) => e.id !== this.categoryDelete.id
       )
       axios.delete(`${url}category/${this.categoryDelete.id}`)
       this.busy = false
       this.categoryDelete = {}
-      this.categoriesBackup = this.categories.data
     },
     onRemoveCategory(item) {
       this.categoryDelete = item
+      console.log(item);
       this.busy = true
     },
     onCancel() {
@@ -218,7 +197,7 @@ export default {
             class="mr-5"
             variant="outline-danger"
             @click="onRemoveCategory(cate.item)"
-            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
+            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon>Xoá</b-button
           >
           <b-button variant="outline-info" @click="mdEditCategory(cate.item)"
             ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
@@ -249,9 +228,9 @@ export default {
           <b-col>
             <b-form-group label="Danh mục cha">
               <b-form-select
-                v-model="formAddCategory.parent_id"
+                v-model="formAddCategory.parent"
               >
-              <option v-for="ct in categories.data" :key="ct.id" :value="ct.id">{{ct.name}} </option>
+              <option v-for="ct in categories.data" :key="ct.id + 'cate'" :value="ct">{{ct.name}} </option>
               </b-form-select>
             </b-form-group>
           </b-col>
@@ -287,16 +266,13 @@ export default {
             type="text"
           ></b-form-input>
         </b-form-group>
-        <div>
-          <modalIcon />
-        </div>
         <b-row>
           <b-col>
             <b-form-group label="Danh mục cha">
               <b-form-select
-                v-model="formEditCategory.category"
+                v-model="formEditCategory.parent"
               >
-                <option v-for="ct in categories.data" :key="ct.id" v-show="(ct.id !== formEditCategory.id)" :value="ct.id">{{ct.name}} </option>
+                <option v-for="ct in categories.data" :key="ct.id"  v-show="(ct.id !== formEditCategory.id)" :value="ct">{{ct.name}} </option>
               </b-form-select>
             </b-form-group>
           </b-col>
@@ -328,7 +304,7 @@ export default {
           <p>
             <strong id="form-confirm-label">
               Bạn có chắc muốn <span class="text-danger">xoá</span
-              ><span class="text-bold"> {{ categoryDelete.name_ }}</span>
+              ><span class="text-bold"> {{ categoryDelete.name }}</span>
             </strong>
           </p>
           <div style="justify-content: center">

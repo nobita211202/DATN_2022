@@ -164,8 +164,14 @@ export default {
         this.videos.data.push(res.data)
         console.log(res.data);
         this.thongBao.isAddShow = false
-        this.video = {}
+        this.resetForm()
       })
+    },
+    resetForm(){
+      this.video = {
+          title:"",
+          link:""
+        }
     },
     deleteVideo(idVideo){
       axios.delete(`${url}video/delete/${idVideo}`)
@@ -185,7 +191,7 @@ export default {
           }
         }
         this.thongBao.isAddShow = false
-        this.video = {}
+        this.resetForm()
         this.thongBao.isUpdateShow = false
         this.btEditVideo = true
       })
