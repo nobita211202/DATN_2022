@@ -25,4 +25,5 @@ public interface CoursService {
     Page<Course> getCoursPaging(Optional<Integer> pageNumber, Integer pageSize);
     List<Course> findTop5CoursePurchase();
     Collection<Course> getCourseByCategoryId(Long id);
+    Collection<Course> getCourseBuyTop8();
 }
