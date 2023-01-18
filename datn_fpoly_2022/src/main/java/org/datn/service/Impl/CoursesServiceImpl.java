@@ -44,7 +44,7 @@ public class CoursesServiceImpl implements CoursService {
 
     @Override
     public Course createCours(Course co) {
-        co.setStatus((short)0);
+        co.setStatus((short)1);
         return cdao.save(bases.getBase(co,Bases.CREATE));
     }
 
@@ -96,5 +96,10 @@ public class CoursesServiceImpl implements CoursService {
     @Override
     public Collection<Course> getCourseByCategoryId(Long id) {
         return cdao.getCourseByCategoryId(id);
+    }
+
+    @Override
+    public Collection<Course> getCourseBuyTop8() {
+        return cdao.getTop8();
     }
 }

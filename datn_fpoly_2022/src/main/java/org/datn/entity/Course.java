@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "courses")
@@ -25,6 +26,9 @@ public class Course {
     @ManyToOne( )
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "courseId")
+    List<Video> videos;
 
     @NotNull
     @ManyToOne( )
@@ -42,7 +46,7 @@ public class Course {
     private String image;
 
     @Column(name = "study_time")
-    private Integer studyTime;
+    private Float studyTime;
 
 
     @Column(name = "link")

@@ -17,7 +17,7 @@ public class Category {
     @Column(name = "category_id", nullable = false)
     private Long id;
 
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne()
     @JoinColumn(name = "parent_id")
     private Category parent;
 

@@ -129,6 +129,11 @@ public class CoursController {
     public Collection<Course> getByCategory(@PathVariable Long id){
         return coursService.getCourseByCategoryId(id);
     }
+    @GetMapping("/getBuyTop8")
+    public Collection<Course> getBuyTop8(){
+        return coursService.getCourseBuyTop8();
+    }
+
 }
 
 
