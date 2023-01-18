@@ -21,13 +21,23 @@ export default {
 
         ],
       },categoryParent : [],
+      top8Course:[]
     }
   },
   created() {
     this.getCourse();
     this.getCourseByPurchase()
+    this.getTop8()
   }
   ,methods: {
+    getTop8(){
+      axios.get(`/api/course/getBuyTop8`).then((response) => {
+        this.top8Course = response.data
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     getCourse(){
       axios.get(`/api/course/get`).then((response) => {
         this.listCouses.data = response.data
@@ -116,7 +126,7 @@ export default {
             <div class="my-auto container-xxl">
               <b-row>
                 <b-col sm="12">
-                  <Carousel :classtext="'text-white'" class="text-white" :listCourse="listCouses.data" />
+                  <Carousel :classtext="'text-white'" class="text-white" :listCourse="top8Course" />
                 </b-col>
               </b-row>
             </div>
@@ -125,9 +135,9 @@ export default {
     </div>
     <div class="container-xxl mt-5">
       <div>
-        <span class="fs-1 fw-blod">Khóa học được mua nhiều nhất</span>
+        <span class="fs-1 fw-blod">Danh sách khóa học</span>
       </div>
-       <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data_top" />
+       <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data" />
 
     </div>
   </Layout>

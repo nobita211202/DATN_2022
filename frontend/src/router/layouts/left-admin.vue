@@ -1,5 +1,7 @@
 <script>
 import { bus } from '@src/main'
+import store from '@/src/state/store'
+
 export default {
   props: {
     active: {
@@ -11,15 +13,26 @@ export default {
   data() {
     return {
       leftContentAdminHeight: 700,
-      menuList: [
+      user :Object.assign({}, store.state.auth.currentUser),
+      menuList: [],
+      menuListAdmin: [
         { key: 'admin-role', title: 'Thống kê', icon: 'bi bi-pie-chart-fill' },
         { key: 'admin-category', title: 'Quản lý danh mục', icon: 'fa-folder' },
         { key: 'admin-users', title: 'Quản lý tài khoản', icon: 'fa-user' },
         { key: 'admin-course', title: 'Quản lý Khóa học', icon: 'bi bi-table' },
         { key: 'admin-contact', title: 'Quản lý liên hệ', icon: 'bi bi-telephone-fill' },
+      ],
+      menuListTeacher: [
         { key: 'course-user', title: 'Gửi duyệt khóa học', icon: 'bi bi-table' },
       ],
     }
+  },
+  created(){
+    if(this.user.usersRoles.map(userRole => userRole.role.id).includes(2))
+    this.menuList = this.menuListAdmin
+    if(this.user.usersRoles.map(userRole => userRole.role.id).includes(4))
+    this.menuList = this.menuListTeacher
+
   },
 
   methods: {
