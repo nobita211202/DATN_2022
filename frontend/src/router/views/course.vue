@@ -99,9 +99,7 @@
           <div class="bg-white p-2" v-html="course.describe">
 
           </div>
-          <div class="my-1 bg-white p-2">
-            <strong class="fs-5 fw-bolder">Nội dung khóa học</strong>
-          </div>
+
           <div class="bg-white p-2 border-bottom ">
             <a v-b-toggle.b1 class="fw-bold "><i class="fa fa-minus-square"></i> Phần 1:hehehe</a>
             <b-collapse id="b1" class="py-2 border-bottom ">
@@ -255,7 +253,7 @@
               </b-col>
             </b-row>
           </div>
-          <div class="my-1 bg-white p-2 ">
+          <!-- <div class="my-1 bg-white p-2 ">
             <strong class="fs-5 fw-bolder">Nhận xét</strong>
           </div>
           <div class="my-1 bg-white p-2">
@@ -273,7 +271,7 @@
                   <i class="fa fa-star text-warning"></i>
               </div>
           </div>
-          </div>
+          </div> -->
         </b-col>
       </b-row>
       <div class="mb-5"></div>

@@ -9,7 +9,7 @@
           <div class="m-1 d-flex flex-column ">
             <span class="fw-bold"><a :class="classtext" :href="`/course/${cr.id}`">{{ cr.name }}</a></span>
             <span class="opacity-75">{{ cr.user.username }}</span>
-            <span class="opacity-75">{{ cr.studyTime }}h<span class="px-2">/</span>{{ cr.videos.length }} video</span>
+            <span class="opacity-75">{{ cr.videos.length }} video</span>
             <span class="text-bold">
               {{cr.price | formatNumber}}
             </span>

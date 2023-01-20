@@ -44,6 +44,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
   const authAdmin = routeTo.matched.some((route) => route.meta.authAdmin)
   const authStaff = routeTo.matched.some((route) => route.meta.authStaff)
+  const authTeacher = routeTo.matched.some((route) => route.meta.authStaff)
   // If auth isn't required for the route, just continue.
   if (!authRequired) return next()
   const userLogined = store.getters['auth/loggedIn']
@@ -54,6 +55,11 @@ router.beforeEach((routeTo, routeFrom, next) => {
     return store.dispatch('auth/validate').then((validUser) => {
       // Then continue if the token still represents a valid user,
       // otherwise redirect to login.
+
+      if(authAdmin){
+        // const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
+        return  next() ;
+      }
       if(authAdmin){
         const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
         return userRole.includes(2) ? next() : next({name:"home"})
@@ -62,6 +68,11 @@ router.beforeEach((routeTo, routeFrom, next) => {
         const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
         return userRole.includes(3) ? next() : next({name:"home"})
       }
+      if(authTeacher){
+        const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
+        return userRole.includes(4) ? next() : next({name:"home"})
+      }
+
       return validUser ? next() : redirectToLogin()
     })
   }
