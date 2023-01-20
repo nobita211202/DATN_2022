@@ -165,6 +165,7 @@ export default {
         console.log(res.data);
         this.thongBao.isAddShow = false
         this.resetForm()
+        this.$bvModal.hide("modal-add-video")
       })
     },
     resetForm(){
@@ -175,10 +176,8 @@ export default {
     },
     deleteVideo(idVideo){
       axios.delete(`${url}video/delete/${idVideo}`)
-      .then((res)=>{
-        this.videos.data.filter(video => video.id !== idVideo)
+        this.videos.data = this.videos.data.filter(video => video.id !== idVideo)
         this.thongBao.isDeleteShow = false
-      })
     },
     putVideo(){
       var video = Object.assign(this.video)
@@ -412,7 +411,7 @@ export default {
                   <b-button
                       class="mr-5"
                       variant="outline-danger"
-                      @click="deleteVideo(video.item)"
+                      @click="deleteVideo(video.item.id)"
                       ><b-icon icon="trash-fill" aria-hidden="true"></b-icon>xóa</b-button
                     >
                     <b-button  variant="outline-warning" @click="showEditVideo(video.item)"

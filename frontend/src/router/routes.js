@@ -77,7 +77,8 @@ export default [
     component: () => lazyLoadView(import('@views/admin/admin-home.vue')),
     meta: {
       authRequired: true,
-      authAdmin: true
+      authAdmin: true,
+      authTeacher: true
     },
   },
   {

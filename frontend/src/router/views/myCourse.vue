@@ -16,14 +16,14 @@
                 <img class="w-100 img" :src="getImg(cr.image)" alt="">
               </div>
               <div class="m-1 d-flex flex-column ">
-                <span class="fw-bold " ><a  :href="`/course/${cr.id}`" :class="'text-dark'">{{ cr.name }}</a></span>
+                <span class="fw-bold"><a :class="classtext" :href="`/course/${cr.id}`">{{ cr.name }}</a></span>
                 <span class="opacity-75">{{ cr.user.username }}</span>
-                <span class="opacity-75">12.5h<span class="px-2">/</span>16 video</span>
+                <span class="opacity-75">{{ cr.videos.length }} video</span>
                 <span class="text-bold">
                   {{cr.price | formatNumber}}
                 </span>
               </div>
-              <div class="mx-1 mb-3 mt-auto d-flex">
+              <!-- <div class="mx-1 mb-3 mt-auto d-flex">
                 <span class="me-auto">
                   <span class=" me-1 fw-bold">4.8</span>
                   <i class="fa fa-star text-warning"></i>
@@ -34,12 +34,12 @@
                   <span>(12.000)</span>
                 </span>
 
-              </div>
+              </div> -->
               <b-overlay
                 :show="false"
                 rounded="sm"
               >
-                <a :href="`/`"><b-button class=" w-100"  variant="outline-dark">Vào học</b-button></a>
+                <a :href="`/video/${cr.id}`"><b-button class=" w-100"  variant="outline-dark">Vào học</b-button></a>
               </b-overlay>
             </div>
           </div>

@@ -28,9 +28,11 @@ export default {
     }
   },
   created(){
-    if(this.user.usersRoles.map(userRole => userRole.role.id).includes(2))
+    if(this.user.usersRoles.map(userRole => userRole.role.id).includes(2)){
     this.menuList = this.menuListAdmin
-    if(this.user.usersRoles.map(userRole => userRole.role.id).includes(4))
+      return
+  }
+    if(this.user.usersRoles.map(userRole => userRole.role.id).includes(3))
     this.menuList = this.menuListTeacher
 
   },
