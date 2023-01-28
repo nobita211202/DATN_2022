@@ -33,6 +33,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    public boolean existsCourseInOrderDetail(Long userId, Long courseId) {
+        return orderDetailDao.existsByCourseAndUser(courseId,userId).size() < 1 ? false : true ;
+    }
+
+    @Override
     public ResponseEntity<?> deleteOrderDetail(Long id) {
         try {
             orderDetailDao.deleteById(id);
