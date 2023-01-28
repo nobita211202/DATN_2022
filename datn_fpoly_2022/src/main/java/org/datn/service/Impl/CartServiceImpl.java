@@ -2,6 +2,7 @@ package org.datn.service.Impl;
 
 import org.datn.dao.CartDao;
 import org.datn.entity.Cart;
+import org.datn.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,13 @@ public class CartServiceImpl implements org.datn.service.CartService {
     @Override
     public List<Cart> getAll() {
         return cartDao.findAll();
+    }
+
+    @Override
+    public List<Cart> getCartByUser(Long idUser) {
+        User user = new User();
+        user.setId(idUser);
+        return cartDao.getCartByUser(user);
     }
 
     @Override

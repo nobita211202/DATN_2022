@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAll() {
-        return categoryDao.findAll();
+        return categoryDao.getCategoryByStatus((short)0);
     }
 
     @Override

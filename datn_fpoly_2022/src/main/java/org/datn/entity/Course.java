@@ -32,8 +32,8 @@ public class Course {
 
     @NotNull
     @ManyToOne( )
-    @JoinColumn(name = "category_attr_id", nullable = false)
-    private CategoriesAttr categoryAttr;
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @NotNull
     @Column(name = "name_", nullable = false)
