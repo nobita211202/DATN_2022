@@ -19,6 +19,7 @@ export default {
         console.log(res.data);
       })
     }
+    this.getCategory()
     // var getCourseAttr=()=>{
     //   axios.get(`${url}course/get`)
     //   .then((res)=>{
@@ -30,6 +31,7 @@ export default {
   },
   data() {
     return {
+      categories:[],
       debounceSearch:null,
       overlayTB:null,
       imageUP:null,
@@ -72,9 +74,6 @@ export default {
       },
       busy: false,
       formAddCourse: {
-        categoryAttr:{
-          id:1
-        },
         user:{
           id:user.id
         }
@@ -89,6 +88,13 @@ export default {
 
 
   methods: {
+    getCategory(){
+      axios.get(`${url}category/get`)
+      .then((res)=>{
+        this.categories = res.data
+        console.log(res.data);
+      })
+    },
     chooseImg(even) {
 
       this.imageSelected = even.target.files[0]
@@ -341,6 +347,17 @@ export default {
                 </b-form-group>
               </b-col>
             </b-row>
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <b-form-group label="Thể loại" >
+                  <b-form-select
+                  v-model="formAddCourse.category"
+                  >
+                    <option v-for="ct in categories" :key="ct.id + 'cate'" :value="ct">{{ct.name}}</option>
+                  </b-form-select>
+              </b-form-group>
+              </div>
+            </div>
             <b-row>
               <b-col>
                 <b-form-group label="Thông tin" label-for="role-name">
@@ -425,6 +442,17 @@ export default {
               </b-col>
 
             </b-row>
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <b-form-group label="Thể loại" >
+                  <b-form-select
+                  v-model="formEditCourse.category"
+                  >
+                    <option v-for="ct in categories" :key="ct.id + 'cate'" :value="ct">{{ct.name}}</option>
+                  </b-form-select>
+              </b-form-group>
+              </div>
+            </div>
             <b-row>
               <b-col>
                 <b-form-group label="Thông tin" label-for="role-name">

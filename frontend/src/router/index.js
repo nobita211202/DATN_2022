@@ -44,7 +44,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
   const authAdmin = routeTo.matched.some((route) => route.meta.authAdmin)
   const authStaff = routeTo.matched.some((route) => route.meta.authStaff)
-  const authTeacher = routeTo.matched.some((route) => route.meta.authStaff)
+  const authTeacher = routeTo.matched.some((route) => route.meta.authTeacher)
   // If auth isn't required for the route, just continue.
   if (!authRequired) return next()
   const userLogined = store.getters['auth/loggedIn']
@@ -57,22 +57,21 @@ router.beforeEach((routeTo, routeFrom, next) => {
       // otherwise redirect to login.
 
       if(authAdmin){
-        // const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
-        return  next() ;
-      }
-      if(authAdmin){
         const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
-        return userRole.includes(2) ? next() : next({name:"home"})
+        const next = userRole.includes(2)
+        if (next) return next()
       }
       if(authStaff){
         const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
-        return userRole.includes(3) ? next() : next({name:"home"})
+        const next = userRole.includes(4)
+        if (next) return next()
       }
       if(authTeacher){
         const userRole = validUser.usersRoles.map(userRole => userRole.role.id)
-        return userRole.includes(4) ? next() : next({name:"home"})
+        const next = userRole.includes(3)
+        if (next) return next()
       }
-
+      if(authAdmin || authStaff || authTeacher ) return next({name:"home"})
       return validUser ? next() : redirectToLogin()
     })
   }

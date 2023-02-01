@@ -52,13 +52,13 @@
               <div class="row">
                 <div class="col-lg-7 col-12">
                   <div v-for="cs,index in lstCart" :key="index" class="d-flex py-2 border-bottom">
-                    <div class="d-flex w-100px">
+                    <div class="d-flex w-100px pe-3">
                       <input type="checkbox" class="select" :value="cs.course.id">
                       <img :src="getImg(cs.course.image)" class="w-100 my-auto" alt="">
                     </div>
                     <span class="mx-2">
                       <span class="d-flex fw-bold fs-5 ">{{ cs.course.name }}</span>
-                      <span class="d-flex text-muted">giảng viên</span>
+                      <span class="d-flex text-muted">{{ cs.user.username }}</span>
                       <span class="d-flex text-danger">{{cs.course.price | formatNumber}}</span>
                     </span>
                     <span class="ms-auto d-flex">
@@ -121,6 +121,8 @@
 import axios from '@/node_modules/axios';
 import Main from '@layouts/main.vue'
 import LstcourseVue from '@/src/components/lstcourse.vue';
+import store from '@/src/state/store';
+const user = Object.assign({},store.state.auth.currentUser)
 export default {
   components:{
     Main,
@@ -145,7 +147,7 @@ export default {
     }
   },
   created(){
-    axios.get("/api/cart/get")
+    axios.get("/api/cart/get/"+user.id)
     .then(_ => {this.lstCart = _.data})
 
 
@@ -217,7 +219,7 @@ export default {
 <style >
 
   .w-100px{
-    width: 100px;
+    width: 130px;
   }
   .w-card{
     width: 200px;

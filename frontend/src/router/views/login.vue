@@ -76,19 +76,12 @@ import { authMethods } from '@state/helpers'
               if(this.validate(this.acc)) return
               this.acc.email= Object.assign(this.acc.username)
               const respon = await this.logIn(this.acc)
-            //   this.loginFalseMsg = !respon.status
+              this.loginFalseMsg = !respon.status
               console.log(respon);
-              this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
-            //   if(respon.status) return
+              if(!respon.status) return
 
-            //   axios.post("/api/login",this.acc)
-            //   .then(_=>{
-            //     this.$cookie.set("acc",_.data.token)
-            //     this.loginFalseMsg=false
-            //   })
-            //   .catch(_=>{
-            //     this.loginFalseMsg=true
-            //   })
+              this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
+              this.loginFalseMsg=false
           },
           validate(acc){
               if(!acc.username){
