@@ -20,6 +20,9 @@ public class Video  {
     @Column(name = "video_id", nullable = false)
     private Long id;
 
+    @Column(name = "free")
+    private boolean free;
+
     @Column(name = "describe")
     private String user;
     @Column(name = "title")

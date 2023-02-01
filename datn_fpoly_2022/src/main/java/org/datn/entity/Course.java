@@ -31,7 +31,7 @@ public class Course {
     List<Video> videos;
 
     @NotNull
-    @ManyToOne( )
+    @ManyToOne()
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

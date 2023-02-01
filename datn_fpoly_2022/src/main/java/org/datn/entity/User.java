@@ -27,6 +27,8 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<UsersRole> usersRoles;
 
+    @Column(name = "category_id")
+    private String categoryId;
 
     @Column(name = "name_")
     private String name;

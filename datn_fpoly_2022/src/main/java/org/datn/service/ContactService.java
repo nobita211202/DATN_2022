@@ -12,4 +12,5 @@ public interface ContactService {
     void delete(long id);
     Contact put(Contact contact);
     boolean exists(long contact);
+    List<Contact> getByStatus(short status);
 }
