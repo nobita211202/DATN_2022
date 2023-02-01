@@ -161,7 +161,7 @@ export default {
                         </div>
                         <div class="dropdown-divider m-0"></div>
                         <a
-                          v-if="!user.usersRoles.map(userRole => userRole.role.id).includes(5)"
+                          v-if="!user.usersRoles.map(userRole => userRole.role.id).includes(5) || !user.usersRoles.map(userRole => userRole.role.id).includes(3) || !user.usersRoles.map(userRole => userRole.role.id).includes(4)"
                           href="/admin"
                           class="dropdown-item"
                         >
@@ -173,6 +173,9 @@ export default {
                         <!--                    </a>-->
                         <a href="/profile" class="dropdown-item">
                           <i class="dropdown-icon fe fe-user"></i> Quản lý tài khoản
+                        </a>
+                        <a href="/myCourse" class="dropdown-item">
+                          <i class="dropdown-icon fe fe-user"></i> Khóa học của tôi
                         </a>
                         <a  class="dropdown-item btn " @click="$bvModal.show('modal-dmk')">
                           <i class="dropdown-icon fe fe-x"></i> Đổi mật khẩu

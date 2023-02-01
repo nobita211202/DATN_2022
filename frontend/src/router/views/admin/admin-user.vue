@@ -1,5 +1,6 @@
 <script>
 import axios from '@/node_modules/axios'
+import store from '@/src/state/store'
 const url="/api/"
 
 export default {
@@ -16,24 +17,11 @@ export default {
     return {
     imageUP:null,
     imageSelected :"",
+    currentUser:Object.assign({},store.state.auth.currentUser),
     fileRender:{},
       users: {
         isBusy: false,
-        data: [
-          {
-            id: 1,
-            username: 'Manager',
-            password: 1,
-            email:"hoang@c.cp",
-            image:"",
-            phone:"0961389115",
-            address:"Hà nội",
-
-            creator: 'admin',
-            created: '1970-01-01',
-            status: 1,
-          },
-        ],
+        data: [],
         fields: [
           { key: 'image', label: 'img', sortable: true },
           { key: 'username', label: 'Tài khoản' },
@@ -41,7 +29,6 @@ export default {
           { key: 'phone', label: 'SDT', sortable: true },
           { key: 'email', label: 'Email', sortable: true },
           { key: 'created', label: 'Ngày tạo' },
-          { key: 'status', label: 'Trạng thái', sortable: true },
           { key: 'address', label: 'Địa chỉ' },
           { key: 'action', label: 'Hành động' },
         ],
@@ -62,37 +49,36 @@ export default {
         email:"",
         created:"",
         address:"",
+        name:"",
+        usersRoles:[],
         status: 0,
       },
       userDelete: {},
       formEditUser: {},
       currentPage: 1,
       usersPerPage: 5,
-      currentUser: {
-        id: 1,
-        name: 'admin',
-      },
-      optionsStatus: [
-        { value: 0, text: 'Inactive' },
-        { value: 1, text: 'Active' },
-      ],
-      optionsAdminId: [
-        { value: 1, text: 'Admin' },
-        { value: 2, text: 'Manager' },
-      ],
       usersBackup: [],
       txtSearch: '',
       overlayTB:null,
-      debounceSearch:null
+      debounceSearch:null,
+      role:1
     }
   },
 
 
   methods: {
     getUser(idRole){
+      this.overlayTB = true
+      if(idRole === 2) this.role = 1
+      if(idRole === 3) this.role = 2
+      if(idRole === 4) this.role = 3
+      if(idRole === 5) this.role = 4
       axios.get(`${url}user/getByRole/${idRole}`)
       .then((res)=>{
         this.users.data = res.data
+      })
+      .finally(()=>{
+        this.overlayTB = false
       })
     },
     chooseImg(even) {
@@ -106,11 +92,23 @@ export default {
       this.$bvModal.show('modal-edit-user')
     },
     onAddUser() {
-      const obj = Object.assign({}, this.formAddUser)
-      const isExist = this.users.data.find((e) => e.username === obj.username)
-      if (isExist !== undefined) {
-        alert('Username đã tồn tại')
-        return
+      const roleStudent = {role:{id:5}}
+      const roleLecturers = {role:{id:3}}
+      const roleStaff = {role:{id:4}}
+      const roleAdmin = {role:{id:2}}
+      switch (this.role) {
+        case 1:
+          this.formAddUser.usersRoles.push(roleAdmin)
+          break;
+        case 2:
+          this.formAddUser.usersRoles.push(roleLecturers)
+          break;
+        case 3:
+          this.formAddUser.usersRoles.push(roleStaff)
+          break;
+        default:
+          this.formAddUser.usersRoles.push(roleStudent)
+          break;
       }
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formAddUser))
@@ -121,11 +119,13 @@ export default {
             'Content-Type': 'multipart/form-data',
             'Accept':'application/json'
           },
-          // transformRequest:""
         }
       )
+      .then(res => {
+        this.users.data.push(res.data)
+      })
 
-
+      this.formAddUser.usersRoles = []
       this.usersBackup = this.users.data
       this.$bvModal.hide('modal-add-user')
     },
@@ -199,10 +199,10 @@ export default {
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" @click="getUser(2)" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Quản lý</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" @click="getUser(3)" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Nhân viên</button>
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" @click="getUser(4)" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Nhân viên</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" @click="getUser(4)" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Giảng viên</button>
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" @click="getUser(3)" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Giảng viên</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="contact-tab" data-bs-toggle="tab" @click="getUser(5)" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Học viên</button>
@@ -246,21 +246,13 @@ export default {
             {{ role.item.created | formatDate}}
           </span>
         </template>
-        <template v-slot:cell(status)="role">
-          <span v-if="role.item.status === 0" class="text-danger text-bold">
-            Inactive
-          </span>
-          <span v-if="role.item.status === 1" class="text-success text-bold">
-            Active
-          </span>
-        </template>
-
         <template v-slot:cell(admin_id)="role">
           <span v-if="role.item.admin_id === 1" class="text-bold"> Admin </span>
           <span v-if="role.item.admin_id === 2" class="text-bold"> Manager </span>
         </template>
         <template v-slot:cell(action)="role">
           <b-button
+            v-if="currentUser.usersRoles.map(userRole => userRole.role.id).includes(2)"
             class="mr-5"
             variant="outline-danger"
             @click="onRemoveUser(role.item)"
@@ -346,7 +338,19 @@ export default {
             </b-row>
             <b-row>
               <b-col>
-                <b-form-group label="Address" label-for="role-name">
+                <b-form-group label="Họ và tên" label-for="role-name">
+                  <b-form-input
+                    id="full-name"
+                    v-model="formAddUser.name"
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Địa chỉ" label-for="role-name">
                   <b-form-textarea v-model="formAddUser.address">
                   </b-form-textarea>
                 </b-form-group>
@@ -429,7 +433,19 @@ export default {
             </b-row>
             <b-row>
               <b-col>
-                <b-form-group label="Address" label-for="role-name">
+                <b-form-group label="Họ và tên" label-for="role-name">
+                  <b-form-input
+                    id="full-name"
+                    v-model="formAddUser.name"
+                    required
+                    type="text"
+                  ></b-form-input>
+                </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-form-group label="Địa chỉ" label-for="role-name">
                   <b-form-textarea v-model="formEditUser.address">
                   </b-form-textarea>
                 </b-form-group>

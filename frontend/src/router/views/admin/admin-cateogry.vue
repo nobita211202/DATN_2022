@@ -56,19 +56,13 @@ export default {
           .catch( er => {
             console.log(er);
             this.overlayTB= false})
-
         },1000
       )
     }
   },
 
   created() {
-    axios.get(`${url}category/get`)
-    .then((res)=>{
-      this.categories.data = res.data
-      console.log(res.data);
-      this.parentCategory = res.data.filter(_=> _.parent === null )
-    })
+    this.getCategory()
     axios.get('/api/category/get/parent').then(resParent => {
       this.diagramCate = resParent.data
     })
@@ -76,6 +70,16 @@ export default {
   },
 
   methods: {
+    getCategory(){
+      this.overlayTB = true
+      axios.get(`${url}category/get`)
+      .then((res)=>{
+        this.categories.data = res.data
+        console.log(res.data);
+        this.parentCategory = res.data.filter(_=> _.parent === null )
+      })
+      .finally(()=>{this.overlayTB = false})
+    },
     nameOfParentCategory(id) {
       const isExist = this.categories.data.find((e) => e.id === id)
       if (isExist !== undefined) {

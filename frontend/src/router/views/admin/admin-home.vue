@@ -26,11 +26,16 @@ export default {
 
   data() {
     return {
-      activeTab: 'admin-role',
+      activeTab: '',
     }
   },
-
+  props:{
+    role: Array
+  },
   created() {
+    if (this.role.includes(2)) this.activeTab = 'thong-ke'
+    if (this.role.includes(3)) this.activeTab = 'thong-ke'
+    if (this.role.includes(4)) this.activeTab = 'admin-category'
     bus.$on('switchTab', (data) => {
       this.activeTab = data
     })
@@ -101,7 +106,7 @@ body {
         <b-col class="col-12 col-lg-9 col-xl-10 float-left">
           <div class="card">
             <div class="card-header">
-              <h3 v-if="activeTab === 'admin-role'" class="card-title"
+              <h3 v-if="activeTab === 'thong-ke'" class="card-title"
                 >Thống kê</h3
               >
               <h3  v-if="activeTab === 'admin-category'" class="card-title"
@@ -123,7 +128,7 @@ body {
             </div>
             <div class="h600px p-3" style=" overflow-y: scroll ; overflow-x: hidden;">
              <!-- <KeepAlive> -->
-                <AdminThongKe v-if="activeTab === 'admin-role'" />
+                <AdminThongKe v-if="activeTab === 'thong-ke'" />
                 <AdminCategory v-if="activeTab === 'admin-category'" />
                 <adminUser v-if="activeTab === 'admin-users'" />
                 <adminSourse v-if="activeTab === 'admin-course'"/>

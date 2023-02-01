@@ -19,9 +19,9 @@ export default {
       mail:mail,
       debounceSearch:null,
       overlayTB:null,
-    courseAtt:[],
-    btHide:true,
-    table: {
+      courseAtt:[],
+      btHide:true,
+      table: {
         isBusy: false,
         data: [],
         fields: [
@@ -124,12 +124,14 @@ export default {
       return `${axios.defaults.baseURL}${url}image/get/${name}`
     },
     async getCourseAccept(){
+      this.overlayTB = true
       axios.get(`${url}course/get/accept`)
       .then((res)=>{
         this.btHide= false
         this.table.data = res.data
         console.log(res.data);
       })
+      .finally(()=>{this.overlayTB = false})
     },
     async getCourseNotAccept(){
       axios.get(`${url}course/get/not_accept`)
@@ -139,12 +141,14 @@ export default {
       })
     },
     async getCourseToAccept(){
+      this.overlayTB = true
       axios.get(`${url}course/get/toAccept`)
       .then((res)=>{
         this.btHide = true
         this.table.data = res.data
         console.log(res.data);
       })
+      .finally(()=>{this.overlayTB = false})
     },
     mdAddVideo(course){
       this.showCourse = Object.assign({},course)

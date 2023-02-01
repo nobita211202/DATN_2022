@@ -76,10 +76,11 @@ export default [
     name: 'adminPage',
     component: () => lazyLoadView(import('@views/admin/admin-home.vue')),
     meta: {
-      authRequired: true,
       authAdmin: true,
-      authTeacher: true
+      authTeacher: true,
+      authStaff:true
     },
+    props: (route) => ({ role: Object.assign(store.state.auth.currentUser.usersRoles.map(userRole => userRole.role.id)) || [] }),
   },
   {
     path: '/profile/:username',

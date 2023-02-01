@@ -3,8 +3,10 @@
     <div class="row">
       <div v-for="cr,index in listCourse" :key="cr.id"  class="  col-lg-3 col-md-4 col-sm-6 col-12 my-3">
         <div class=" p-0 d-flex flex-column position-relative block-hover h-100">
-          <div class="w-100" >
-            <img class="w-100 img" :src="getImg(cr.image)" alt="">
+          <div class="w-100"  >
+            <a class="w-100" :href="`/course/${cr.id}`">
+              <img class="w-100 img" :src="getImg(cr.image)" alt="">
+            </a>
           </div>
           <div class="m-1 d-flex flex-column ">
             <span class="fw-bold"><a :class="classtext" :href="`/course/${cr.id}`">{{ cr.name }}</a></span>
@@ -71,12 +73,7 @@ import store from '@state/store'
     mounted (){
       console.log(this.user);
     },
-    watch:{
-      async listCourse(){
 
-
-      },
-    },
     methods: {
 
       getImg(name){
@@ -89,15 +86,17 @@ import store from '@state/store'
       },
       cartCourse(id){
         var cart = {
-          "user":{id:"15"},
+          "user":{id:this.user.id},
           "course":{id:id}
         }
         console.log(cart);
         axios.post("/api/cart/add",cart)
         .then( _ =>{
+          console.log(_.data);
           this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã thêm</p> </div>')
         }).catch(_ =>{
-          this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đã có khóa học này trong giỏ hàng rồi. </p> </div>')
+          console.log(_);
+          this.$toast.center(`<div class="px-2 py-1"><i class="text-danger fs-1 mb-1 fw-bold bi bi-x-circle-fill"></i> <p>${_.response.data} </p> </div>`)
         })
       },
     },

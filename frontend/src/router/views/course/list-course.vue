@@ -14,37 +14,39 @@ export default {
   data() {
     return {
       listCouses: {
-        data: [
-
-        ],
-        data_top: [
-
-        ],
+        data: [],
+        data_top: [],
       },categoryParent : [],
-      top8Course:[]
+      top8Course:[],
+      loading1:false,
+      loading2:false
     }
   },
   created() {
     this.getCourse();
-    this.getCourseByPurchase()
+    // this.getCourseByPurchase()
     this.getTop8()
   }
   ,methods: {
     getTop8(){
+      this.loading1 = true
       axios.get(`/api/course/getBuyTop8`).then((response) => {
         this.top8Course = response.data
         console.log(response.data);
       }).catch((error) => {
         console.log(error)
       })
+      .finally(()=>{this.loading1 =false})
     },
     getCourse(){
+      this.loading2 = true
       axios.get(`/api/course/get`).then((response) => {
         this.listCouses.data = response.data
         console.log(response.data);
       }).catch((error) => {
         console.log(error)
       })
+      .finally(()=>{this.loading2 =false})
     },getCourseByPurchase(){
       axios.get(`/api/course/get-by-purchase`).then((response) => {
         this.listCouses.data_top = response.data
@@ -102,43 +104,48 @@ export default {
 .fw-blod{
   font-weight: 700 !important;
 }
+.h-350px{
+  height: 400px;
+}
+.h-150px{
+  height: 250px;
+}
 
 </style>
 
 <template>
   <Layout>
     <div class="bg-dark  w-100" >
-      <div class="h-1000 before position-relative ">
+      <div class=" before position-relative ">
         <!-- <div  class="w-100 h-100 position-absolute bg-dark opacity-75">
         </div> -->
         <div class="d-flex flex-column w-100 h-100">
             <div class="container-xxl text-white mt-5">
-              <div class="border-bottom border-white py-2">
-                <a  v-for="c,index in categoryParent"  :key="index" href="#" class="text-white">
-                {{ c.name }}
-                  <span v-show="index < ( categoryParent.length - 1)" class="px-2">/</span>
-                </a>
-              </div>
               <div>
                 <span class="fs-1 fw-blod">Top 8 khóa học bán chạy trong tuần</span>
               </div>
             </div>
-            <div class="my-auto container-xxl">
-              <b-row>
-                <b-col sm="12">
-                  <Carousel :classtext="'text-white'" class="text-white" :listCourse="top8Course" />
-                </b-col>
-              </b-row>
+            <div class="my-auto container-xxl" >
+              <b-overlay :show="loading1"  class="mb-5">
+                <b-row class="" :class="loading1 ? 'h-150px' : ''">
+                  <b-col sm="12">
+                    <Carousel :classtext="'text-white'" class="text-white" :listCourse="top8Course" />
+                  </b-col>
+                </b-row>
+              </b-overlay>
             </div>
         </div>
       </div>
     </div>
     <div class="container-xxl mt-5">
-      <div>
+      <div class="">
         <span class="fs-1 fw-blod">Danh sách khóa học</span>
       </div>
-       <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data" />
-
+      <b-overlay variant="light" :show="loading2">
+        <div :class="loading2 ? 'h-350px' : ''">
+          <Carousel :classtext="'text-dark'" class="text-dark" :listCourse="listCouses.data" />
+        </div>
+      </b-overlay>
     </div>
   </Layout>
 </template>
