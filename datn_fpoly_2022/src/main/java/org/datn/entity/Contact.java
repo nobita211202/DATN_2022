@@ -17,6 +17,7 @@ import java.util.Date;
 public class Contact {
     @Id
     @Column(name = "contact_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,4 +44,6 @@ public class Contact {
     @Column(name = "created")
     private Date created;
 
+    @Column(name ="status")
+    private Short status;
 }

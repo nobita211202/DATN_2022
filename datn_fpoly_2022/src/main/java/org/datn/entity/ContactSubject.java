@@ -5,13 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "contact_subject")
@@ -20,6 +18,7 @@ import java.time.Instant;
 public class ContactSubject {
     @Id
     @Column(name = "contact_subject_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name_")
@@ -31,15 +30,16 @@ public class ContactSubject {
     @Column(name = "code", nullable = false)
     private String code;
 
+
     @Column(name = "created")
-    private Instant created;
+    private Date created;
 
     @Column(name = "creator")
     @Type(type = "org.hibernate.type.TextType")
     private String creator;
 
     @Column(name = "modified")
-    private Instant modified;
+    private Date modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")

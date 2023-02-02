@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "comment_")
@@ -18,14 +19,6 @@ public class Comment {
     @Column(name = "comment_id", nullable = false)
     private Long id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "comment_id", nullable = false)
-    private Comment comment;
-
-    @NotNull
-    @Column(name = "parent_id", nullable = false)
-    private Long parentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -35,22 +28,21 @@ public class Comment {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_attr_id")
-    private CourseAttr courseAttr;
+    @Column(name ="numberStar")
+    private Short numberStar;
 
-    @Column(name = "likes")
-    private Long likes;
+    @Column(name = "commentLine")
+    private String commentLine;
 
     @Column(name = "created")
-    private Instant created;
+    private Date created;
 
     @Column(name = "creator")
     @Type(type = "org.hibernate.type.TextType")
     private String creator;
 
     @Column(name = "modified")
-    private Instant modified;
+    private Date modified;
 
     @Column(name = "modifier")
     @Type(type = "org.hibernate.type.TextType")

@@ -48,4 +48,9 @@ public class ContactServiceImpl implements ContactService {
     public boolean exists(long contact) {
         return false;
     }
+
+    @Override
+    public List<Contact> getByStatus(short status) {
+        return contactDao.getContactByStatus(status);
+    }
 }
