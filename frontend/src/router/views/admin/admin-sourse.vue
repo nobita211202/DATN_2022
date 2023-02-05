@@ -76,6 +76,32 @@ export default {
       this.showCourse = Object.assign({}, item)
       this.$bvModal.show('modal-show-course')
     },
+    validate(){
+      if (this.formAddUser.username === '') {
+        console.log(this.formAddUser)
+        alert('Vui lòng nhập tên tài khoản')
+        return
+      }
+      if (this.formAddUser.password === '') {
+        alert('Vui lòng nhập mật khẩu')
+        return
+      }
+      if (this.formAddUser.email === '') {
+        alert('Vui lòng nhập email')
+        return
+      }
+      if (this.formAddUser.phone === '') {
+        alert('Vui lòng nhập số điện thoại')
+        return
+      }
+      if (this.formAddUser.address === '') {
+        alert('Vui lòng nhập địa chỉ')
+        return
+      }
+      if (this.formAddUser.name === '') {
+        return alert('Vui lòng nhập họ tên')
+      }
+    },
     accept() {
 
       axios.get(`${url}course/accept/${this.showCourse.id}`)

@@ -81,6 +81,32 @@ export default {
         this.overlayTB = false
       })
     },
+    validate(){
+      if (this.formAddUser.username === '') {
+        console.log(this.formAddUser)
+        alert('Vui lòng nhập tên tài khoản')
+        return
+      }
+      if (this.formAddUser.password === '') {
+        alert('Vui lòng nhập mật khẩu')
+        return
+      }
+      if (this.formAddUser.email === '') {
+        alert('Vui lòng nhập email')
+        return
+      }
+      if (this.formAddUser.phone === '') {
+        alert('Vui lòng nhập số điện thoại')
+        return
+      }
+      if (this.formAddUser.address === '') {
+        alert('Vui lòng nhập địa chỉ')
+        return
+      }
+      if (this.formAddUser.name === '') {
+        return alert('Vui lòng nhập họ tên')
+      }
+    },
     chooseImg(even) {
       this.imageSelected = even.target.files[0]
       this.imageUP= this.imageSelected
@@ -110,6 +136,7 @@ export default {
           this.formAddUser.usersRoles.push(roleStudent)
           break;
       }
+      this.validate()
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formAddUser))
       if(this.imageUP !== null) dataForm.append("file",this.imageUP)
@@ -131,7 +158,7 @@ export default {
     },
 
     onEditUser() {
-
+      this.validate()
       const dataForm= new FormData()
       dataForm.append("json", JSON.stringify(this.formEditUser))
       if(this.imageUP !== null) dataForm.append("file",this.imageUP)

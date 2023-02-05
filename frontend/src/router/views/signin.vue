@@ -59,7 +59,7 @@
                           <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
                         </svg>
                       </span>
-                      <input v-model="acc.email" class="bg-light w-100  input-outline-node-focus input-hover border-0 py-3  " type="text" placeholder="email" aria-label="Search">
+                      <input v-model="acc.email" class="bg-light w-100  input-outline-node-focus input-hover border-0 py-3  " type="email" placeholder="email" aria-label="Search" required>
                     </div>
                   </div>
                   <div class="input-focus my-5 d-flex" >
@@ -97,6 +97,7 @@
                   phone:"",
                   email:"",
                   image:"",
+                status:0,
               },
               errUsername:"",
               errPassword:"",
@@ -105,6 +106,18 @@
       },
       methods:{
         async signin() {
+          if(this.acc.email==="" || this.acc.username==="" || this.acc.password==="" || this.acc.address==="" || this.acc.phone===""){
+            alert("Vui lòng điền đủ thông tin")
+            return
+          }
+          if(this.acc.password !== this.confirmPass){
+            alert("Mật khẩu không khớp")
+            return
+          }
+          if(this.acc.email.indexOf("@")===-1){
+            alert("Email không hợp lệ")
+            return
+          }
           var submit=false;
           await axios.get(`api/forgotPassword/getExists/${this.acc.username}`).then(_=> {submit =true}).catch(_ => console.log(_))
           if(!submit) await axios.get(`api/forgotPassword/getExists/${this.acc.email}`).then(_=> {submit =true}).catch(_ => console.log(_.status))
