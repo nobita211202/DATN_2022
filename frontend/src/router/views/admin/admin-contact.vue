@@ -38,6 +38,7 @@ export default {
       currentPage: 1,
       categoriesPerPage: 5,
       txtSearch: '',
+      contact:{}
     }
   },
 
@@ -85,10 +86,14 @@ export default {
       .finally(()=> {this.overlayTB = false})
     },
     tryDeleteContact(id){
-      axios.post(`/api/contact/delete/${id}`)
+      axios.delete(`/api/contact/delete/${id}`).then(res =>{
+        this.getContact()
+      })
     },
     setStatus(contact){
-      axios.post(`/api/contact/afterSendMail`,contact)
+      axios.post(`/api/contact/afterSendMail`,contact).then(res =>{
+        this.getContact()
+      })
       this.showSendMail = false
     },
     trySendMail(){
@@ -98,12 +103,13 @@ export default {
       formData.append("title",this.mail.title)
       axios.post(`/api/contact/sendMail`,formData)
       .then(res =>{
-        this.setStatus(res.data)
+        this.setStatus(this.contact)
       })
     },
-    showMail(email){
+    showMail(contact){
       this.showSendMail = true
-      this.mail.email = email
+      this.mail.email = contact.email
+      this.contact = contact
     },
     hideMail(){
       this.showSendMail = false
@@ -157,11 +163,11 @@ export default {
           <b-button
             class="mr-5"
             variant="outline-danger"
-            ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button>
+            ><b-icon icon="trash-fill" @click="tryDeleteContact(contact.item.id)" aria-hidden="true"></b-icon> Xoá</b-button>
             <b-button
             class="mr-5"
             variant="outline-primary"
-            @click="showMail(contact.item.email)"
+            @click="showMail(contact.item)"
             ><b-icon icon="arrow90deg-right" aria-hidden="true"></b-icon> Phản hồi mail</b-button>
 
         </template>

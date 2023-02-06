@@ -12,6 +12,7 @@ export default {
     }
 
     this.getUser(2)
+    this.getChildCate()
   },
   data() {
     return {
@@ -24,6 +25,7 @@ export default {
         data: [],
         fields: [
           { key: 'image', label: 'img', sortable: true },
+          { key: 'name', label: 'Họ và tên' },
           { key: 'username', label: 'Tài khoản' },
           { key: 'email', label: 'Email', sortable: true },
           { key: 'phone', label: 'SDT', sortable: true },
@@ -61,7 +63,8 @@ export default {
       txtSearch: '',
       overlayTB:null,
       debounceSearch:null,
-      role:1
+      role:1,
+      categories:[]
     }
   },
 
@@ -85,6 +88,12 @@ export default {
       this.imageSelected = even.target.files[0]
       this.imageUP= this.imageSelected
       this.fileRender.readAsDataURL(this.imageSelected)
+    },
+    getChildCate(){
+      axios.get(`/api/category/get/childs`)
+      .then(res=>{
+        this.categories= res.data
+      })
     },
     mdEditUser(item) {
       this.formEditUser = Object.assign({}, item)
@@ -123,6 +132,8 @@ export default {
       )
       .then(res => {
         this.users.data.push(res.data)
+        this.imageSelected={}
+        delete this.formAddUser.category
       })
 
       this.formAddUser.usersRoles = []
@@ -146,9 +157,11 @@ export default {
             obj.email = this.formEditUser.email
             obj.phone = this.formEditUser.phone
             obj.address = this.formEditUser.address
+            obj.category = this.formEditUser.category
             obj.image = _.data.image
             break
           }
+          delete this.formEditUser.category
         }
       })
       this.$bvModal.hide('modal-edit-user')
@@ -230,10 +243,20 @@ export default {
         :fields="users.fields"
         :busy="users.isBusy"
       >
-        <template  v-slot:cell(image)="role">
+        <template  v-slot:cell(image)="user">
           <span >
-            <img :src="getImg(role.item.image)" style="width: 50px;" alt="">
+            <img :src="getImg(user.item.image)" style="width: 50px;" alt="">
           </span>
+        </template>
+        <template v-slot:cell(name)="user">
+          <div class="d-flex flex-column">
+            <span class="fw-bold">{{ user.item.name }}</span>
+            <span v-if=" user.item.usersRoles.map(userRole => userRole.role.id).includes(3)">
+              Chuyên môn:
+              <span v-if="user.item.category" class="">{{ user.item.category.name }}</span>
+              <span v-else class="text-muted">Chưa có</span>
+            </span>
+          </div>
         </template>
         <template v-slot:table-busy>
           <div class="text-center text-secondary my-2">
@@ -241,26 +264,28 @@ export default {
             <strong>Loading...</strong>
           </div>
         </template>
-        <template v-slot:cell(created)="role">
+        <template v-slot:cell(created)="user">
           <span>
-            {{ role.item.created | formatDate}}
+            {{ user.item.created | formatDate}}
           </span>
         </template>
-        <template v-slot:cell(admin_id)="role">
-          <span v-if="role.item.admin_id === 1" class="text-bold"> Admin </span>
-          <span v-if="role.item.admin_id === 2" class="text-bold"> Manager </span>
+        <template v-slot:cell(admin_id)="user">
+          <span v-if="user.item.admin_id === 1" class="text-bold"> Admin </span>
+          <span v-if="user.item.admin_id === 2" class="text-bold"> Manager </span>
         </template>
-        <template v-slot:cell(action)="role">
+        <template  v-slot:cell(action)="user">
+         <div>
           <b-button
             v-if="currentUser.usersRoles.map(userRole => userRole.role.id).includes(2)"
             class="mr-5"
             variant="outline-danger"
-            @click="onRemoveUser(role.item)"
+            @click="onRemoveUser(user.item)"
             ><b-icon icon="trash-fill" aria-hidden="true"></b-icon> Xoá</b-button
           >
-          <b-button variant="outline-info" @click="mdEditUser(role.item)"
+          <b-button variant="outline-info" @click="mdEditUser(user.item)"
             ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
           >
+         </div>
         </template>
       </b-table>
     </b-overlay>
@@ -349,6 +374,16 @@ export default {
               </b-col>
             </b-row>
             <b-row>
+            <b-row v-if="this.role === 2">
+              <b-col>
+                <label for="">Chuyên môn</label>
+                <select class="form-select" v-model = "formAddUser.category" name="" id="">
+                  <option v-for="ct in categories" :key = "ct.id" :value="ct">{{ ct.name }}</option>
+                </select>
+              </b-col>
+
+            </b-row>
+
               <b-col>
                 <b-form-group label="Địa chỉ" label-for="role-name">
                   <b-form-textarea v-model="formAddUser.address">
@@ -436,11 +471,19 @@ export default {
                 <b-form-group label="Họ và tên" label-for="role-name">
                   <b-form-input
                     id="full-name"
-                    v-model="formAddUser.name"
+                    v-model="formEditUser.name"
                     required
                     type="text"
                   ></b-form-input>
                 </b-form-group>
+              </b-col>
+            </b-row>
+            <b-row v-if="this.role === 2">
+              <b-col>
+                <label for="">Chuyên môn</label>
+                <select class="form-select" v-model = "formEditUser.category" name="" id="">
+                  <option v-for="ct in categories" :key = "ct.id" :value="ct">{{ ct.name }}</option>
+                </select>
               </b-col>
             </b-row>
             <b-row>

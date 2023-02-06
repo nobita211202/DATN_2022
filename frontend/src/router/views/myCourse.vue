@@ -10,6 +10,10 @@
       <div class="container-xxl">
 
         <div class="row">
+          <b-overlay class="" v-show="loading">
+            <div class="h800px">
+            </div>
+          </b-overlay>
           <div v-for="cr,index in courses" :key="index"  class="  col-lg-3 col-md-4 col-sm-6 col-12 my-3">
             <div class=" p-0 d-flex flex-column position-relative block-hover h-100">
               <div class="w-100" >
@@ -64,15 +68,8 @@ export default {
       debounceSearch:{},
       txtSearch:"",
       courses:[],
-      lstCart:[],
-      lstCourseGY:[],
-      sumMoney:()=>{
-        var sum=0;
-        this.lstCart.forEach(c => {
-          sum += c.course.price
-        });
-        return sum
-      }
+      loading:false
+
     }
   },
   created(){
@@ -80,10 +77,14 @@ export default {
   },
   methods:{
     getMyCourse(){
+      this.loading = true
       axios.get(`/api/course/get/myCourse/${user.id}`)
       .then(res=>{
         this.courses = res.data
         console.log(res.data);
+      })
+      .finally(()=>{
+        this.loading = false
       })
     },
     getImg(name){

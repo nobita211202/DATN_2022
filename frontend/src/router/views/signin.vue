@@ -97,6 +97,9 @@
                   phone:"",
                   email:"",
                   image:"",
+                  userRole:{
+                    role:{id:5},
+                  }
               },
               errUsername:"",
               errPassword:"",

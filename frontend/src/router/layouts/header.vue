@@ -1,22 +1,19 @@
 <script>
 import axios from '@/node_modules/axios'
 import store from '@/src/state/store'
-console.log(store.state);
 export default {
   data() {
     return {
-      user: store.state.auth.currentUser,
-      currentUser: {
-        name: 'admin',
-        is_admin: true,
+      user: Object.assign({},store.state.auth.currentUser),
 
-      },
       categories: [],
       cateModel:{},
       oldPassword:"",
       newPassword:"",
       confirmPassword:"",
       errMsg:"",
+      isShowAdmin:false,
+      isShowUser:false
     }
   },filters:{
     formatNumber:function(value){
@@ -29,6 +26,12 @@ export default {
       this.categories = resParent.data
       console.log(this.categories);
     })
+    console.log("user");
+    console.log(this.user?.name !== undefined);
+    if(this.user?.id !== undefined){
+      this.isShowAdmin =!this.user.usersRoles.map(userRole => userRole.role.id).includes(5) || !this.user.usersRoles.map(userRole => userRole.role.id).includes(3) || !this.user.usersRoles.map(userRole => userRole.role.id).includes(4);
+      this.isShowUser = true
+    }
   },
   methods:{
     changePassword(){
@@ -37,18 +40,16 @@ export default {
         return
       }
       if(this.newPassword === this.confirmPassword){
-        var user = JSON.parse(localStorage.getItem("user"))
-        console.log(user );
-        if(user.password !== this.oldPassword){
+        console.log(this.user );
+        if(this.user.password !== this.oldPassword){
           this.errMsg = "Mật khẩu cũ không đúng"
           return
         }
         this.errMsg = ""
-        user.password=this.newPassword
-        axios.post("/api/changePassword",user)
+        this.user.password=this.newPassword
+        axios.post("/api/changePassword",this.user)
         .then(()=>{
           this.errMsg=""
-          localStorage.setItem("user",JSON.stringify(user))
           this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Đổi thành công</p> </div>')
           this.$bvModal.hide("modal-dmk")
         })
@@ -136,7 +137,7 @@ export default {
                 </a>
               </li>
                   <div class=" d-flex order-lg-2">
-                    <div v-if="user" class="position-relative d-flex profile-1">
+                    <div v-if="isShowUser" class="position-relative d-flex profile-1">
                       <a
                         href="javascript:void(0)"
                         data-bs-toggle="dropdown"
@@ -161,7 +162,7 @@ export default {
                         </div>
                         <div class="dropdown-divider m-0"></div>
                         <a
-                          v-if="!user.usersRoles.map(userRole => userRole.role.id).includes(5) || !user.usersRoles.map(userRole => userRole.role.id).includes(3) || !user.usersRoles.map(userRole => userRole.role.id).includes(4)"
+                          v-if="isShowAdmin"
                           href="/admin"
                           class="dropdown-item"
                         >
