@@ -48,4 +48,8 @@ public interface UserDao extends JpaRepository<User, Long> {
     @Modifying
     @Query("update User u set u.status = 1 where u.id = ?1")
     void deleteById(Long aLong);
+
+    @Override
+    @Query("select u from User u where u.status = 0")
+    List<User> findAll();
 }

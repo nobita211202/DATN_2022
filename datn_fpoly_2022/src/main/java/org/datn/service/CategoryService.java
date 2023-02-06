@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
+    List<Category> getChilds();
     List<Category> getAll();
     Optional findById(long id);
     Category save(Category category);
