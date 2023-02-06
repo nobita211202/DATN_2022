@@ -80,7 +80,10 @@ import store from '@state/store'
         return `${axios.defaults.baseURL}/api/image/get/${name}`
       },
       timerCartCourse(id,index){
-        if(!this.user) this.$router.push("/login")
+        if(!this.user?.username) {
+          this.$router.push("/login")
+          return
+        }
         clearTimeout(this.debounceAddCart)
         this.debounceAddCart = setTimeout(()=>{this.cartCourse(id);},1000)
       },

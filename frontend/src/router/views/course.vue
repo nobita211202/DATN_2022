@@ -161,76 +161,21 @@
           <div class="bg-white ">
             <b-row>
               <b-col sm="4" class="d-flex flex-column">
-                <span class="number m-auto">5.0</span>
-                <p class="text-center">1000 đánh giá</p>
+                <span class="number m-auto">{{ Math.round(avgStar[0] * 10) / 10 }}</span>
+                <p class="text-center">{{ avgStar[1] }} đánh giá</p>
               </b-col>
               <b-col sm="8">
                 <div class="my-3">
-                  <b-row class="d-flex my-3">
+                  <b-row class="d-flex my-3" v-for=" item in countCommentByStar" :key="item.stt">
                     <b-col sm="8" class="">
-                      <b-progress value="100"  variant="warning" max="100" class=" radius  mx-0"></b-progress>
+                      <b-progress :value="item.count"  variant="warning" :max="avgStar[1]" class=" radius  mx-0"></b-progress>
                     </b-col>
-                    <b-col sm="4" class="my-auto">
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <i class="fa fa-star text-warning"></i>
-                        <span class="px-1">100%</span>
+                    <b-col sm="4"  class="my-auto">
+                        <i v-for="x in [1,2,3,4,5]" class="fa fa-star" :key="x + 'x'" :class="x <= item.stt ? 'text-warning' : 'text-light'"></i>
+                        <span class="px-1">{{ item.count }}</span>
                     </b-col>
                   </b-row>
-                  <b-row class="d-flex my-3">
-                    <b-col sm="8" class="">
-                      <b-progress value="0"  variant="warning" max="100" class=" radius  mx-0"></b-progress>
-                    </b-col>
-                    <b-col sm="4" class="my-auto">
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <span class="px-1">0%</span>
-                    </b-col>
-                  </b-row>
-                  <b-row class="d-flex my-3">
-                    <b-col sm="8" class="">
-                      <b-progress value="0"  variant="warning" max="100" class=" radius  mx-0"></b-progress>
-                    </b-col>
-                    <b-col sm="4" class="my-auto">
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <span class="px-1">0%</span>
-                    </b-col>
-                  </b-row>
-                  <b-row class="d-flex my-3">
-                    <b-col sm="8" class="">
-                      <b-progress value="0"  variant="warning" max="100" class=" radius  mx-0"></b-progress>
-                    </b-col>
-                    <b-col sm="4" class="my-auto">
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <span class="px-1">0%</span>
-                    </b-col>
-                  </b-row>
-                  <b-row class="d-flex my-3">
-                    <b-col sm="8" class="">
-                      <b-progress value="0"  variant="warning" max="100" class=" radius  mx-0"></b-progress>
-                    </b-col>
-                    <b-col sm="4" class="my-auto">
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <i class="fa fa-star-o co-or text-warning"></i>
-                        <span class="px-1">0%</span>
-                    </b-col>
-                  </b-row>
+
 
                 </div>
               </b-col>
@@ -257,14 +202,14 @@
           </div> -->
         </b-col>
       </b-row>
-      <div class="col-12 col-lg-8">
+      <div class="col-12 col-lg-8" v-show="isComment">
         <div>
           <span class="fw-bold fs-5">Đánh giá của bạn</span>
         </div>
-        <div class="d-flex">
+        <div class="d-flex border-bottom">
           <div class="me-auto my-auto fs-5">Chất lượng</div>
-          <div>
-            <div class="ms-auto fs-1 px-2 my-auto">
+          <div class="my-auto ">
+            <div class="ms-auto fs-3 px-2 my-auto">
                 <i class="fa fa-star "  v-for="vl in [1,2,3,4,5]" :key="vl" :class="comment.numberStar >= vl ? 'text-warning' : 'text-light'" @click="comment.numberStar = vl" ></i>
             </div>
           </div>
@@ -279,12 +224,15 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class=" col-12 col-lg-8">
         <div>
           <span class="fw-bold fs-5">Đánh giá của mọi người</span>
         </div>
-        <div v-for="cmt in comments" :key="cmt.id">
-          <div class="my-1 bg-white p-2">
+        <div v-if="comments.length < 1">
+          <p class="text-center text-muted fs-5">Chưa có đánh giá</p>
+        </div>
+        <div v-for="cmt,index in comments" :key="cmt.id">
+          <div class="my-1  p-2" :class="index % 2 !== 0 ? 'bg-white' : 'bg-dark text-white'">
            <div class="d-flex">
             <img  class="wh rounded my-auto" style="width: 50px;height: 50px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS95t740XwECjf9UqEXOR1q3ovhxhqxlmVElw&usqp=CAU" alt="">
             <div class="mx-2 my-auto lh-1">
@@ -297,8 +245,8 @@
             </div>
           </div>
         </div>
-        <div class="text-center">
-          <span>Xem thêm</span>
+        <div v-if="comments.length > 0" class="text-center">
+          <span @click="getComments" style="cursor: pointer;">Xem thêm</span>
         </div>
       </div>
       <div class="mb-5"></div>
@@ -324,7 +272,7 @@ export default {
     cartCourse(){
       var cart = {
         "user":{id:user.id},
-        "course":this.course
+        "courseId":this.course.id
       }
       axios.post("/api/cart/add",cart)
         .then( _ =>{
@@ -340,7 +288,48 @@ export default {
       return `${axios.defaults.baseURL}/api/image/get/${name}`
     },
     addComment(){
+      axios.post(`/api/comment/add`,this.comment)
+      .then(res=>{
+        this.comments.unshift(res.data)
 
+      })
+    },
+     isCommented(){
+      if(!user?.id) return
+       axios.get(`/api/comment/isComment/${user.id}/${this.course.id}`)
+      .then(res=>{
+        this.isComment = res.data
+        console.log("log "+ this.isComment);
+      })
+    },
+    getAvgStar(){
+      axios.get(`/api/comment/avgStar/${this.course.id}`)
+      .then(res=>{
+        this.avgStar= res.data
+        console.log("avgv :"+res.data);
+        console.log();
+      })
+    },
+    getCountCommentByStar(){
+      for(let i=0 ;i<5;i++){
+        axios.get(`/api/comment/getCountComment/${this.course.id}/${i+1}`)
+        .then(res =>{
+          const data ={
+            stt:i+1,
+            count:res.data
+          }
+          this.countCommentByStar.push(data)
+          this.countCommentByStar = this.countCommentByStar.sort((a,b) => a.stt - b.stt)
+        })
+      }
+    },
+    getComments(){
+      axios.get(`/api/comment/get/${this.tabComment}/${this.course.id}`)
+      .then(res=>{
+        this.comments.push(...res.data)
+        console.log("comment");
+        console.log(res.data);
+      })
     }
   },
   data(){
@@ -353,7 +342,11 @@ export default {
         course:{},
         numberStar:1
       },
-      comments:[]
+      comments:[],
+      isComment:false,
+      tabComment:0,
+      avgStar:'0',
+      countCommentByStar:[]
     }
   },
   filters:{
@@ -361,13 +354,21 @@ export default {
       return new Intl.NumberFormat().format(value)+"đ"
     }
   },
-  beforeCreate(){
+  created(){
     axios.get(`/api/course/get/${this.$route.params.id}`)
     .then((res)=>{
       this.course=res.data
       this.comment.course = res.data
+      this.isCommented()
+      this.getComments()
+      this.getAvgStar()
+      this.getCountCommentByStar()
     })
+
     // axios.get(`/api/course/get/${this.$route.params.id}`)
+  },
+  watch:{
+
   }
 }
 </script>

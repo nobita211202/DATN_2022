@@ -35,7 +35,7 @@ export default {
     updateAcc(){
       const dataForm= new FormData()
       delete  this.user.usersRoles
-      delete  this.user.money
+      // delete  this.user.money
       delete  this.user.password
       delete  this.user.username
       dataForm.append("json", JSON.stringify(this.user))

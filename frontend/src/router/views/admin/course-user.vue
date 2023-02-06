@@ -263,8 +263,6 @@ export default {
           >
           <b-button variant="outline-warning" v-if="course.item.status === 1" @click="mdEditCourse(course.item)"
             ><b-icon icon="pen" aria-hidden="true"></b-icon> Sửa</b-button
-          ><b-button variant="outline-primary" v-else @click="mdEditCourse(course.item)"
-            ><b-icon icon="pen" aria-hidden="true"></b-icon>Sửa</b-button
           >
         </template>
       </b-table>
