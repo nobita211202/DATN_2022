@@ -94,4 +94,8 @@ public class CategoryController {
     public ResponseEntity findParent(){
         return ResponseEntity.ok(categoryService.getAllByParentIsNull());
     }
+    @GetMapping("/get/childs")
+    public ResponseEntity getChilds(){
+        return ResponseEntity.ok(categoryService.getChilds());
+    }
 }

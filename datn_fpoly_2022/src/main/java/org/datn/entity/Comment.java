@@ -16,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor@NoArgsConstructor
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id", nullable = false)
     private Long id;
 
@@ -24,9 +25,8 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @Column(name = "course_id")
+    private Long courseId;
 
     @Column(name ="numberStar")
     private Short numberStar;

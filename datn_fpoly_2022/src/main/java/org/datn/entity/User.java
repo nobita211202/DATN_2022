@@ -9,6 +9,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +28,10 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<UsersRole> usersRoles;
 
-    @Column(name = "category_id")
-    private String categoryId;
+    @Null
+    @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Category category;
 
     @Column(name = "name_")
     private String name;

@@ -15,6 +15,8 @@ import java.util.List;
 @Transactional
 public interface CategoryDao extends JpaRepository<Category, Long> {
     List<Category> findCategoryByParent(Category category);
+    @Query("select c from Category c where c.parent is not null ")
+    List<Category> getChilds();
     @Query(value = "CALL delete_ctg(?1)", nativeQuery = true)
     @Modifying
     void delete_ctg(long id);

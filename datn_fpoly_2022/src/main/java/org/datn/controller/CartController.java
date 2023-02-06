@@ -21,7 +21,7 @@ public class CartController {
     public ResponseEntity getCart(
             @PathVariable("idUser") Long idUser
     ){
-        return ResponseEntity.ok(cartService.getAll());
+        return ResponseEntity.ok(cartService.getCartByUser(idUser));
     }
     @PostMapping("/add")
     public ResponseEntity addCart(
