@@ -56,7 +56,7 @@
                       <input type="checkbox" class="select" :value="cs.course.id" @click="select">
                       <img :src="getImg(cs.course.image)" class="w-100 my-auto" alt="">
                     </div>
-                    <span class="mx-2">
+                    <span class="ms-3">
                       <span class="d-flex fw-bold fs-5 ">{{ cs.course.name }}</span>
                       <span class="d-flex text-muted">{{ cs.user.username }}</span>
                       <span class="d-flex text-danger">{{cs.course.price | formatNumber}}</span>
@@ -71,7 +71,7 @@
                   </div>
                 </div>
                 <div class="col-12 my-2 col-lg-5 d-flex">
-                  <div class=" bg-white m-auto  shadow radius  p-5 col-lg-8 col-12 ">
+                  <div class=" bg-white mx-auto  shadow radius  p-5 col-lg-8 col-12 ">
                     <span class=" d-flex ">
                       Giá ban đầu: <span class="fw-bold ms-auto">{{sumMoney() | formatNumber}}</span>
                     </span>
@@ -159,6 +159,7 @@ export default {
   },
   created(){
     axios.get("/api/cart/get/"+user.id)
+
         .then(_ => {this.lstCart = _.data})
 
 

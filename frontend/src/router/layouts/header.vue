@@ -58,6 +58,10 @@ export default {
         this.errMsg = "Mật khẩu xác nhận chưa khớp"
       }
     },
+    search(form){
+      console.log("form");
+      console.log(form);
+    }
   }
 }
 </script>
@@ -123,7 +127,7 @@ export default {
 
 
           </ul>
-          <form class="d-flex w-100 py-1 border mx-lg-auto">
+          <form :submit="search(this)" class="d-flex w-100 py-1 border mx-lg-auto">
             <span class="px-2">
               <i class="fs-4 bi bi-search"></i>
             </span>

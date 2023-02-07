@@ -5,69 +5,85 @@
       <span class="text-muted fs-3 fw-bold">Thống kê chung</span>
     </div>
     <div class="row">
-      <div class="col-6">
-        <select name=""  class="w-100 ms-2 form-select" id="">
-          <option value="">Tất cả</option>
-          <option value="">Ngày</option>
-        </select>
-      </div>
-      <div class="w-50 col-6 d-flex">
-        <div class="me-auto d-flex">
-          <span class="my-auto fw-blod px-2 fs-6 text-muted">Từ</span>
-          <input class="form-control" type="date">
-        </div>
-        <div class="d-flex">
-          <span class="my-auto fw-blod px-2 fs-6 text-muted">Đến</span>
-          <input class="form-control" type="date">
-        </div>
-      </div>
-      <div class="col-lg-4 col-xxl-3 col-4 ">
-        <div class="m-2 p-5 h-100 border shadow d-flex flex-column">
-          <span class="fs-5 text-max text-muted mb-2">Tổng số học viên</span>
-          <div class="my-auto d-flex">
-            <div class="d-flex">
-              <div class="d-flex  bg-warning">
-                <span class="px-4 m-auto ">
-                  <i class="bi fs-3 text-white  bi-people"></i>
-                </span>
-              </div>
-              <span class="fs-1 text-warning text-blod ms-1">12</span>
-            </div>
-          </div>
 
+      <div class="row">
+        <div class="col-6">
+          <select name="" v-model="selectTypeTk"  class="w-100 ms-2 form-select" id="">
+            <option value="all">Tất cả</option>
+            <option @click="getCountAll" value="day">Ngày</option>
+          </select>
         </div>
+        <div v-if="selectTypeTk === 'day'" class="w-50  d-flex">
+          <div class="me-auto d-flex">
+            <span class="my-auto fw-blod px-2 fs-6 text-muted">Từ</span>
+            <input class="form-control" v-model="from1" type="date">
+          </div>
+          <div class="d-flex">
+            <span class="my-auto fw-blod px-2 fs-6 text-muted">Đến</span>
+            <input class="form-control" v-model="to1" type="date">
+          </div>
+          <b-overlay variant="" :show="loading">
+            <button @click="getCountByDate" class="btn btn-primary">Lọc</button>
+          </b-overlay>
+        </div>
+      </div>
+     <div class="col-lg-4 col-xxl-3 col-4 "> <b-overlay :show="loading">
 
-      </div>
-      <div class="col-lg-4 col-xxl-3 col-4 ">
-        <div class="m-2 p-5 h-100 border shadow d-flex flex-column">
-          <span class="fs-5 text-max text-muted mb-2">Tổng số bình luận</span>
-          <div class="my-auto d-flex">
-            <div class="d-flex">
-              <div class="d-flex  bg-info">
-                <span class="px-4 m-auto ">
-                  <i class="bi bi-chat-left-text  fs-3 text-white"></i>
-                </span>
+          <div class="m-2 p-5 h-100 border shadow d-flex flex-column">
+            <span class="fs-5 text-max text-muted mb-2">Tổng số học viên</span>
+            <div class="my-auto d-flex">
+              <div class="d-flex">
+                <div class="d-flex  bg-warning">
+                  <span class="px-4 m-auto ">
+                    <i class="bi fs-3 text-white  bi-people"></i>
+                  </span>
+                </div>
+                <span class="fs-1 text-warning text-blod ms-1">{{ thongKeChung.hv }}</span>
               </div>
-              <span class="fs-1 text-info text-blod ms-1">1200</span>
             </div>
           </div>
-        </div>
-      </div>
+      </b-overlay>
+    </div>
+
       <div class="col-lg-4 col-xxl-3 col-4 ">
-        <div class="m-2 p-5 h-100 border shadow d-flex flex-column">
-          <span class="fs-5 text-max text-muted mb-2">Tổng số đánh giá</span>
-          <div class="my-auto d-flex">
-            <div class="d-flex">
-              <div class="d-flex  bg-success">
-                <span class="px-4 m-auto">
-                  <i class="bi bi-bookmark-star fs-3 text-white"></i>
-                </span>
+      <b-overlay :show="loading">
+
+          <div class="m-2 p-5 h-100 border shadow d-flex flex-column">
+            <span class="fs-5 text-max text-muted mb-2">Tổng doanh thu</span>
+            <div class="my-auto d-flex">
+              <div class="d-flex">
+                <div class="d-flex  bg-info">
+                  <span class="px-4 m-auto ">
+                    <i class="bi bi-cash-stack  fs-3 text-white"></i>
+                    <!-- <i class="bi "></i> -->
+                  </span>
+                </div>
+                <span class="fs-1 text-info text-blod ms-1">{{ thongKeChung.dt | formatNumber }}</span>
               </div>
-              <span class="fs-1 text-success text-blod ms-1">12</span>
             </div>
           </div>
-        </div>
-      </div>
+      </b-overlay>
+    </div>
+
+      <div class="col-lg-4 col-xxl-3 col-4 ">
+      <b-overlay :show="loading">
+
+          <div class="m-2 p-5 h-100 border shadow d-flex flex-column">
+            <span class="fs-5 text-max text-muted mb-2">Tổng số đánh giá</span>
+            <div class="my-auto d-flex">
+              <div class="d-flex">
+                <div class="d-flex  bg-success">
+                  <span class="px-4 m-auto">
+                    <i class="bi bi-bookmark-star fs-3 text-white"></i>
+                  </span>
+                </div>
+                <span class="fs-1 text-success text-blod ms-1">{{thongKeChung.dg}}</span>
+              </div>
+            </div>
+          </div>
+      </b-overlay>
+    </div>
+
     </div>
     <div class="row">
       <div class="row mt-5">
@@ -103,13 +119,24 @@ export default {
   },
   data(){
     return{
+
+
+      loading:false,
       today:{},
       data:[],
       labels:[],
       tkQuy:{},
       tkNam:{},
       from:null,
-      to:null
+      to:null,
+      thongKeChung:{
+        hv:0,
+        dg:0,
+        dt:0,
+      },
+      selectTypeTk:"all",
+      from1:null,
+      to1:null
     }
   },
   created(){
@@ -121,8 +148,29 @@ export default {
     this.from = this.getDay(date)
     console.log(this.from);
     this.getThongKeNgay()
+    this.getCountAll()
   },
   methods:{
+    getCountByDate(){
+      this.loading = true
+      axios.get(`/api/statistical/getCountByDate/${this.from1}/${this.to1}`)
+      .then(res=>{
+        this.thongKeChung.hv=res.data[0]
+        this.thongKeChung.dt=res.data[1]
+        this.thongKeChung.dg=res.data[2]
+      })
+      .finally(()=>{this.loading = false})
+    },
+    getCountAll(){
+      this.loading = true
+      axios.get(`api/statistical/getCountAll`)
+      .then(res=>{
+        this.thongKeChung.hv= res.data[0]
+        this.thongKeChung.dt= res.data[1]
+        this.thongKeChung.dg= res.data[2]
+      })
+      .finally(()=>{this.loading = false})
+    },
     getDay(date){
       const month = date.getMonth() < 9 ? `0${date.getMonth()+1}`: date.getMonth() + 1
       const year = date.getFullYear()
@@ -136,16 +184,23 @@ export default {
         // this.data = res.data.map(data => data.doanhthu);
         // this.labels = res.data.map(data => data.date)
         const dates = this.getDaysArray(this.from,this.to);
-        res.data.forEach(data =>{
-          dates.forEach(date=>{
+        this.data =[]
+        dates.forEach(date =>{
+          var dt = null;
+          res.data.forEach(data=>{
             if (data.date === date){
-              this.data.push(data.doanhthu)
+              dt = data.doanhthu
             }
           })
-          this.data.push(0)
+          if(dt) this.data.push(dt)
+          else this.data.push(0)
+          console.log("data");
+          console.log(dt);
+          console.log(this.data);
         });
         this.labels = dates
-
+        console.log("date");
+        console.log(this.data);
       })
     },
     getDaysArray : function(start, end) {
@@ -153,6 +208,17 @@ export default {
             arr.push(this.getDay(new Date(dt)));
         }
         return arr;
+    }
+  },
+  filters:{
+      formatNumber:function(value){
+        return new Intl.NumberFormat().format(value)+"đ"
+      }
+  },
+  watch:{
+    selectTypeTk(){
+      if (this.selectTypeTk === 'all')
+      this.getCountAll()
     }
   }
 }
