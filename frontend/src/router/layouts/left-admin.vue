@@ -21,13 +21,13 @@ export default {
         { key: 'admin-users', title: 'Quản lý tài khoản', icon: 'fa-user' },
         { key: 'admin-course', title: 'Quản lý Khóa học', icon: 'bi bi-table' },
         { key: 'admin-contact', title: 'Quản lý liên hệ', icon: 'bi bi-telephone-fill' },
+        { key: 'course-user', title: 'Gửi duyệt khóa học', icon: 'bi bi-table' },
       ],
       menuListStaff: [
         { key: 'admin-category', title: 'Quản lý danh mục', icon: 'fa-folder' },
         { key: 'admin-users', title: 'Quản lý tài khoản', icon: 'fa-user' },
         { key: 'admin-course', title: 'Quản lý Khóa học', icon: 'bi bi-table' },
         { key: 'admin-contact', title: 'Quản lý liên hệ', icon: 'bi bi-telephone-fill' },
-        { key: 'course-user', title: 'Gửi duyệt khóa học', icon: 'bi bi-table' },
       ],
       menuListTeacher: [
       { key: 'thong-ke', title: 'Thống kê', icon: 'bi bi-pie-chart-fill' },

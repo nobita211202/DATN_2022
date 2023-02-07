@@ -72,6 +72,11 @@ export default [
     props: (route) => ({ user: Object.assign(store.state.auth.currentUser) || {} }),
   },
   {
+    path: '/list_course',
+    name: 'fillterCourse',
+    component: () => lazyLoadView(import('@views/fillterCourse.vue')),
+  },
+  {
     path: '/admin',
     name: 'adminPage',
     component: () => lazyLoadView(import('@views/admin/admin-home.vue')),
