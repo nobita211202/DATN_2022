@@ -20,4 +20,17 @@ public class StatisticalService {
         log.info("log date :",from,to);
         return orderDao.getByDate(from,to);
     }
+
+    public  Object getCoutnAll(){
+        return new Object[]{orderDao.getCountUserAll(),orderDao.getSumMoneyAll(),orderDao.getCountCmonmentAll()};
+    };
+
+    public  Object getCountByDate(String from, String to){
+        return new Object[]{
+                orderDao.getCountUserByDate(from, to),
+                orderDao.getSumMoneyByDate(from, to),
+                orderDao.getCountCmonmentByDate(from, to)};
+    };
+
+
 }
