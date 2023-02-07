@@ -2,7 +2,7 @@
   <div>
     <Main>
       <div class="bg-dark py-5">
-            <div class="container-xxl ">
+        <div class="container-xxl ">
               <span class="d-flex mb-2 p-3  row text-white">
               <span class="pe-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30"  fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
@@ -13,26 +13,26 @@
                 <span class="text-white fs-1">Giỏ hàng</span>
               </span>
             </span>
-            </div>
-          </div>
+        </div>
+      </div>
       <b-modal
-      id="modal-rm-course"
-      size="sm"
-      centered
-      scrollable
-      hide-backdrop
-      hide-header-close
-    >
-      <template v-slot:modal-title> Bỏ khóa hoc </template>
+          id="modal-rm-course"
+          size="sm"
+          centered
+          scrollable
+          hide-backdrop
+          hide-header-close
+      >
+        <template v-slot:modal-title> Bỏ khóa hoc </template>
         <p>
           Xác nhận bỏ khóa học <span class="fw-bold"> {{deleteCourse.name}}</span> ?
         </p>
-      <template v-slot:modal-footer>
-        <b-button type="button" variant="success" @click="rmCourse(deleteCourse.id)">
-          Oke</b-button
-        >
-      </template>
-    </b-modal>
+        <template v-slot:modal-footer>
+          <b-button type="button" variant="success" @click="rmCourse(deleteCourse.id)">
+            Oke</b-button
+          >
+        </template>
+      </b-modal>
       <div class="d-flex h800px" v-if="lstCart.length === 0">
         <div class="text-center opacity-50 m-auto">
           <span class="fs-1 text-muted ">
@@ -53,7 +53,7 @@
                 <div class="col-lg-7 col-12">
                   <div v-for="cs,index in lstCart" :key="index" class="d-flex py-2 border-bottom">
                     <div class="d-flex w-100px pe-3">
-                      <input type="checkbox" class="select" :value="cs.course.id">
+                      <input type="checkbox" class="select" :value="cs.course.id" @click="select">
                       <img :src="getImg(cs.course.image)" class="w-100 my-auto" alt="">
                     </div>
                     <span class="ms-3">
@@ -83,7 +83,16 @@
                     <span class="fs-4 d-flex ">
                       Tổng: <span class="fw-bold ms-auto">{{sumMoney() | formatNumber}}</span>
                     </span><hr>
-                    <a class="ms-auto btn btn-success" @click="coursePayment">Thanh toán</a >
+                    <div>
+                      <b-button v-b-modal.modal-1 class="ms-auto btn btn-success">Thanh toán</b-button>
+
+                      <b-modal id="modal-1" title="Thông báo" hide-footer>
+                        <p class="my-4">Bạn các chắc chắn muốn thanh toán</p>
+                        <b-button class="mt-3" block @click="coursePayment">Thanh toán</b-button>
+                        <b-button class="mt-3" block @click="$bvModal.hide('modal-1')">Quay lại</b-button>
+                      </b-modal>
+                    </div>
+                    <!--                    <a class="ms-auto btn btn-success" @click="coursePayment">Thanh toán</a >-->
                   </div>
                 </div>
               </div>
@@ -100,13 +109,13 @@
                   <input class="w-75" v-model="txtSearch" type="search" placeholder="Search" aria-label="Search">
                 </form>
               </div>
-                <b-overlay :show="overlayGY" rounded="sm" >
-                  <div class="mt-2 border-top">
-                    <div class="mt-5 row">
-                      <LstcourseVue :classtext="'text-dark'" :listCourse="lstCourseGY" />
-                    </div>
+              <b-overlay :show="overlayGY" rounded="sm" >
+                <div class="mt-2 border-top">
+                  <div class="mt-5 row">
+                    <LstcourseVue :classtext="'text-dark'" :listCourse="lstCourseGY" />
                   </div>
-                </b-overlay>
+                </div>
+              </b-overlay>
             </div>
           </div>
         </div>
@@ -121,6 +130,7 @@
 import axios from '@/node_modules/axios';
 import Main from '@layouts/main.vue'
 import LstcourseVue from '@/src/components/lstcourse.vue';
+import * as _ from 'lodash';
 import store from '@/src/state/store';
 const user = Object.assign({},store.state.auth.currentUser)
 export default {
@@ -135,11 +145,12 @@ export default {
       debounceSearch:{},
       txtSearch:"",
       lstIdCourse:[],
+      listCourse:[],
       lstCart:[],
       lstCourseGY:[],
       sumMoney:()=>{
         var sum=0;
-        this.lstCart.forEach(c => {
+        this.listCourse.forEach(c => {
           sum += c.course.price
         });
         return sum
@@ -148,7 +159,10 @@ export default {
   },
   created(){
     axios.get("/api/cart/get/"+user.id)
-    .then(_ => {this.lstCart = _.data; console.log(_.data);})
+
+        .then(_ => {this.lstCart = _.data})
+
+
 
     axios.get(`/api/course/get`).then( res => {this.lstCourseGY = res.data})
   },
@@ -165,25 +179,48 @@ export default {
     },
     getImg(name){
       return `${axios.defaults.baseURL}/api/image/get/${name}`
-    }, coursePayment(){
-    var checkboxs = document.getElementsByClassName("select");
-    console.log(this.lstCart);
-    var lstIdCourse = []
-    if(checkboxs.length > 0){
-      for (let i = 0; i < checkboxs.length; i++) {
-        if(checkboxs[i].checked){
-         lstIdCourse.push(Number.parseInt(checkboxs[i].value))
+    },
+    select(){
+      const checkBoxS = document.getElementsByClassName("select");
+      console.log(this.lstCart);
+      if(checkBoxS.length > 0) {
+        this.listCourse=[]
+        for (let i = 0; i < checkBoxS.length; i++) {
+          if (checkBoxS[i].checked) {
+            this.lstIdCourse.push(Number.parseInt(checkBoxS[i].value))
+            this.listCourse.push(this.lstCart.find(c => c.course.id === Number.parseInt(checkBoxS[i].value)))
+          }
+          // else{
+          //   this.listCourse = this.listCourse.splice(this.listCourse.findIndex(c => c.course.id === Number.parseInt(checkBoxS[i].value)) -1,1)
+          // }
         }
+      }},
+    coursePayment(){
+      this.$bvModal.hide('modal-1')
+      var checkboxs = document.getElementsByClassName("select");
+      console.log(this.lstCart);
+      if(checkboxs.length > 0) {
+        for (let i = 0; i < checkboxs.length; i++) {
+          if (checkboxs[i].checked) {
+            this.lstIdCourse.push(Number.parseInt(checkboxs[i].value))
+          }
+        }
+        axios.post("/api/order-detail/course-payment/" + JSON.parse(localStorage.getItem('auth.currentUser')).id, this.lstIdCourse).then(res => {
+          if (res.data.status === 200) {
+            this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Thanh toán thành công</p> </div>')
+            _.forIn(this.listCourse, (value, key) => {
+              console.log(value)
+              axios.delete("/api/cart/delete/"+value.id)
+            })
+          } else {
+            alert("Thanh toán thất bại");
+          }
+        });
       }
-      axios.post("/api/order-detail/course-payment/" + JSON.parse(localStorage.getItem('auth.currentUser')).id,lstIdCourse).then(res => {
-        if(res.data.status === 200) {
-          this.$toast.center('<div class="px-2 py-1"><i class="text-success fs-1 mb-1 fw-bold fa-solid fa-circle-check"></i> <p>Thanh toán thành công</p> </div>')
-        }else {
-          alert("Thanh toán thất bại");
-        }
-      });
-    }
-  },
+      else{
+        alert("Bạn chưa chọn khóa học nào");
+      }
+    },
   },
   filters:{
     formatNumber:function(value){
@@ -195,19 +232,19 @@ export default {
       this.overlayGY = true
       clearTimeout(this.debounceSearch)
       this.debounceSearch = setTimeout(
-        ()=>{
-          this.lstCourseGY = []
-          axios.get(`/api/course/search/${this.txtSearch}`)
-          .then((res)=>{
-            this.lstCourseGY = res.data
-            console.log(this.lstCourseGY);
-            this.overlayGY= false
-          })
-          .catch( er => {
-            console.log(er);
-            this.overlayGY= false})
+          ()=>{
+            this.lstCourseGY = []
+            axios.get(`/api/course/search/${this.txtSearch}`)
+                .then((res)=>{
+                  this.lstCourseGY = res.data
+                  console.log(this.lstCourseGY);
+                  this.overlayGY= false
+                })
+                .catch( er => {
+                  console.log(er);
+                  this.overlayGY= false})
 
-        },1000
+          },1000
       )
     }
   }
@@ -216,24 +253,24 @@ export default {
 
 <style >
 
-  .w-100px{
-    width: 130px;
-  }
-  .w-card{
-    width: 200px;
-  }
-  .shadow{
-    box-shadow: -50px 0px 40px rgba(156, 156, 156, 0.323) !important;
-  }
-  .w-pay{
-    width: 300px;
-  }
-  input{
-    outline: none;
-    border-radius: 0;
-    border: none !important;
-  }
-  .h800px{
-    height: 600px;
-  }
+.w-100px{
+  width: 130px;
+}
+.w-card{
+  width: 200px;
+}
+.shadow{
+  box-shadow: -50px 0px 40px rgba(156, 156, 156, 0.323) !important;
+}
+.w-pay{
+  width: 300px;
+}
+input{
+  outline: none;
+  border-radius: 0;
+  border: none !important;
+}
+.h800px{
+  height: 600px;
+}
 </style>

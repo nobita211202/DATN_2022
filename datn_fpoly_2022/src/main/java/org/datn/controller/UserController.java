@@ -55,7 +55,7 @@ public class UserController {
         @ModelAttribute EntityAndImage data
             ) throws IOException {
         User user = (User) new ObjectMapper().readValue(data.getJson(),User.class);
-        user.setImage(user.getImage() == null ? "default-user.jpg" : service.saveImage(data.getFile()) );
+        user.setImage(data.getFile() == null ? "default-user.jpg" : service.saveImage(data.getFile()) );
         System.out.println(user.getImage());
         userService.save(user);
         return ResponseEntity.ok(user);

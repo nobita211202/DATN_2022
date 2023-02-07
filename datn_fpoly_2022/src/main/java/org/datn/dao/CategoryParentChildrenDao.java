@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface CategoryParentChildrenDao extends JpaRepository<CategoryParentChildren,Integer> {
-    @Query("select c from CategoryParentChildren c where c.parent is null")
+    @Query("select c from CategoryParentChildren c where c.parent is null and c.status = 0")
     List<CategoryParentChildren> getParent();
 }

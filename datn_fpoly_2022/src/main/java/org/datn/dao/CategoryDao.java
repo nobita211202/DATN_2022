@@ -15,6 +15,8 @@ import java.util.List;
 @Transactional
 public interface CategoryDao extends JpaRepository<Category, Long> {
     List<Category> findCategoryByParent(Category category);
+    @Query("select c from Category c where c.parent is not null ")
+    List<Category> getChilds();
     @Query(value = "CALL delete_ctg(?1)", nativeQuery = true)
     @Modifying
     void delete_ctg(long id);
@@ -30,7 +32,7 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
             "\t(\n" +
             "\t\tSELECT c.category_id,c.parent_id,c.admin_id,c.name_,c.interest,c.like_,c.created,c.image,\n" +
             "\t\t\tc.creator,c.modified,c.modifier,c.status \n" +
-            "\t\t\tFROM categories c WHERE c.parent_id = ?1\n" +
+            "\t\t\tFROM categories c WHERE c.parent_id = ?1 and c.status = 0 \n" +
             "\t\tUNION ALL\n" +
             "\t\tSELECT c.category_id,c.parent_id,c.admin_id,c.name_,c.interest,c.like_,c.created,c.image,\n" +
             "\t\t\tc.creator,c.modified,c.modifier,c.status \n" +
@@ -40,10 +42,10 @@ public interface CategoryDao extends JpaRepository<Category, Long> {
             "\tSELECT * FROM tempTable", nativeQuery = true)
 
     List<Category> findCategoryByParentId(Long id);
-    @Query(value = "SELECT * FROM categories c WHERE c.parent_id IS NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM categories c WHERE c.parent_id IS NULL and c.status = 0", nativeQuery = true)
     List<Category> getAllByParentIsNull();
 
-    @Query("select c from Category c where   c.name like concat('%',:name,'%') ")
+    @Query("select c from Category c where   c.name like concat('%',:name,'%') and c.status = 0")
     List<Category> findAllByName(@Param("name") String name);
-
+    List<Category> getCategoryByStatus(Short status);
 }

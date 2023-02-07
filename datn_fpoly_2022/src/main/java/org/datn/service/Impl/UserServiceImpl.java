@@ -33,14 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        user.setImage("default-user.jpg");
         userDao.save(bases.getBase(user,Bases.CREATE));
-        UsersRole usersRole = new UsersRole();
-        Role role = new Role();
-        role.setId((long)5);
-        usersRole.setUser(usersRole.getId());
-        usersRole.setRole(role);
-        usersRoleDao.save(usersRole);
+        user.getUsersRoles().forEach(usersRole -> usersRole.setUser(user.getId()));
+        usersRoleDao.saveAll(user.getUsersRoles());
         return user;
     }
 

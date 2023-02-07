@@ -14,6 +14,7 @@ public interface OrderDetailService {
 
     List<History> findByUserId(Long userId);
 
+    boolean existsCourseInOrderDetail(Long userId,Long courseId);
     ResponseEntity<?> deleteOrderDetail(Long id);
     Map coursePayment(Long userId, Long[] multiCourse) throws ClassNotFoundException, SQLException;
 }

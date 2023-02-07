@@ -82,4 +82,6 @@ public interface CoursDao extends JpaRepository<Course,Long> {
             "SELECT * FROM result_final rf \n",nativeQuery = true)
     Collection<Course> getCourseByCategoryId(Long categoryId);
 
+    @Query("select c from Course c join OrderDetail od on od.course.id = c.id GROUP BY c order by count (od.course)")
+    public List<Course> getTop8();
 }

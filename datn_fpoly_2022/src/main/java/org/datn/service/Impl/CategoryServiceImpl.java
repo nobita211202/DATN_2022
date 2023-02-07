@@ -29,8 +29,13 @@ public class CategoryServiceImpl implements CategoryService {
     Bases<Category> bases;
 
     @Override
+    public List<Category> getChilds() {
+        return categoryDao.getChilds();
+    }
+
+    @Override
     public List<Category> getAll() {
-        return categoryDao.findAll();
+        return categoryDao.getCategoryByStatus((short)0);
     }
 
     @Override

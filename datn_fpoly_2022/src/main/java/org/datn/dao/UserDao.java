@@ -20,9 +20,9 @@ import java.util.List;
 @Transactional
 public interface UserDao extends JpaRepository<User, Long> {
 
-    @Query("SELECT e FROM User e WHERE e.email LIKE :email")
+    @Query("SELECT e FROM User e WHERE e.email LIKE :email and e.status = 0")
     User findByEmail(String email);
-    @Query("SELECT u FROM BlockUser u WHERE u.user = :u")
+    @Query("SELECT u FROM BlockUser u WHERE u.user = :u and u.status =0")
     BlockUser findByEmailInBlockUser(User u);
     @Query("SELECT DISTINCT ar.user FROM UsersRole ar WHERE ar.role.name IN ('DIRE','STAF')")
     List<User> getAdministrators();
@@ -35,44 +35,21 @@ public interface UserDao extends JpaRepository<User, Long> {
     @Query("SELECT MAX (i.effectUntil) FROM BlockUser i WHERE i.ipAddress LIKE :ip ")
     Instant findEffectUntilInBlockUser(String ip);
 
-    @Query("SELECT e FROM User e WHERE e.email LIKE :email AND e.password LIKE :password")
+    @Query("SELECT e FROM User e WHERE e.email LIKE :email AND e.password LIKE :password and e.status = 0")
     User findOneByEmailIgnoreCaseAndPassword(String email, String password);
 
-    @Query("select u from User u where u.username = :username or  u.name like concat('%',:name,'%') ")
+    @Query("select u from User u where (u.username = :username or  u.name like concat('%',:name,'%') and u.status = 0) ")
     List<User> findAllByNameOrUsername(@Param("name") String name,@Param("username") String username);
 
+    @Query("select u from User  u where  u.password = ?1 and u.email = ?2 and u.status = 0")
     User findByUsernameOrEmail(String username, String email);
 
-    @Query("update User u " +
-            "set u.name =:name ," +
-            " u.email =:email ," +
-            " u.phone =:phone , " +
-            "u.address=:address, " +
-            "u.modifier =:modifier," +
-            "u.modified=:modified")
-    void updateUserNotImage(
-            @Param("name") String name,
-            @Param("email") String email,
-            @Param("phone") String phone,
-            @Param("address") String address,
-            @Param("modifier") String modifier,
-            @Param("modified") Date modified
-    );
-    @Query("update User u " +
-            "set u.name =:name ," +
-            " u.image =:image ," +
-            " u.email =:email ," +
-            " u.phone =:phone , " +
-            "u.address=:address, " +
-            "u.modifier =:modifier," +
-            "u.modified=:modified")
-    void updateUserAndImage(
-            @Param("name") String name,
-            @Param("email") String email,
-            @Param("image") String image,
-            @Param("phone") String phone,
-            @Param("address") String address,
-            @Param("modifier") String modifier,
-            @Param("modified") Date modified
-    );
+    @Override
+    @Modifying
+    @Query("update User u set u.status = 1 where u.id = ?1")
+    void deleteById(Long aLong);
+
+    @Override
+    @Query("select u from User u where u.status = 0")
+    List<User> findAll();
 }

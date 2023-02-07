@@ -37,11 +37,8 @@ public class CategoryController {
 
     @PostMapping("/add")
     public ResponseEntity<Category> add(
-//            @PathVariable("uuid") String uuid,
             @RequestBody Category category) {
-//        User user= userService.findUserByToken(uuid);
-//        if (user==null) return ResponseEntity.badRequest().build();
-//        category.
+        System.out.println(category);
         categoryService.save(category);
         return ResponseEntity.ok(category);
     }
@@ -96,5 +93,9 @@ public class CategoryController {
     @GetMapping("/get/parent")
     public ResponseEntity findParent(){
         return ResponseEntity.ok(categoryService.getAllByParentIsNull());
+    }
+    @GetMapping("/get/childs")
+    public ResponseEntity getChilds(){
+        return ResponseEntity.ok(categoryService.getChilds());
     }
 }

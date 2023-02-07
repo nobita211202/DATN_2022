@@ -2,6 +2,7 @@ package org.datn.controller;
 
 import org.datn.entity.Cart;
 import org.datn.service.CartService;
+import org.datn.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,22 @@ public class CartController {
     @Autowired
     CartService cartService;
 
-    @GetMapping("/get")
-    public ResponseEntity getCart(){
-        return ResponseEntity.ok(cartService.getAll());
+    @Autowired
+    OrderDetailService orderDetailService;
+    @GetMapping("/get/{idUser}")
+    public ResponseEntity getCart(
+            @PathVariable("idUser") Long idUser
+    ){
+        return ResponseEntity.ok(cartService.getCartByUser(idUser));
     }
     @PostMapping("/add")
     public ResponseEntity addCart(
             @RequestBody Cart cart
     ){
-        if(cartService.exists(cart)) return ResponseEntity.badRequest().build();
+        boolean existsOrder = orderDetailService.existsCourseInOrderDetail(cart.getUser().getId(),cart.getCourse().getId());
+//        if (orderDetailService.existsCourseInOrderDetail(cart.getUser().getId(),cart.getCourse().getId()));
+        if (existsOrder) return ResponseEntity.badRequest().body("Bạn đã mua khóa học này rồi ");
+        if(cartService.exists(cart)) return ResponseEntity.badRequest().body("Đã có trong giỏ");
         else {
             cartService.save(cart);
             return ResponseEntity.ok(cart);
