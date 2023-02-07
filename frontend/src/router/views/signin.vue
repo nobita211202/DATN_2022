@@ -99,7 +99,7 @@
                   image:"",
                   userRole:{
                     role:{id:5},
-                  }
+                  },
                 status:0,
               },
               errUsername:"",
