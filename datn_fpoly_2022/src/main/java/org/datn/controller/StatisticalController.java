@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @RestController
 @CrossOrigin
@@ -20,8 +18,19 @@ public class StatisticalController {
     public ResponseEntity getDay(
             @PathVariable("dayFrom")String dateFrom,
             @PathVariable("dayTo")String dateTo
-    )throws Exception{
-//        log.info("log :"+new Date(dateFrom));
+    ){
         return ResponseEntity.ok(statisticalService.getByDate(dateFrom,dateTo));
+    }
+
+    @GetMapping("/getCountAll")
+    public ResponseEntity getCountAll(){
+        return ResponseEntity.ok(statisticalService.getCoutnAll());
+    }
+    @GetMapping("/getCountByDate/{dayFrom}/{dayTo}")
+    public ResponseEntity getCountByDate(
+            @PathVariable("dayFrom")String dateFrom,
+            @PathVariable("dayTo")String dateTo
+    ){
+        return ResponseEntity.ok(statisticalService.getCountByDate(dateFrom,dateTo));
     }
 }
